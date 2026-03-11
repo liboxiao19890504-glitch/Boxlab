@@ -210,6 +210,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             // 登录验证功能
             let isAuthenticated = false;
+            let isEditing = false;
             const adminUsername = 'admin';
             const adminPassword = 'password'; // 这里可以根据需要修改密码
 
@@ -407,7 +408,6 @@
             }
 
             // 编辑模式切换功能
-            let isEditing = false;
             editButton.addEventListener('click', function() {
                 // 如果未登录，显示登录对话框
                 if (!isAuthenticated) {
@@ -437,7 +437,7 @@
             
             // 为可编辑元素添加自动保存功能
             document.addEventListener('input', function(e) {
-                if (e.target.isContentEditable) {
+                if (e.target.isContentEditable && isEditing) {
                     saveJoin();
                 }
             });
