@@ -331,11 +331,17 @@
             
             // 本地存储功能
             function savePublications() {
-                const publications = [];
+                const publicationsData = {
+                    hero: {
+                        title: document.querySelector('header h1').textContent,
+                        description: document.querySelector('header p').textContent
+                    },
+                    publications: []
+                };
                 const publicationItems = document.querySelectorAll('.publication-item');
                 
                 publicationItems.forEach(item => {
-                    publications.push({
+                    publicationsData.publications.push({
                         title: item.querySelector('.publication-title').textContent,
                         authors: item.querySelector('.publication-authors').textContent,
                         journal: item.querySelector('.publication-journal').textContent,
@@ -344,13 +350,20 @@
                     });
                 });
                 
-                localStorage.setItem('boxlabPublications', JSON.stringify(publications));
+                localStorage.setItem('boxlabPublications', JSON.stringify(publicationsData));
             }
             
             function loadPublications() {
                 const savedPublications = localStorage.getItem('boxlabPublications');
                 if (savedPublications) {
-                    const publications = JSON.parse(savedPublications);
+                    const publicationsData = JSON.parse(savedPublications);
+                    
+                    // 加载英雄区域内容
+                    if (publicationsData.hero) {
+                        document.querySelector('header h1').textContent = publicationsData.hero.title;
+                        document.querySelector('header p').textContent = publicationsData.hero.description;
+                    }
+                    
                     const publicationContainer = document.querySelector('.max-w-4xl');
                     
                     // 清空现有内容
@@ -358,43 +371,45 @@
                     publicationItems.forEach(item => item.remove());
                     
                     // 加载保存的论文
-                    publications.forEach((pub, index) => {
-                        const publicationItem = document.createElement('div');
-                        publicationItem.className = 'mb-8 pb-8 border-b border-gray-200 publication-item';
-                        publicationItem.innerHTML = `
-                            <h3 class="text-xl font-bold mb-2 publication-title editable" contenteditable="false">${pub.title}</h3>
-                            <p class="text-gray-600 mb-2 publication-authors editable" contenteditable="false">${pub.authors}</p>
-                            <p class="text-gray-600 mb-2 publication-journal editable" contenteditable="false">${pub.journal}</p>
-                            <div class="flex space-x-4 mt-4">
-                                <a href="${pub.pdf}" class="text-accent hover:underline publication-pdf editable" contenteditable="false">
-                                    <i class="fa fa-file-pdf-o mr-1"></i> PDF
-                                </a>
-                                <a href="${pub.link}" class="text-accent hover:underline publication-link editable" contenteditable="false">
-                                    <i class="fa fa-external-link mr-1"></i> 期刊链接
-                                </a>
-                            </div>
-                        `;
-                        
-                        // 添加双击编辑事件
-                        publicationItem.addEventListener('dblclick', function() {
-                            const title = this.querySelector('.publication-title').textContent;
-                            const authors = this.querySelector('.publication-authors').textContent;
-                            const journal = this.querySelector('.publication-journal').textContent;
-                            const pdfLink = this.querySelector('.publication-pdf').getAttribute('href');
-                            const journalLink = this.querySelector('.publication-link').getAttribute('href');
+                    if (publicationsData.publications) {
+                        publicationsData.publications.forEach((pub, index) => {
+                            const publicationItem = document.createElement('div');
+                            publicationItem.className = 'mb-8 pb-8 border-b border-gray-200 publication-item';
+                            publicationItem.innerHTML = `
+                                <h3 class="text-xl font-bold mb-2 publication-title editable" contenteditable="false">${pub.title}</h3>
+                                <p class="text-gray-600 mb-2 publication-authors editable" contenteditable="false">${pub.authors}</p>
+                                <p class="text-gray-600 mb-2 publication-journal editable" contenteditable="false">${pub.journal}</p>
+                                <div class="flex space-x-4 mt-4">
+                                    <a href="${pub.pdf}" class="text-accent hover:underline publication-pdf editable" contenteditable="false">
+                                        <i class="fa fa-file-pdf-o mr-1"></i> PDF
+                                    </a>
+                                    <a href="${pub.link}" class="text-accent hover:underline publication-link editable" contenteditable="false">
+                                        <i class="fa fa-external-link mr-1"></i> 期刊链接
+                                    </a>
+                                </div>
+                            `;
                             
-                            document.getElementById('currentPublicationIndex').value = index;
-                            document.getElementById('publicationEditTitle').value = title;
-                            document.getElementById('publicationEditAuthors').value = authors;
-                            document.getElementById('publicationEditJournal').value = journal;
-                            document.getElementById('publicationEditPdf').value = pdfLink;
-                            document.getElementById('publicationEditLink').value = journalLink;
+                            // 添加双击编辑事件
+                            publicationItem.addEventListener('dblclick', function() {
+                                const title = this.querySelector('.publication-title').textContent;
+                                const authors = this.querySelector('.publication-authors').textContent;
+                                const journal = this.querySelector('.publication-journal').textContent;
+                                const pdfLink = this.querySelector('.publication-pdf').getAttribute('href');
+                                const journalLink = this.querySelector('.publication-link').getAttribute('href');
+                                
+                                document.getElementById('currentPublicationIndex').value = index;
+                                document.getElementById('publicationEditTitle').value = title;
+                                document.getElementById('publicationEditAuthors').value = authors;
+                                document.getElementById('publicationEditJournal').value = journal;
+                                document.getElementById('publicationEditPdf').value = pdfLink;
+                                document.getElementById('publicationEditLink').value = journalLink;
+                                
+                                publicationEditModal.classList.remove('hidden');
+                            });
                             
-                            publicationEditModal.classList.remove('hidden');
+                            publicationContainer.insertBefore(publicationItem, document.querySelector('.text-center.mt-8'));
                         });
-                        
-                        publicationContainer.insertBefore(publicationItem, document.querySelector('.text-center.mt-8'));
-                    });
+                    }
                 }
             }
             

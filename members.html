@@ -322,6 +322,10 @@
             // 本地存储功能
             function saveMembers() {
                 const membersData = {
+                    hero: {
+                        title: document.querySelector('header h1').textContent,
+                        description: document.querySelector('header p').textContent
+                    },
                     pi: {
                         name: document.querySelector('.flex.justify-center.mb-16 h3').textContent,
                         title: document.querySelector('.flex.justify-center.mb-16 p:nth-child(2)').textContent,
@@ -360,6 +364,12 @@
                 const savedMembers = localStorage.getItem('boxlabMembers');
                 if (savedMembers) {
                     const membersData = JSON.parse(savedMembers);
+                    
+                    // 加载英雄区域内容
+                    if (membersData.hero) {
+                        document.querySelector('header h1').textContent = membersData.hero.title;
+                        document.querySelector('header p').textContent = membersData.hero.description;
+                    }
                     
                     // 加载PI数据
                     if (membersData.pi) {

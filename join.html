@@ -306,6 +306,10 @@
             // 本地存储功能
             function saveJoin() {
                 const joinData = {
+                    hero: {
+                        title: document.querySelector('header h1').textContent,
+                        description: document.querySelector('header p').textContent
+                    },
                     positions: [],
                     process: [],
                     contact: {
@@ -353,6 +357,12 @@
                 const savedJoin = localStorage.getItem('boxlabJoin');
                 if (savedJoin) {
                     const joinData = JSON.parse(savedJoin);
+                    
+                    // 加载英雄区域内容
+                    if (joinData.hero) {
+                        document.querySelector('header h1').textContent = joinData.hero.title;
+                        document.querySelector('header p').textContent = joinData.hero.description;
+                    }
                     
                     // 加载职位信息
                     if (joinData.positions && joinData.positions.length > 0) {

@@ -260,6 +260,10 @@
             // 本地存储功能
             function saveResearches() {
                 const researchData = {
+                    hero: {
+                        title: document.querySelector('header h1').textContent,
+                        description: document.querySelector('header p').textContent
+                    },
                     areas: [],
                     projects: []
                 };
@@ -292,6 +296,12 @@
                 const savedResearches = localStorage.getItem('boxlabResearches');
                 if (savedResearches) {
                     const researchData = JSON.parse(savedResearches);
+                    
+                    // 加载英雄区域内容
+                    if (researchData.hero) {
+                        document.querySelector('header h1').textContent = researchData.hero.title;
+                        document.querySelector('header p').textContent = researchData.hero.description;
+                    }
                     
                     // 加载研究领域
                     if (researchData.areas && researchData.areas.length > 0) {
