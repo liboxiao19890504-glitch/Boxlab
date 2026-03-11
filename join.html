@@ -446,7 +446,9 @@
             // 为可编辑元素添加自动保存功能
             document.addEventListener('input', function(e) {
                 if (e.target.classList.contains('editable') && isEditing) {
+                    console.log('Auto-saving join data...');
                     saveJoin();
+                    console.log('Saved join data:', localStorage.getItem('boxlabJoin'));
                 }
             });
             

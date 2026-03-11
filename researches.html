@@ -373,7 +373,9 @@
             // 为可编辑元素添加自动保存功能
             document.addEventListener('input', function(e) {
                 if (e.target.classList.contains('editable') && isEditing) {
+                    console.log('Auto-saving researches data...');
                     saveResearches();
+                    console.log('Saved researches data:', localStorage.getItem('boxlabResearches'));
                 }
             });
             

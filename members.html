@@ -488,7 +488,9 @@
             // 为可编辑元素添加自动保存功能
             document.addEventListener('input', function(e) {
                 if (e.target.classList.contains('editable') && isEditing) {
+                    console.log('Auto-saving members data...');
                     saveMembers();
+                    console.log('Saved members data:', localStorage.getItem('boxlabMembers'));
                 }
             });
             
