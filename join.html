@@ -307,8 +307,8 @@
             function saveJoin() {
                 const joinData = {
                     hero: {
-                        title: document.querySelector('header h1').textContent,
-                        description: document.querySelector('header p').textContent
+                        title: document.querySelector('header.bg-gradient-to-r h1').textContent,
+                        description: document.querySelector('header.bg-gradient-to-r p').textContent
                     },
                     positions: [],
                     process: [],
@@ -360,8 +360,8 @@
                     
                     // 加载英雄区域内容
                     if (joinData.hero) {
-                        document.querySelector('header h1').textContent = joinData.hero.title;
-                        document.querySelector('header p').textContent = joinData.hero.description;
+                        document.querySelector('header.bg-gradient-to-r h1').textContent = joinData.hero.title;
+                        document.querySelector('header.bg-gradient-to-r p').textContent = joinData.hero.description;
                     }
                     
                     // 加载职位信息

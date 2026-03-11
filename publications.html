@@ -333,8 +333,8 @@
             function savePublications() {
                 const publicationsData = {
                     hero: {
-                        title: document.querySelector('header h1').textContent,
-                        description: document.querySelector('header p').textContent
+                        title: document.querySelector('header.bg-gradient-to-r h1').textContent,
+                        description: document.querySelector('header.bg-gradient-to-r p').textContent
                     },
                     publications: []
                 };
@@ -360,8 +360,8 @@
                     
                     // 加载英雄区域内容
                     if (publicationsData.hero) {
-                        document.querySelector('header h1').textContent = publicationsData.hero.title;
-                        document.querySelector('header p').textContent = publicationsData.hero.description;
+                        document.querySelector('header.bg-gradient-to-r h1').textContent = publicationsData.hero.title;
+                        document.querySelector('header.bg-gradient-to-r p').textContent = publicationsData.hero.description;
                     }
                     
                     const publicationContainer = document.querySelector('.max-w-4xl');

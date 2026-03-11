@@ -261,8 +261,8 @@
             function saveResearches() {
                 const researchData = {
                     hero: {
-                        title: document.querySelector('header h1').textContent,
-                        description: document.querySelector('header p').textContent
+                        title: document.querySelector('header.bg-gradient-to-r h1').textContent,
+                        description: document.querySelector('header.bg-gradient-to-r p').textContent
                     },
                     areas: [],
                     projects: []
@@ -299,8 +299,8 @@
                     
                     // 加载英雄区域内容
                     if (researchData.hero) {
-                        document.querySelector('header h1').textContent = researchData.hero.title;
-                        document.querySelector('header p').textContent = researchData.hero.description;
+                        document.querySelector('header.bg-gradient-to-r h1').textContent = researchData.hero.title;
+                        document.querySelector('header.bg-gradient-to-r p').textContent = researchData.hero.description;
                     }
                     
                     // 加载研究领域
