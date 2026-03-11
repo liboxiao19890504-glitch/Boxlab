@@ -316,7 +316,7 @@
                     };
                     
                     // 保存职位信息
-                    const positions = document.querySelectorAll('.grid.gap-8 .bg-white');
+                    const positions = document.querySelectorAll('section > div > div:nth-of-type(2) .bg-white');
                     positions.forEach(position => {
                         try {
                             joinData.positions.push({
@@ -379,7 +379,7 @@
                         
                         // 加载职位信息
                         if (joinData.positions && joinData.positions.length > 0) {
-                            const positionsContainer = document.querySelector('.grid.gap-8');
+                            const positionsContainer = document.querySelector('section > div > div:nth-of-type(2)');
                             if (positionsContainer) {
                                 positionsContainer.innerHTML = '';
                                 

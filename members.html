@@ -333,7 +333,7 @@
                     };
                     
                     // 保存当前成员
-                    const currentMembers = document.querySelectorAll('.grid.gap-8 .bg-white');
+                    const currentMembers = document.querySelectorAll('section > div > div:nth-of-type(3) .bg-white');
                     currentMembers.forEach(member => {
                         try {
                             membersData.current.push({
@@ -348,7 +348,7 @@
                     });
                     
                     // 保存校友
-                    const alumniMembers = document.querySelectorAll('.grid.gap-8:nth-of-type(2) .bg-white');
+                    const alumniMembers = document.querySelectorAll('section > div > div:nth-of-type(4) .bg-white');
                     alumniMembers.forEach(member => {
                         try {
                             membersData.alumni.push({
@@ -390,7 +390,7 @@
                         
                         // 加载当前成员
                         if (membersData.current && membersData.current.length > 0) {
-                            const currentContainer = document.querySelector('.grid.gap-8');
+                            const currentContainer = document.querySelector('section > div > div:nth-of-type(3)');
                             if (currentContainer) {
                                 currentContainer.innerHTML = '';
                                 
@@ -416,7 +416,7 @@
                         
                         // 加载校友
                         if (membersData.alumni && membersData.alumni.length > 0) {
-                            const alumniContainer = document.querySelector('.grid.gap-8:nth-of-type(2)');
+                            const alumniContainer = document.querySelector('section > div > div:nth-of-type(4)');
                             if (alumniContainer) {
                                 alumniContainer.innerHTML = '';
                                 
