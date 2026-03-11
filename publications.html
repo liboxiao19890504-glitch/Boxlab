@@ -3,592 +3,603 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Publications | Dr. 姓名</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#334155',
-                        secondary: '#475569',
-                        accent: '#64748b',
-                        light: '#f8fafc',
-                        dark: '#334155'
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'system-ui', 'sans-serif'],
-                        serif: ['Georgia', 'serif']
-                    }
-                }
-            }
+    <title>Boxlab</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
         }
-    </script>
-    <style type="text/tailwindcss">
-        @layer utilities {
-            .text-shadow {
-                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-            }
-            .transition-all-300 {
-                transition: all 300ms ease-in-out;
-            }
-            .card-hover:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            }
+        header {
+            background: linear-gradient(to right, #334155, #475569);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+        nav {
+            background-color: #334155;
+            color: white;
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+        nav ul li {
+            margin: 0 20px;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        section {
+            padding: 40px 0;
+        }
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .news-item {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .news-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            cursor: pointer;
+        }
+        .news-content {
+            padding: 20px;
+        }
+        .news-content h3, .news-content p {
+            margin: 10px 0;
+        }
+        footer {
+            background-color: #334155;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+        }
+        /* 编辑按钮样式 */
+        .edit-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #334155;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+        /* 登录模态框 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 2000;
+        }
+        .modal-content {
+            background-color: white;
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 300px;
+        }
+        .modal-content h3 {
+            margin-top: 0;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .btn-primary {
+            background-color: #334155;
+            color: white;
+        }
+        .btn-secondary {
+            background-color: #94a3b8;
+            color: white;
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+        /* 编辑模式样式 */
+        .editable {
+            border: 2px dashed transparent;
+            padding: 5px;
+        }
+        .editable:hover {
+            border-color: #334155;
+        }
+        .editable.active {
+            border-color: #334155;
+            background-color: #f0f9ff;
+        }
+        /* 新闻编辑模态框 */
+        .news-edit-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 2000;
+        }
+        .news-edit-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 500px;
+        }
+        .news-edit-content h3 {
+            margin-top: 0;
+        }
+        .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            resize: vertical;
+            min-height: 100px;
+        }
+        .image-upload {
+            border: 2px dashed #ccc;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 15px;
+            cursor: pointer;
+        }
+        .image-upload:hover {
+            border-color: #334155;
+        }
+        #newsImagePreview {
+            max-width: 100%;
+            max-height: 200px;
+            margin-top: 10px;
+        }
+        /* 添加新闻按钮 */
+        .add-news-btn {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #334155;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
         }
     </style>
 </head>
-<body class="bg-light font-sans text-dark">
+<body>
     <!-- 导航栏 -->
-    <nav class="bg-primary text-white shadow-md fixed w-full z-10">
-        <div class="container mx-auto px-4 py-3">
-            <div class="flex justify-between items-center">
-                <a href="index.html" class="text-2xl font-bold">Dr. 姓名</a>
-                <div class="hidden md:flex space-x-8">
-                    <a href="index.html" class="hover:text-accent transition-all-300">Home</a>
-                    <a href="publications.html" class="hover:text-accent transition-all-300">Publications</a>
-                    <a href="members.html" class="hover:text-accent transition-all-300">Members</a>
-                    <a href="researches.html" class="hover:text-accent transition-all-300">Researches</a>
-                    <a href="join.html" class="hover:text-accent transition-all-300">Join Us</a>
-                </div>
-                <button class="md:hidden text-white focus:outline-none">
-                    <i class="fa fa-bars text-xl"></i>
-                </button>
-            </div>
-        </div>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="publications.html">Publications</a></li>
+            <li><a href="members.html">Members</a></li>
+            <li><a href="researches.html">Researches</a></li>
+            <li><a href="join.html">Join Us</a></li>
+        </ul>
     </nav>
 
     <!-- 英雄区域 -->
-    <header class="bg-gradient-to-r from-primary to-secondary text-white pt-24 pb-16">
-        <div class="container mx-auto px-4">
-            <h1 class="text-4xl md:text-5xl font-bold mb-4 text-shadow editable" contenteditable="false">Publications</h1>
-            <p class="text-lg mb-8 editable" contenteditable="false">Research publications by Dr. 姓名 and team</p>
-        </div>
+    <header>
+        <h1 class="editable" contenteditable="false">Boxlab</h1>
+        <p class="editable" contenteditable="false">Dr. 姓名 - 首席研究员 | 博士生导师 | 所属学院</p>
     </header>
 
-    <!-- 发表论文 -->
-    <section class="py-16 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="max-w-4xl mx-auto">
-                <!-- 论文1 -->
-                <div class="mb-8 pb-8 border-b border-gray-200 publication-item">
-                    <h3 class="text-xl font-bold mb-2 publication-title editable" contenteditable="false">论文标题1</h3>
-                    <p class="text-gray-600 mb-2 publication-authors editable" contenteditable="false">作者1, 作者2, <strong>您的姓名</strong>, 作者4</p>
-                    <p class="text-gray-600 mb-2 publication-journal editable" contenteditable="false"><em>期刊名称</em>, 卷号(期号), 页码, 年份</p>
-                    <div class="flex space-x-4 mt-4">
-                        <a href="#" class="text-accent hover:underline publication-pdf editable" contenteditable="false">
-                            <i class="fa fa-file-pdf-o mr-1"></i> PDF
-                        </a>
-                        <a href="#" class="text-accent hover:underline publication-link editable" contenteditable="false">
-                            <i class="fa fa-external-link mr-1"></i> 期刊链接
-                        </a>
+    <!-- 团队新闻 -->
+    <section>
+        <div class="container">
+            <h2 class="editable" contenteditable="false">Selected News</h2>
+            <div class="news-grid" id="newsGrid">
+                <!-- 新闻1 -->
+                <div class="news-item">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=academic%20research%20team%20meeting%2C%20professional%20setting%2C%20high%20quality%20photo&image_size=landscape_4_3" alt="新闻图片" class="news-image">
+                    <div class="news-content">
+                        <h3 class="editable" contenteditable="false">团队成员在国际会议上发表重要研究成果</h3>
+                        <p class="editable" contenteditable="false">2026-03-10</p>
+                        <p class="editable" contenteditable="false">团队成员在最近的国际会议上展示了最新研究成果，获得了同行的高度评价。</p>
                     </div>
                 </div>
-                <!-- 论文2 -->
-                <div class="mb-8 pb-8 border-b border-gray-200 publication-item">
-                    <h3 class="text-xl font-bold mb-2 publication-title editable" contenteditable="false">论文标题2</h3>
-                    <p class="text-gray-600 mb-2 publication-authors editable" contenteditable="false">作者1, <strong>您的姓名</strong>, 作者3, 作者4</p>
-                    <p class="text-gray-600 mb-2 publication-journal editable" contenteditable="false"><em>期刊名称</em>, 卷号(期号), 页码, 年份</p>
-                    <div class="flex space-x-4 mt-4">
-                        <a href="#" class="text-accent hover:underline publication-pdf editable" contenteditable="false">
-                            <i class="fa fa-file-pdf-o mr-1"></i> PDF
-                        </a>
-                        <a href="#" class="text-accent hover:underline publication-link editable" contenteditable="false">
-                            <i class="fa fa-external-link mr-1"></i> 期刊链接
-                        </a>
+                <!-- 新闻2 -->
+                <div class="news-item">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=research%20team%20receiving%20award%2C%20ceremony%20setting%2C%20high%20quality%20photo&image_size=landscape_4_3" alt="新闻图片" class="news-image">
+                    <div class="news-content">
+                        <h3 class="editable" contenteditable="false">团队获得国家自然科学基金项目资助</h3>
+                        <p class="editable" contenteditable="false">2026-03-05</p>
+                        <p class="editable" contenteditable="false">团队成功获得国家自然科学基金重点项目资助，将开展为期三年的深入研究。</p>
                     </div>
                 </div>
-                <!-- 论文3 -->
-                <div class="mb-8 pb-8 border-b border-gray-200 publication-item">
-                    <h3 class="text-xl font-bold mb-2 publication-title editable" contenteditable="false">论文标题3</h3>
-                    <p class="text-gray-600 mb-2 publication-authors editable" contenteditable="false"><strong>您的姓名</strong>, 作者2, 作者3, 作者4</p>
-                    <p class="text-gray-600 mb-2 publication-journal editable" contenteditable="false"><em>期刊名称</em>, 卷号(期号), 页码, 年份</p>
-                    <div class="flex space-x-4 mt-4">
-                        <a href="#" class="text-accent hover:underline publication-pdf editable" contenteditable="false">
-                            <i class="fa fa-file-pdf-o mr-1"></i> PDF
-                        </a>
-                        <a href="#" class="text-accent hover:underline publication-link editable" contenteditable="false">
-                            <i class="fa fa-external-link mr-1"></i> 期刊链接
-                        </a>
+                <!-- 新闻3 -->
+                <div class="news-item">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=new%20team%20member%20joining%2C%20office%20setting%2C%20high%20quality%20photo&image_size=landscape_4_3" alt="新闻图片" class="news-image">
+                    <div class="news-content">
+                        <h3 class="editable" contenteditable="false">团队新成员加入</h3>
+                        <p class="editable" contenteditable="false">2026-02-28</p>
+                        <p class="editable" contenteditable="false">欢迎新博士后研究员加入团队，将为团队带来新的研究视角和技术专长。</p>
                     </div>
-                </div>
-                <!-- 论文4 -->
-                <div class="mb-8 pb-8 border-b border-gray-200 publication-item">
-                    <h3 class="text-xl font-bold mb-2 publication-title editable" contenteditable="false">论文标题4</h3>
-                    <p class="text-gray-600 mb-2 publication-authors editable" contenteditable="false">作者1, 作者2, 作者3, <strong>您的姓名</strong></p>
-                    <p class="text-gray-600 mb-2 publication-journal editable" contenteditable="false"><em>期刊名称</em>, 卷号(期号), 页码, 年份</p>
-                    <div class="flex space-x-4 mt-4">
-                        <a href="#" class="text-accent hover:underline publication-pdf editable" contenteditable="false">
-                            <i class="fa fa-file-pdf-o mr-1"></i> PDF
-                        </a>
-                        <a href="#" class="text-accent hover:underline publication-link editable" contenteditable="false">
-                            <i class="fa fa-external-link mr-1"></i> 期刊链接
-                        </a>
-                    </div>
-                </div>
-                <!-- 论文5 -->
-                <div class="mb-8 pb-8 border-b border-gray-200 publication-item">
-                    <h3 class="text-xl font-bold mb-2 publication-title editable" contenteditable="false">论文标题5</h3>
-                    <p class="text-gray-600 mb-2 publication-authors editable" contenteditable="false"><strong>您的姓名</strong>, 作者2</p>
-                    <p class="text-gray-600 mb-2 publication-journal editable" contenteditable="false"><em>期刊名称</em>, 卷号(期号), 页码, 年份</p>
-                    <div class="flex space-x-4 mt-4">
-                        <a href="#" class="text-accent hover:underline publication-pdf editable" contenteditable="false">
-                            <i class="fa fa-file-pdf-o mr-1"></i> PDF
-                        </a>
-                        <a href="#" class="text-accent hover:underline publication-link editable" contenteditable="false">
-                            <i class="fa fa-external-link mr-1"></i> 期刊链接
-                        </a>
-                    </div>
-                </div>
-                <!-- 操作按钮 -->
-                <div class="flex justify-center space-x-4 mt-8">
-                    <button id="addPublicationBtn" class="inline-block bg-primary text-white w-8 h-8 rounded-full font-medium hover:bg-secondary transition-all-300 flex items-center justify-center hidden">
-                        <i class="fa fa-plus"></i>
-                    </button>
-                    <a href="#" class="inline-block bg-primary text-white px-6 py-3 rounded-md font-medium hover:bg-secondary transition-all-300 editable" contenteditable="false">
-                        查看更多论文
-                    </a>
                 </div>
             </div>
+            <button class="add-news-btn" id="addNewsBtn" style="display: none;">添加新闻</button>
         </div>
     </section>
 
-    <!-- 论文编辑对话框 -->
-    <div id="publicationEditModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-        <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-2xl">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="text-2xl font-bold">编辑论文</h3>
-                <button id="closePublicationModal" class="text-gray-500 hover:text-gray-700">
-                    <i class="fa fa-times text-xl"></i>
-                </button>
+    <!-- 页脚 -->
+    <footer>
+        <p class="editable" contenteditable="false">&copy; 2026 Boxlab. 保留所有权利.</p>
+    </footer>
+
+    <!-- 编辑按钮 -->
+    <div class="edit-btn" id="editBtn">
+        <i class="fas fa-pencil-alt"></i>
+    </div>
+
+    <!-- 登录模态框 -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <h3>登录</h3>
+            <div class="form-group">
+                <label for="username">用户名</label>
+                <input type="text" id="username" placeholder="请输入用户名">
             </div>
-            <form id="publicationEditForm">
-                <input type="hidden" id="currentPublicationIndex">
-                <div class="mb-4">
-                    <label class="block text-gray-700 font-medium mb-2">标题</label>
-                    <input type="text" id="publicationEditTitle" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent">
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700 font-medium mb-2">作者</label>
-                    <input type="text" id="publicationEditAuthors" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent">
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700 font-medium mb-2">期刊信息</label>
-                    <input type="text" id="publicationEditJournal" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent">
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700 font-medium mb-2">PDF链接</label>
-                    <input type="text" id="publicationEditPdf" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent">
-                </div>
-                <div class="mb-6">
-                    <label class="block text-gray-700 font-medium mb-2">期刊链接</label>
-                    <input type="text" id="publicationEditLink" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent">
-                </div>
-                <div class="flex justify-end space-x-4">
-                    <button type="button" id="cancelPublicationEdit" class="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-100">取消</button>
-                    <button type="submit" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-secondary">保存</button>
-                </div>
-            </form>
+            <div class="form-group">
+                <label for="password">密码</label>
+                <input type="password" id="password" placeholder="请输入密码">
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-secondary" id="cancelLogin">取消</button>
+                <button class="btn btn-primary" id="submitLogin">登录</button>
+            </div>
         </div>
     </div>
 
-    <!-- 页脚 -->
-    <footer class="bg-primary text-white py-8">
-        <div class="container mx-auto px-4">
-            <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="mb-4 md:mb-0">
-                    <p>&copy; 2026 Dr. 姓名. 保留所有权利.</p>
-                </div>
-                <div class="flex space-x-6">
-                    <a href="index.html" class="hover:text-accent transition-all-300">Home</a>
-                    <a href="publications.html" class="hover:text-accent transition-all-300">Publications</a>
-                    <a href="members.html" class="hover:text-accent transition-all-300">Members</a>
-                    <a href="researches.html" class="hover:text-accent transition-all-300">Researches</a>
-                    <a href="join.html" class="hover:text-accent transition-all-300">Join Us</a>
+    <!-- 新闻编辑模态框 -->
+    <div class="news-edit-modal" id="newsEditModal">
+        <div class="news-edit-content">
+            <h3>编辑新闻</h3>
+            <input type="hidden" id="currentNewsIndex">
+            <div class="form-group">
+                <label>新闻图片</label>
+                <div class="image-upload" id="imageUpload">
+                    <p>点击上传图片</p>
+                    <input type="file" id="newsImageInput" accept="image/*" style="display: none;">
+                    <img id="newsImagePreview" src="" alt="预览图片" style="display: none;">
                 </div>
             </div>
+            <div class="form-group">
+                <label for="newsTitle">标题</label>
+                <input type="text" id="newsTitle" placeholder="新闻标题">
+            </div>
+            <div class="form-group">
+                <label for="newsDate">日期</label>
+                <input type="date" id="newsDate">
+            </div>
+            <div class="form-group">
+                <label for="newsContent">内容</label>
+                <textarea id="newsContent" placeholder="新闻内容"></textarea>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-secondary" id="cancelNewsEdit">取消</button>
+                <button class="btn btn-primary" id="saveNewsEdit">保存</button>
+                <button class="btn btn-secondary" id="deleteNews" style="background-color: #ef4444;">删除</button>
+            </div>
         </div>
-    </footer>
+    </div>
 
     <script>
+        // 全局变量
+        let isEditMode = false;
+        let currentEditingNews = -1;
+        
+        // 页面加载时从本地存储加载数据
         document.addEventListener('DOMContentLoaded', function() {
-            // 登录验证功能
-            let isAuthenticated = false;
-            let isEditing = false;
-            const adminUsername = 'admin';
-            const adminPassword = 'password'; // 这里可以根据需要修改密码
-
-            // 创建登录对话框
-            const loginModal = document.createElement('div');
-            loginModal.id = 'loginModal';
-            loginModal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden';
-            loginModal.innerHTML = `
-                <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-md">
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-2xl font-bold">管理员登录</h3>
-                        <button id="closeLoginModal" class="text-gray-500 hover:text-gray-700">
-                            <i class="fa fa-times text-xl"></i>
-                        </button>
-                    </div>
-                    <form id="loginForm">
-                        <div class="mb-4">
-                            <label class="block text-gray-700 font-medium mb-2">用户名</label>
-                            <input type="text" id="loginUsername" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent" required>
-                        </div>
-                        <div class="mb-6">
-                            <label class="block text-gray-700 font-medium mb-2">密码</label>
-                            <input type="password" id="loginPassword" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent" required>
-                        </div>
-                        <div class="flex justify-end space-x-4">
-                            <button type="button" id="cancelLogin" class="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-100">取消</button>
-                            <button type="submit" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-secondary">登录</button>
-                        </div>
-                    </form>
-                </div>
-            `;
-            document.body.appendChild(loginModal);
-
-            // 添加编辑模式切换按钮（使用图标）
-            const editButton = document.createElement('button');
-            editButton.innerHTML = '<i class="fa fa-pencil"></i>';
-            editButton.title = '编辑模式';
-            editButton.className = 'fixed bottom-8 right-8 bg-primary text-white w-12 h-12 rounded-full shadow-lg z-20 hover:bg-secondary transition-all-300 flex items-center justify-center';
-            document.body.appendChild(editButton);
-
-            // 导航栏滚动效果
-            window.addEventListener('scroll', function() {
-                const nav = document.querySelector('nav');
-                if (window.scrollY > 100) {
-                    nav.classList.add('py-2');
-                    nav.classList.remove('py-3');
-                } else {
-                    nav.classList.add('py-3');
-                    nav.classList.remove('py-2');
-                }
+            loadData();
+            initEventListeners();
+        });
+        
+        // 初始化事件监听器
+        function initEventListeners() {
+            // 编辑按钮点击事件
+            document.getElementById('editBtn').addEventListener('click', function() {
+                document.getElementById('loginModal').style.display = 'block';
             });
-
-            // 登录功能
-            const loginForm = document.getElementById('loginForm');
-            const closeLoginModal = document.getElementById('closeLoginModal');
-            const cancelLogin = document.getElementById('cancelLogin');
-
-            // 显示登录对话框
-            function showLoginModal() {
-                document.getElementById('loginModal').classList.remove('hidden');
-            }
-
-            // 隐藏登录对话框
-            function hideLoginModal() {
-                document.getElementById('loginModal').classList.add('hidden');
-            }
-
-            // 登录表单提交
-            loginForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                const username = document.getElementById('loginUsername').value;
-                const password = document.getElementById('loginPassword').value;
-
-                if (username === adminUsername && password === adminPassword) {
-                    isAuthenticated = true;
-                    hideLoginModal();
+            
+            // 登录取消按钮
+            document.getElementById('cancelLogin').addEventListener('click', function() {
+                document.getElementById('loginModal').style.display = 'none';
+            });
+            
+            // 登录提交按钮
+            document.getElementById('submitLogin').addEventListener('click', function() {
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                
+                // 简单的登录验证（实际应用中应该使用更安全的方法）
+                if (username === 'admin' && password === 'password') {
+                    enterEditMode();
+                    document.getElementById('loginModal').style.display = 'none';
                 } else {
                     alert('用户名或密码错误');
                 }
             });
-
-            // 关闭登录对话框
-            closeLoginModal.addEventListener('click', hideLoginModal);
-            cancelLogin.addEventListener('click', hideLoginModal);
-
-            // 点击编辑按钮时显示登录对话框（如果未登录）
-            editButton.addEventListener('click', function() {
-                if (!isAuthenticated) {
-                    showLoginModal();
-                }
-            });
-
-            // 编辑模式切换功能
-            editButton.addEventListener('click', function() {
-                // 如果未登录，显示登录对话框
-                if (!isAuthenticated) {
-                    showLoginModal();
-                    return;
-                }
-
-                isEditing = !isEditing;
-                const editableElements = document.querySelectorAll('.editable');
-                editableElements.forEach(element => {
-                    element.contentEditable = isEditing;
-                    if (isEditing) {
-                        element.classList.add('border-b-2', 'border-dashed', 'border-accent');
-                    } else {
-                        element.classList.remove('border-b-2', 'border-dashed', 'border-accent');
-                    }
-                });
+            
+            // 点击模态框外部关闭
+            window.addEventListener('click', function(event) {
+                const loginModal = document.getElementById('loginModal');
+                const newsEditModal = document.getElementById('newsEditModal');
                 
-                // 显示/隐藏添加论文按钮
-                const addPublicationBtn = document.getElementById('addPublicationBtn');
-                if (isEditing) {
-                    addPublicationBtn.classList.remove('hidden');
-                } else {
-                    addPublicationBtn.classList.add('hidden');
+                if (event.target === loginModal) {
+                    loginModal.style.display = 'none';
                 }
                 
-                editButton.innerHTML = isEditing ? '<i class="fa fa-check"></i>' : '<i class="fa fa-pencil"></i>';
-                editButton.title = isEditing ? '退出编辑模式' : '编辑模式';
-                editButton.classList.toggle('bg-accent');
+                if (event.target === newsEditModal) {
+                    newsEditModal.style.display = 'none';
+                }
             });
             
-            // 本地存储功能
-            function savePublications() {
-                const publicationsData = {
-                    hero: {
-                        title: document.querySelector('header h1').textContent,
-                        description: document.querySelector('header p').textContent
-                    },
-                    publications: []
-                };
-                const publicationItems = document.querySelectorAll('.publication-item');
-                
-                publicationItems.forEach(item => {
-                    publicationsData.publications.push({
-                        title: item.querySelector('.publication-title').textContent,
-                        authors: item.querySelector('.publication-authors').textContent,
-                        journal: item.querySelector('.publication-journal').textContent,
-                        pdf: item.querySelector('.publication-pdf').getAttribute('href'),
-                        link: item.querySelector('.publication-link').getAttribute('href')
-                    });
+            // 图片上传点击事件
+            document.getElementById('imageUpload').addEventListener('click', function() {
+                document.getElementById('newsImageInput').click();
+            });
+            
+            // 图片选择事件
+            document.getElementById('newsImageInput').addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const preview = document.getElementById('newsImagePreview');
+                        preview.src = e.target.result;
+                        preview.style.display = 'block';
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            // 新闻编辑取消按钮
+            document.getElementById('cancelNewsEdit').addEventListener('click', function() {
+                document.getElementById('newsEditModal').style.display = 'none';
+            });
+            
+            // 新闻编辑保存按钮
+            document.getElementById('saveNewsEdit').addEventListener('click', function() {
+                saveNewsEdit();
+            });
+            
+            // 新闻删除按钮
+            document.getElementById('deleteNews').addEventListener('click', function() {
+                deleteNews();
+            });
+            
+            // 添加新闻按钮
+            document.getElementById('addNewsBtn').addEventListener('click', function() {
+                openNewsEditModal(-1); // -1 表示添加新新闻
+            });
+        }
+        
+        // 进入编辑模式
+        function enterEditMode() {
+            isEditMode = true;
+            
+            // 显示添加新闻按钮
+            document.getElementById('addNewsBtn').style.display = 'block';
+            
+            // 启用所有可编辑元素
+            const editableElements = document.querySelectorAll('.editable');
+            editableElements.forEach(element => {
+                element.contentEditable = 'true';
+                element.classList.add('active');
+            });
+            
+            // 为新闻项添加点击事件
+            const newsItems = document.querySelectorAll('.news-item');
+            newsItems.forEach((item, index) => {
+                item.addEventListener('click', function() {
+                    openNewsEditModal(index);
                 });
+            });
+        }
+        
+        // 打开新闻编辑模态框
+        function openNewsEditModal(index) {
+            currentEditingNews = index;
+            const modal = document.getElementById('newsEditModal');
+            const newsItems = document.querySelectorAll('.news-item');
+            
+            if (index === -1) {
+                // 添加新新闻
+                document.getElementById('currentNewsIndex').value = -1;
+                document.getElementById('newsTitle').value = '';
+                document.getElementById('newsDate').value = '';
+                document.getElementById('newsContent').value = '';
+                document.getElementById('newsImagePreview').src = '';
+                document.getElementById('newsImagePreview').style.display = 'none';
+                document.getElementById('deleteNews').style.display = 'none';
+            } else {
+                // 编辑现有新闻
+                const newsItem = newsItems[index];
+                const image = newsItem.querySelector('img').src;
+                const title = newsItem.querySelector('h3').textContent;
+                const date = newsItem.querySelector('p:nth-child(2)').textContent;
+                const content = newsItem.querySelector('p:nth-child(3)').textContent;
                 
-                localStorage.setItem('boxlabPublications', JSON.stringify(publicationsData));
+                document.getElementById('currentNewsIndex').value = index;
+                document.getElementById('newsTitle').value = title;
+                document.getElementById('newsDate').value = date;
+                document.getElementById('newsContent').value = content;
+                document.getElementById('newsImagePreview').src = image;
+                document.getElementById('newsImagePreview').style.display = 'block';
+                document.getElementById('deleteNews').style.display = 'inline-block';
             }
             
-            function loadPublications() {
-                const savedPublications = localStorage.getItem('boxlabPublications');
-                if (savedPublications) {
-                    const publicationsData = JSON.parse(savedPublications);
-                    
-                    // 加载英雄区域内容
-                    if (publicationsData.hero) {
-                        document.querySelector('header h1').textContent = publicationsData.hero.title;
-                        document.querySelector('header p').textContent = publicationsData.hero.description;
-                    }
-                    
-                    const publicationContainer = document.querySelector('.max-w-4xl');
-                    
-                    // 清空现有内容
-                    const publicationItems = document.querySelectorAll('.publication-item');
-                    publicationItems.forEach(item => item.remove());
-                    
-                    // 加载保存的论文
-                    if (publicationsData.publications) {
-                        publicationsData.publications.forEach((pub, index) => {
-                            const publicationItem = document.createElement('div');
-                            publicationItem.className = 'mb-8 pb-8 border-b border-gray-200 publication-item';
-                            publicationItem.innerHTML = `
-                                <h3 class="text-xl font-bold mb-2 publication-title editable" contenteditable="false">${pub.title}</h3>
-                                <p class="text-gray-600 mb-2 publication-authors editable" contenteditable="false">${pub.authors}</p>
-                                <p class="text-gray-600 mb-2 publication-journal editable" contenteditable="false">${pub.journal}</p>
-                                <div class="flex space-x-4 mt-4">
-                                    <a href="${pub.pdf}" class="text-accent hover:underline publication-pdf editable" contenteditable="false">
-                                        <i class="fa fa-file-pdf-o mr-1"></i> PDF
-                                    </a>
-                                    <a href="${pub.link}" class="text-accent hover:underline publication-link editable" contenteditable="false">
-                                        <i class="fa fa-external-link mr-1"></i> 期刊链接
-                                    </a>
-                                </div>
-                            `;
-                            
-                            // 添加双击编辑事件
-                            publicationItem.addEventListener('dblclick', function() {
-                                const title = this.querySelector('.publication-title').textContent;
-                                const authors = this.querySelector('.publication-authors').textContent;
-                                const journal = this.querySelector('.publication-journal').textContent;
-                                const pdfLink = this.querySelector('.publication-pdf').getAttribute('href');
-                                const journalLink = this.querySelector('.publication-link').getAttribute('href');
-                                
-                                const currentIndex = Array.from(document.querySelectorAll('.publication-item')).indexOf(this);
-                                document.getElementById('currentPublicationIndex').value = currentIndex;
-                                document.getElementById('publicationEditTitle').value = title;
-                                document.getElementById('publicationEditAuthors').value = authors;
-                                document.getElementById('publicationEditJournal').value = journal;
-                                document.getElementById('publicationEditPdf').value = pdfLink;
-                                document.getElementById('publicationEditLink').value = journalLink;
-                                
-                                publicationEditModal.classList.remove('hidden');
-                            });
-                            
-                            publicationContainer.insertBefore(publicationItem, document.querySelector('.flex.justify-center.space-x-4.mt-8'));
-                        });
-                    }
-                }
-            }
+            modal.style.display = 'block';
+        }
+        
+        // 保存新闻编辑
+        function saveNewsEdit() {
+            const index = parseInt(document.getElementById('currentNewsIndex').value);
+            const title = document.getElementById('newsTitle').value;
+            const date = document.getElementById('newsDate').value;
+            const content = document.getElementById('newsContent').value;
+            const imageSrc = document.getElementById('newsImagePreview').src;
             
-            // 论文编辑功能
-            const publicationEditModal = document.getElementById('publicationEditModal');
-            const closePublicationModal = document.getElementById('closePublicationModal');
-            const cancelPublicationEdit = document.getElementById('cancelPublicationEdit');
-            const publicationEditForm = document.getElementById('publicationEditForm');
+            const newsGrid = document.getElementById('newsGrid');
             
-            // 为所有论文项添加双击编辑事件
-            function addEditEvents() {
-                const publicationItems = document.querySelectorAll('.publication-item');
-                publicationItems.forEach((item, index) => {
-                    item.addEventListener('dblclick', function() {
-                        // 检查是否已登录
-                        if (!isAuthenticated) {
-                            alert('请先登录');
-                            showLoginModal();
-                            return;
-                        }
-                        
-                        const title = this.querySelector('.publication-title').textContent;
-                        const authors = this.querySelector('.publication-authors').textContent;
-                        const journal = this.querySelector('.publication-journal').textContent;
-                        const pdfLink = this.querySelector('.publication-pdf').getAttribute('href');
-                        const journalLink = this.querySelector('.publication-link').getAttribute('href');
-                        
-                        const currentIndex = Array.from(document.querySelectorAll('.publication-item')).indexOf(this);
-                        document.getElementById('currentPublicationIndex').value = currentIndex;
-                        document.getElementById('publicationEditTitle').value = title;
-                        document.getElementById('publicationEditAuthors').value = authors;
-                        document.getElementById('publicationEditJournal').value = journal;
-                        document.getElementById('publicationEditPdf').value = pdfLink;
-                        document.getElementById('publicationEditLink').value = journalLink;
-                        
-                        publicationEditModal.classList.remove('hidden');
-                    });
+            if (index === -1) {
+                // 添加新新闻
+                const newNewsItem = document.createElement('div');
+                newNewsItem.className = 'news-item';
+                newNewsItem.innerHTML = `
+                    <img src="${imageSrc || 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=academic%20research%20team%2C%20professional%20setting%2C%20high%20quality%20photo&image_size=landscape_4_3'}" alt="新闻图片" class="news-image">
+                    <div class="news-content">
+                        <h3 class="editable" contenteditable="true">${title}</h3>
+                        <p class="editable" contenteditable="true">${date}</p>
+                        <p class="editable" contenteditable="true">${content}</p>
+                    </div>
+                `;
+                
+                // 添加点击事件
+                newNewsItem.addEventListener('click', function() {
+                    const newIndex = Array.from(newsGrid.children).indexOf(newNewsItem);
+                    openNewsEditModal(newIndex);
                 });
+                
+                newsGrid.appendChild(newNewsItem);
+            } else {
+                // 更新现有新闻
+                const newsItem = newsGrid.children[index];
+                newsItem.querySelector('img').src = imageSrc;
+                newsItem.querySelector('h3').textContent = title;
+                newsItem.querySelector('p:nth-child(2)').textContent = date;
+                newsItem.querySelector('p:nth-child(3)').textContent = content;
             }
             
-            // 关闭编辑对话框
-            closePublicationModal.addEventListener('click', function() {
-                publicationEditModal.classList.add('hidden');
+            // 保存到本地存储
+            saveData();
+            
+            // 关闭模态框
+            document.getElementById('newsEditModal').style.display = 'none';
+        }
+        
+        // 删除新闻
+        function deleteNews() {
+            const index = parseInt(document.getElementById('currentNewsIndex').value);
+            const newsGrid = document.getElementById('newsGrid');
+            
+            if (index !== -1 && confirm('确定要删除这条新闻吗？')) {
+                newsGrid.removeChild(newsGrid.children[index]);
+                saveData();
+                document.getElementById('newsEditModal').style.display = 'none';
+            }
+        }
+        
+        // 保存数据到本地存储
+        function saveData() {
+            const data = {
+                title: document.querySelector('header h1').textContent,
+                subtitle: document.querySelector('header p').textContent,
+                footer: document.querySelector('footer p').textContent,
+                news: []
+            };
+            
+            // 保存新闻数据
+            const newsItems = document.querySelectorAll('.news-item');
+            newsItems.forEach(item => {
+                data.news.push({
+                    image: item.querySelector('img').src,
+                    title: item.querySelector('h3').textContent,
+                    date: item.querySelector('p:nth-child(2)').textContent,
+                    content: item.querySelector('p:nth-child(3)').textContent
+                });
             });
             
-            cancelPublicationEdit.addEventListener('click', function() {
-                publicationEditModal.classList.add('hidden');
-            });
-            
-            // 添加新论文功能
-            const addPublicationBtn = document.getElementById('addPublicationBtn');
-            addPublicationBtn.addEventListener('click', function() {
-                // 清空表单
-                document.getElementById('currentPublicationIndex').value = '';
-                document.getElementById('publicationEditTitle').value = '';
-                document.getElementById('publicationEditAuthors').value = '';
-                document.getElementById('publicationEditJournal').value = '';
-                document.getElementById('publicationEditPdf').value = '';
-                document.getElementById('publicationEditLink').value = '';
+            localStorage.setItem('boxlabData', JSON.stringify(data));
+        }
+        
+        // 从本地存储加载数据
+        function loadData() {
+            const savedData = localStorage.getItem('boxlabData');
+            if (savedData) {
+                const data = JSON.parse(savedData);
                 
-                // 显示编辑对话框
-                publicationEditModal.classList.remove('hidden');
-            });
-            
-            // 保存编辑内容
-            publicationEditForm.addEventListener('submit', function(e) {
-                e.preventDefault();
+                // 加载标题和副标题
+                document.querySelector('header h1').textContent = data.title;
+                document.querySelector('header p').textContent = data.subtitle;
+                document.querySelector('footer p').textContent = data.footer;
                 
-                // 检查是否已登录
-                if (!isAuthenticated) {
-                    alert('请先登录');
-                    showLoginModal();
-                    return;
-                }
-                
-                const index = document.getElementById('currentPublicationIndex').value;
-                const title = document.getElementById('publicationEditTitle').value;
-                const authors = document.getElementById('publicationEditAuthors').value;
-                const journal = document.getElementById('publicationEditJournal').value;
-                const pdfLink = document.getElementById('publicationEditPdf').value || '#';
-                const journalLink = document.getElementById('publicationEditLink').value || '#';
-                
-                const publicationContainer = document.querySelector('.max-w-4xl');
-                const buttonsContainer = document.querySelector('.flex.justify-center.space-x-4.mt-8');
-                
-                if (index === '') {
-                    // 添加新论文
-                    const publicationItem = document.createElement('div');
-                    publicationItem.className = 'mb-8 pb-8 border-b border-gray-200 publication-item';
-                    publicationItem.innerHTML = `
-                        <h3 class="text-xl font-bold mb-2 publication-title editable" contenteditable="false">${title}</h3>
-                        <p class="text-gray-600 mb-2 publication-authors editable" contenteditable="false">${authors}</p>
-                        <p class="text-gray-600 mb-2 publication-journal editable" contenteditable="false">${journal}</p>
-                        <div class="flex space-x-4 mt-4">
-                            <a href="${pdfLink}" class="text-accent hover:underline publication-pdf editable" contenteditable="false">
-                                <i class="fa fa-file-pdf-o mr-1"></i> PDF
-                            </a>
-                            <a href="${journalLink}" class="text-accent hover:underline publication-link editable" contenteditable="false">
-                                <i class="fa fa-external-link mr-1"></i> 期刊链接
-                            </a>
-                        </div>
-                    `;
+                // 加载新闻数据
+                if (data.news && data.news.length > 0) {
+                    const newsGrid = document.getElementById('newsGrid');
+                    newsGrid.innerHTML = '';
                     
-                    // 添加双击编辑事件
-                    publicationItem.addEventListener('dblclick', function() {
-                        // 检查是否已登录
-                        if (!isAuthenticated) {
-                            alert('请先登录');
-                            showLoginModal();
-                            return;
-                        }
-                        
-                        const title = this.querySelector('.publication-title').textContent;
-                        const authors = this.querySelector('.publication-authors').textContent;
-                        const journal = this.querySelector('.publication-journal').textContent;
-                        const pdfLink = this.querySelector('.publication-pdf').getAttribute('href');
-                        const journalLink = this.querySelector('.publication-link').getAttribute('href');
-                        
-                        const currentIndex = Array.from(document.querySelectorAll('.publication-item')).indexOf(this);
-                        document.getElementById('currentPublicationIndex').value = currentIndex;
-                        document.getElementById('publicationEditTitle').value = title;
-                        document.getElementById('publicationEditAuthors').value = authors;
-                        document.getElementById('publicationEditJournal').value = journal;
-                        document.getElementById('publicationEditPdf').value = pdfLink;
-                        document.getElementById('publicationEditLink').value = journalLink;
-                        
-                        publicationEditModal.classList.remove('hidden');
+                    data.news.forEach((news, index) => {
+                        const newsItem = document.createElement('div');
+                        newsItem.className = 'news-item';
+                        newsItem.innerHTML = `
+                            <img src="${news.image}" alt="新闻图片" class="news-image">
+                            <div class="news-content">
+                                <h3 class="editable" contenteditable="false">${news.title}</h3>
+                                <p class="editable" contenteditable="false">${news.date}</p>
+                                <p class="editable" contenteditable="false">${news.content}</p>
+                            </div>
+                        `;
+                        newsGrid.appendChild(newsItem);
                     });
-                    
-                    if (buttonsContainer) {
-                        publicationContainer.insertBefore(publicationItem, buttonsContainer);
-                    }
-                } else {
-                    // 编辑现有论文
-                    const publicationItems = document.querySelectorAll('.publication-item');
-                    const publicationItem = publicationItems[index];
-                    
-                    if (publicationItem) {
-                        publicationItem.querySelector('.publication-title').textContent = title;
-                        publicationItem.querySelector('.publication-authors').textContent = authors;
-                        publicationItem.querySelector('.publication-journal').textContent = journal;
-                        publicationItem.querySelector('.publication-pdf').setAttribute('href', pdfLink);
-                        publicationItem.querySelector('.publication-link').setAttribute('href', journalLink);
-                    }
                 }
-                
-                // 保存到本地存储
-                savePublications();
-                
-                publicationEditModal.classList.add('hidden');
-            });
-            
-            // 初始化时加载保存的论文并添加编辑事件
-            loadPublications();
-            addEditEvents();
-            
-            // 监听可编辑元素的变化，自动保存
-            document.addEventListener('input', function(e) {
-                if (e.target.classList.contains('editable') && isEditing) {
-                    savePublications();
-                }
-            });
-            
-            // 测试本地存储功能
-            console.log('Publications page loaded');
-            console.log('Saved publications data:', localStorage.getItem('boxlabPublications'));
+            }
+        }
+        
+        // 监听可编辑元素的变化，自动保存
+        document.addEventListener('input', function(e) {
+            if (e.target.classList.contains('editable') && isEditMode) {
+                saveData();
+            }
         });
     </script>
 </body>
