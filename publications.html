@@ -315,15 +315,13 @@
                 }
 
                 isEditing = !isEditing;
-                const editableElements = document.querySelectorAll('h1, h2, h3, h4, p, a, span');
+                const editableElements = document.querySelectorAll('.editable');
                 editableElements.forEach(element => {
-                    if (!element.closest('nav') || element.closest('nav') && element.tagName === 'A') {
-                        element.contentEditable = isEditing;
-                        if (isEditing) {
-                            element.classList.add('border-b-2', 'border-dashed', 'border-accent');
-                        } else {
-                            element.classList.remove('border-b-2', 'border-dashed', 'border-accent');
-                        }
+                    element.contentEditable = isEditing;
+                    if (isEditing) {
+                        element.classList.add('border-b-2', 'border-dashed', 'border-accent');
+                    } else {
+                        element.classList.remove('border-b-2', 'border-dashed', 'border-accent');
                     }
                 });
                 editButton.innerHTML = isEditing ? '<i class="fa fa-check"></i>' : '<i class="fa fa-pencil"></i>';
