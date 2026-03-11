@@ -316,100 +316,130 @@
 
             // 本地存储功能
             function saveMembers() {
-                const membersData = {
-                    hero: {
-                        title: document.querySelector('header h1').textContent,
-                        description: document.querySelector('header p').textContent
-                    },
-                    pi: {
-                        name: document.querySelector('.flex.justify-center.mb-16 h3').textContent,
-                        title: document.querySelector('.flex.justify-center.mb-16 p:nth-child(2)').textContent,
-                        info: document.querySelector('.flex.justify-center.mb-16 p:nth-child(3)').textContent,
-                        image: document.querySelector('.flex.justify-center.mb-16 img').src
-                    },
-                    current: [],
-                    alumni: []
-                };
-                
-                // 保存当前成员
-                const currentMembers = document.querySelectorAll('.grid.grid-cols-1.sm\:grid-cols-2.md\:grid-cols-3.lg\:grid-cols-4.gap-8 .bg-white');
-                currentMembers.forEach(member => {
-                    membersData.current.push({
-                        name: member.querySelector('h4').textContent,
-                        title: member.querySelector('p:nth-child(2)').textContent,
-                        research: member.querySelector('p:nth-child(3)').textContent,
-                        image: member.querySelector('img') ? member.querySelector('img').src : ''
+                try {
+                    const membersData = {
+                        hero: {
+                            title: document.querySelector('header h1').textContent,
+                            description: document.querySelector('header p').textContent
+                        },
+                        pi: {
+                            name: document.querySelector('.flex.justify-center.mb-16 h3').textContent,
+                            title: document.querySelector('.flex.justify-center.mb-16 p:nth-child(2)').textContent,
+                            info: document.querySelector('.flex.justify-center.mb-16 p:nth-child(3)').textContent,
+                            image: document.querySelector('.flex.justify-center.mb-16 img').src
+                        },
+                        current: [],
+                        alumni: []
+                    };
+                    
+                    // 保存当前成员
+                    const currentMembers = document.querySelectorAll('.grid.grid-cols-1.sm\:grid-cols-2.md\:grid-cols-3.lg\:grid-cols-4.gap-8 .bg-white');
+                    currentMembers.forEach(member => {
+                        try {
+                            membersData.current.push({
+                                name: member.querySelector('h4').textContent,
+                                title: member.querySelector('p:nth-child(2)').textContent,
+                                research: member.querySelector('p:nth-child(3)').textContent,
+                                image: member.querySelector('img') ? member.querySelector('img').src : ''
+                            });
+                        } catch (e) {
+                            console.error('Error saving current member:', e);
+                        }
                     });
-                });
-                
-                // 保存校友
-                const alumniMembers = document.querySelectorAll('.grid.grid-cols-1.sm\:grid-cols-2.md\:grid-cols-3.gap-8:nth-of-type(2) .bg-white');
-                alumniMembers.forEach(member => {
-                    membersData.alumni.push({
-                        name: member.querySelector('h4').textContent,
-                        degree: member.querySelector('p:nth-child(2)').textContent,
-                        position: member.querySelector('p:nth-child(3)').textContent
+                    
+                    // 保存校友
+                    const alumniMembers = document.querySelectorAll('.grid.grid-cols-1.sm\:grid-cols-2.md\:grid-cols-3.gap-8:nth-of-type(2) .bg-white');
+                    alumniMembers.forEach(member => {
+                        try {
+                            membersData.alumni.push({
+                                name: member.querySelector('h4').textContent,
+                                degree: member.querySelector('p:nth-child(2)').textContent,
+                                position: member.querySelector('p:nth-child(3)').textContent
+                            });
+                        } catch (e) {
+                            console.error('Error saving alumni member:', e);
+                        }
                     });
-                });
-                
-                localStorage.setItem('boxlabMembers', JSON.stringify(membersData));
+                    
+                    localStorage.setItem('boxlabMembers', JSON.stringify(membersData));
+                    console.log('Members data saved successfully');
+                } catch (e) {
+                    console.error('Error saving members data:', e);
+                }
             }
             
             function loadMembers() {
-                const savedMembers = localStorage.getItem('boxlabMembers');
-                if (savedMembers) {
-                    const membersData = JSON.parse(savedMembers);
-                    
-                    // 加载英雄区域内容
-                    if (membersData.hero) {
-                        document.querySelector('header h1').textContent = membersData.hero.title;
-                        document.querySelector('header p').textContent = membersData.hero.description;
-                    }
-                    
-                    // 加载PI数据
-                    if (membersData.pi) {
-                        document.querySelector('.flex.justify-center.mb-16 h3').textContent = membersData.pi.name;
-                        document.querySelector('.flex.justify-center.mb-16 p:nth-child(2)').textContent = membersData.pi.title;
-                        document.querySelector('.flex.justify-center.mb-16 p:nth-child(3)').textContent = membersData.pi.info;
-                        document.querySelector('.flex.justify-center.mb-16 img').src = membersData.pi.image;
-                    }
-                    
-                    // 加载当前成员
-                    if (membersData.current && membersData.current.length > 0) {
-                        const currentContainer = document.querySelector('.grid.grid-cols-1.sm\:grid-cols-2.md\:grid-cols-3.lg\:grid-cols-4.gap-8');
-                        currentContainer.innerHTML = '';
+                try {
+                    const savedMembers = localStorage.getItem('boxlabMembers');
+                    if (savedMembers) {
+                        const membersData = JSON.parse(savedMembers);
                         
-                        membersData.current.forEach(member => {
-                            const memberElement = document.createElement('div');
-                            memberElement.className = 'bg-white rounded-lg shadow-md p-6 card-hover transition-all-300';
-                            memberElement.innerHTML = `
-                                <div class="w-40 h-40 mx-auto mb-4 rounded-full overflow-hidden">
-                                    <img src="${member.image || 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=professional%20academic%20portrait%20of%20a%20young%20researcher%2C%20clean%20background%2C%20high%20quality%20professional%20photo&image_size=square_hd'}" alt="团队成员" class="w-full h-full object-cover">
-                                </div>
-                                <h4 class="text-xl font-bold mb-2 text-center editable" contenteditable="false">${member.name}</h4>
-                                <p class="text-gray-600 text-center mb-4 editable" contenteditable="false">${member.title}</p>
-                                <p class="text-gray-600 text-center editable" contenteditable="false">${member.research}</p>
-                            `;
-                            currentContainer.appendChild(memberElement);
-                        });
-                    }
-                    
-                    // 加载校友
-                    if (membersData.alumni && membersData.alumni.length > 0) {
-                        const alumniContainer = document.querySelector('.grid.grid-cols-1.sm\:grid-cols-2.md\:grid-cols-3.gap-8:nth-of-type(2)');
-                        alumniContainer.innerHTML = '';
+                        // 加载英雄区域内容
+                        if (membersData.hero) {
+                            document.querySelector('header h1').textContent = membersData.hero.title;
+                            document.querySelector('header p').textContent = membersData.hero.description;
+                        }
                         
-                        membersData.alumni.forEach(member => {
-                            const memberElement = document.createElement('div');
-                            memberElement.className = 'bg-white rounded-lg shadow-md p-6 card-hover transition-all-300';
-                            memberElement.innerHTML = `
-                                <h4 class="text-xl font-bold mb-2 editable" contenteditable="false">${member.name}</h4>
-                                <p class="text-gray-600 mb-2 editable" contenteditable="false">${member.degree}</p>
-                                <p class="text-gray-600 editable" contenteditable="false">${member.position}</p>
-                            `;
-                            alumniContainer.appendChild(memberElement);
-                        });
+                        // 加载PI数据
+                        if (membersData.pi) {
+                            document.querySelector('.flex.justify-center.mb-16 h3').textContent = membersData.pi.name;
+                            document.querySelector('.flex.justify-center.mb-16 p:nth-child(2)').textContent = membersData.pi.title;
+                            document.querySelector('.flex.justify-center.mb-16 p:nth-child(3)').textContent = membersData.pi.info;
+                            document.querySelector('.flex.justify-center.mb-16 img').src = membersData.pi.image;
+                        }
+                        
+                        // 加载当前成员
+                        if (membersData.current && membersData.current.length > 0) {
+                            const currentContainer = document.querySelector('.grid.grid-cols-1.sm\:grid-cols-2.md\:grid-cols-3.lg\:grid-cols-4.gap-8');
+                            if (currentContainer) {
+                                currentContainer.innerHTML = '';
+                                
+                                membersData.current.forEach(member => {
+                                    try {
+                                        const memberElement = document.createElement('div');
+                                        memberElement.className = 'bg-white rounded-lg shadow-md p-6 card-hover transition-all-300';
+                                        memberElement.innerHTML = `
+                                            <div class="w-40 h-40 mx-auto mb-4 rounded-full overflow-hidden">
+                                                <img src="${member.image || 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=professional%20academic%20portrait%20of%20a%20young%20researcher%2C%20clean%20background%2C%20high%20quality%20professional%20photo&image_size=square_hd'}" alt="团队成员" class="w-full h-full object-cover">
+                                            </div>
+                                            <h4 class="text-xl font-bold mb-2 text-center editable" contenteditable="false">${member.name}</h4>
+                                            <p class="text-gray-600 text-center mb-4 editable" contenteditable="false">${member.title}</p>
+                                            <p class="text-gray-600 text-center editable" contenteditable="false">${member.research}</p>
+                                        `;
+                                        currentContainer.appendChild(memberElement);
+                                    } catch (e) {
+                                        console.error('Error loading current member:', e);
+                                    }
+                                });
+                            }
+                        }
+                        
+                        // 加载校友
+                        if (membersData.alumni && membersData.alumni.length > 0) {
+                            const alumniContainer = document.querySelector('.grid.grid-cols-1.sm\:grid-cols-2.md\:grid-cols-3.gap-8:nth-of-type(2)');
+                            if (alumniContainer) {
+                                alumniContainer.innerHTML = '';
+                                
+                                membersData.alumni.forEach(member => {
+                                    try {
+                                        const memberElement = document.createElement('div');
+                                        memberElement.className = 'bg-white rounded-lg shadow-md p-6 card-hover transition-all-300';
+                                        memberElement.innerHTML = `
+                                            <h4 class="text-xl font-bold mb-2 editable" contenteditable="false">${member.name}</h4>
+                                            <p class="text-gray-600 mb-2 editable" contenteditable="false">${member.degree}</p>
+                                            <p class="text-gray-600 editable" contenteditable="false">${member.position}</p>
+                                        `;
+                                        alumniContainer.appendChild(memberElement);
+                                    } catch (e) {
+                                        console.error('Error loading alumni member:', e);
+                                    }
+                                });
+                            }
+                        }
                     }
+                    console.log('Members data loaded successfully');
+                } catch (e) {
+                    console.error('Error loading members data:', e);
                 }
             }
 

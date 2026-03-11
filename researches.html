@@ -254,88 +254,118 @@
 
             // 本地存储功能
             function saveResearches() {
-                const researchData = {
-                    hero: {
-                        title: document.querySelector('header h1').textContent,
-                        description: document.querySelector('header p').textContent
-                    },
-                    areas: [],
-                    projects: []
-                };
-                
-                // 保存研究领域
-                const researchAreas = document.querySelectorAll('.grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3.gap-8 .bg-white');
-                researchAreas.forEach(area => {
-                    researchData.areas.push({
-                        title: area.querySelector('h3').textContent,
-                        description: area.querySelector('p').textContent,
-                        icon: area.querySelector('i').className
+                try {
+                    const researchData = {
+                        hero: {
+                            title: document.querySelector('header h1').textContent,
+                            description: document.querySelector('header p').textContent
+                        },
+                        areas: [],
+                        projects: []
+                    };
+                    
+                    // 保存研究领域
+                    const researchAreas = document.querySelectorAll('.grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3.gap-8 .bg-white');
+                    researchAreas.forEach(area => {
+                        try {
+                            researchData.areas.push({
+                                title: area.querySelector('h3').textContent,
+                                description: area.querySelector('p').textContent,
+                                icon: area.querySelector('i').className
+                            });
+                        } catch (e) {
+                            console.error('Error saving research area:', e);
+                        }
                     });
-                });
-                
-                // 保存研究项目
-                const researchProjects = document.querySelectorAll('.grid.grid-cols-1.md\:grid-cols-2.gap-8 .bg-white');
-                researchProjects.forEach(project => {
-                    researchData.projects.push({
-                        title: project.querySelector('h4').textContent,
-                        organization: project.querySelector('p:nth-child(2)').textContent,
-                        period: project.querySelector('p:nth-child(3)').textContent,
-                        description: project.querySelector('p:nth-child(4)').textContent
+                    
+                    // 保存研究项目
+                    const researchProjects = document.querySelectorAll('.grid.grid-cols-1.md\:grid-cols-2.gap-8 .bg-white');
+                    researchProjects.forEach(project => {
+                        try {
+                            researchData.projects.push({
+                                title: project.querySelector('h4').textContent,
+                                organization: project.querySelector('p:nth-child(2)').textContent,
+                                period: project.querySelector('p:nth-child(3)').textContent,
+                                description: project.querySelector('p:nth-child(4)').textContent
+                            });
+                        } catch (e) {
+                            console.error('Error saving research project:', e);
+                        }
                     });
-                });
-                
-                localStorage.setItem('boxlabResearches', JSON.stringify(researchData));
+                    
+                    localStorage.setItem('boxlabResearches', JSON.stringify(researchData));
+                    console.log('Researches data saved successfully');
+                } catch (e) {
+                    console.error('Error saving researches data:', e);
+                }
             }
             
             function loadResearches() {
-                const savedResearches = localStorage.getItem('boxlabResearches');
-                if (savedResearches) {
-                    const researchData = JSON.parse(savedResearches);
-                    
-                    // 加载英雄区域内容
-                    if (researchData.hero) {
-                        document.querySelector('header h1').textContent = researchData.hero.title;
-                        document.querySelector('header p').textContent = researchData.hero.description;
-                    }
-                    
-                    // 加载研究领域
-                    if (researchData.areas && researchData.areas.length > 0) {
-                        const areasContainer = document.querySelector('.grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3.gap-8');
-                        areasContainer.innerHTML = '';
+                try {
+                    const savedResearches = localStorage.getItem('boxlabResearches');
+                    if (savedResearches) {
+                        const researchData = JSON.parse(savedResearches);
                         
-                        researchData.areas.forEach(area => {
-                            const areaElement = document.createElement('div');
-                            areaElement.className = 'bg-white rounded-lg shadow-md p-6 card-hover transition-all-300';
-                            areaElement.innerHTML = `
-                                <div class="text-accent text-4xl mb-4">
-                                    <i class="${area.icon}"></i>
-                                </div>
-                                <h3 class="text-xl font-bold mb-3 editable" contenteditable="false">${area.title}</h3>
-                                <p class="text-gray-600 editable" contenteditable="false">
-                                    ${area.description}
-                                </p>
-                            `;
-                            areasContainer.appendChild(areaElement);
-                        });
-                    }
-                    
-                    // 加载研究项目
-                    if (researchData.projects && researchData.projects.length > 0) {
-                        const projectsContainer = document.querySelector('.grid.grid-cols-1.md\:grid-cols-2.gap-8');
-                        projectsContainer.innerHTML = '';
+                        // 加载英雄区域内容
+                        if (researchData.hero) {
+                            document.querySelector('header h1').textContent = researchData.hero.title;
+                            document.querySelector('header p').textContent = researchData.hero.description;
+                        }
                         
-                        researchData.projects.forEach(project => {
-                            const projectElement = document.createElement('div');
-                            projectElement.className = 'bg-white rounded-lg shadow-md p-6 border-l-4 border-accent card-hover transition-all-300';
-                            projectElement.innerHTML = `
-                                <h4 class="text-xl font-bold mb-3 editable" contenteditable="false">${project.title}</h4>
-                                <p class="text-gray-600 mb-4 editable" contenteditable="false">${project.organization}</p>
-                                <p class="text-gray-600 mb-4 editable" contenteditable="false">${project.period}</p>
-                                <p class="text-gray-600 editable" contenteditable="false">${project.description}</p>
-                            `;
-                            projectsContainer.appendChild(projectElement);
-                        });
+                        // 加载研究领域
+                        if (researchData.areas && researchData.areas.length > 0) {
+                            const areasContainer = document.querySelector('.grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3.gap-8');
+                            if (areasContainer) {
+                                areasContainer.innerHTML = '';
+                                
+                                researchData.areas.forEach(area => {
+                                    try {
+                                        const areaElement = document.createElement('div');
+                                        areaElement.className = 'bg-white rounded-lg shadow-md p-6 card-hover transition-all-300';
+                                        areaElement.innerHTML = `
+                                            <div class="text-accent text-4xl mb-4">
+                                                <i class="${area.icon}"></i>
+                                            </div>
+                                            <h3 class="text-xl font-bold mb-3 editable" contenteditable="false">${area.title}</h3>
+                                            <p class="text-gray-600 editable" contenteditable="false">
+                                                ${area.description}
+                                            </p>
+                                        `;
+                                        areasContainer.appendChild(areaElement);
+                                    } catch (e) {
+                                        console.error('Error loading research area:', e);
+                                    }
+                                });
+                            }
+                        }
+                        
+                        // 加载研究项目
+                        if (researchData.projects && researchData.projects.length > 0) {
+                            const projectsContainer = document.querySelector('.grid.grid-cols-1.md\:grid-cols-2.gap-8');
+                            if (projectsContainer) {
+                                projectsContainer.innerHTML = '';
+                                
+                                researchData.projects.forEach(project => {
+                                    try {
+                                        const projectElement = document.createElement('div');
+                                        projectElement.className = 'bg-white rounded-lg shadow-md p-6 border-l-4 border-accent card-hover transition-all-300';
+                                        projectElement.innerHTML = `
+                                            <h4 class="text-xl font-bold mb-3 editable" contenteditable="false">${project.title}</h4>
+                                            <p class="text-gray-600 mb-4 editable" contenteditable="false">${project.organization}</p>
+                                            <p class="text-gray-600 mb-4 editable" contenteditable="false">${project.period}</p>
+                                            <p class="text-gray-600 editable" contenteditable="false">${project.description}</p>
+                                        `;
+                                        projectsContainer.appendChild(projectElement);
+                                    } catch (e) {
+                                        console.error('Error loading research project:', e);
+                                    }
+                                });
+                            }
+                        }
                     }
+                    console.log('Researches data loaded successfully');
+                } catch (e) {
+                    console.error('Error loading researches data:', e);
                 }
             }
 

@@ -300,115 +300,153 @@
 
             // 本地存储功能
             function saveJoin() {
-                const joinData = {
-                    hero: {
-                        title: document.querySelector('header h1').textContent,
-                        description: document.querySelector('header p').textContent
-                    },
-                    positions: [],
-                    process: [],
-                    contact: {
-                        email: '',
-                        phone: '',
-                        address: ''
-                    }
-                };
-                
-                // 保存职位信息
-                const positions = document.querySelectorAll('.grid.grid-cols-1.md\:grid-cols-2.gap-8 .bg-white');
-                positions.forEach(position => {
-                    joinData.positions.push({
-                        title: position.querySelector('h3').textContent,
-                        description: position.querySelector('p:nth-child(2)').textContent,
-                        requirements: position.querySelector('p:nth-child(3)').textContent,
-                        benefits: position.querySelector('p:nth-child(4)').textContent,
-                        link: position.querySelector('a').getAttribute('href')
+                try {
+                    const joinData = {
+                        hero: {
+                            title: document.querySelector('header h1').textContent,
+                            description: document.querySelector('header p').textContent
+                        },
+                        positions: [],
+                        process: [],
+                        contact: {
+                            email: '',
+                            phone: '',
+                            address: ''
+                        }
+                    };
+                    
+                    // 保存职位信息
+                    const positions = document.querySelectorAll('.grid.grid-cols-1.md\:grid-cols-2.gap-8 .bg-white');
+                    positions.forEach(position => {
+                        try {
+                            joinData.positions.push({
+                                title: position.querySelector('h3').textContent,
+                                description: position.querySelector('p:nth-child(2)').textContent,
+                                requirements: position.querySelector('p:nth-child(3)').textContent,
+                                benefits: position.querySelector('p:nth-child(4)').textContent,
+                                link: position.querySelector('a').getAttribute('href')
+                            });
+                        } catch (e) {
+                            console.error('Error saving position:', e);
+                        }
                     });
-                });
-                
-                // 保存申请流程
-                const processSteps = document.querySelectorAll('.flex .flex-shrink-0 + div');
-                processSteps.forEach(step => {
-                    joinData.process.push({
-                        title: step.querySelector('h3').textContent,
-                        description: step.querySelector('p').textContent
+                    
+                    // 保存申请流程
+                    const processSteps = document.querySelectorAll('.flex .flex-shrink-0 + div');
+                    processSteps.forEach(step => {
+                        try {
+                            joinData.process.push({
+                                title: step.querySelector('h3').textContent,
+                                description: step.querySelector('p').textContent
+                            });
+                        } catch (e) {
+                            console.error('Error saving process step:', e);
+                        }
                     });
-                });
-                
-                // 保存联系信息
-                const contactInfo = document.querySelectorAll('.flex.items-start');
-                contactInfo.forEach(info => {
-                    const title = info.querySelector('h4').textContent;
-                    const content = info.querySelector('p').textContent;
-                    if (title === '电子邮箱') joinData.contact.email = content;
-                    if (title === '电话') joinData.contact.phone = content;
-                    if (title === '办公地址') joinData.contact.address = content;
-                });
-                
-                localStorage.setItem('boxlabJoin', JSON.stringify(joinData));
+                    
+                    // 保存联系信息
+                    const contactInfo = document.querySelectorAll('.flex.items-start');
+                    contactInfo.forEach(info => {
+                        try {
+                            const title = info.querySelector('h4').textContent;
+                            const content = info.querySelector('p').textContent;
+                            if (title === '电子邮箱') joinData.contact.email = content;
+                            if (title === '电话') joinData.contact.phone = content;
+                            if (title === '办公地址') joinData.contact.address = content;
+                        } catch (e) {
+                            console.error('Error saving contact info:', e);
+                        }
+                    });
+                    
+                    localStorage.setItem('boxlabJoin', JSON.stringify(joinData));
+                    console.log('Join data saved successfully');
+                } catch (e) {
+                    console.error('Error saving join data:', e);
+                }
             }
             
             function loadJoin() {
-                const savedJoin = localStorage.getItem('boxlabJoin');
-                if (savedJoin) {
-                    const joinData = JSON.parse(savedJoin);
-                    
-                    // 加载英雄区域内容
-                    if (joinData.hero) {
-                        document.querySelector('header h1').textContent = joinData.hero.title;
-                        document.querySelector('header p').textContent = joinData.hero.description;
-                    }
-                    
-                    // 加载职位信息
-                    if (joinData.positions && joinData.positions.length > 0) {
-                        const positionsContainer = document.querySelector('.grid.grid-cols-1.md\:grid-cols-2.gap-8');
-                        positionsContainer.innerHTML = '';
+                try {
+                    const savedJoin = localStorage.getItem('boxlabJoin');
+                    if (savedJoin) {
+                        const joinData = JSON.parse(savedJoin);
                         
-                        joinData.positions.forEach(position => {
-                            const positionElement = document.createElement('div');
-                            positionElement.className = 'bg-white rounded-lg shadow-md p-6 border-l-4 border-accent card-hover transition-all-300';
-                            positionElement.innerHTML = `
-                                <h3 class="text-xl font-bold mb-3 editable" contenteditable="false">${position.title}</h3>
-                                <p class="text-gray-600 mb-4 editable" contenteditable="false">${position.description}</p>
-                                <p class="text-gray-600 mb-4 editable" contenteditable="false">${position.requirements}</p>
-                                <p class="text-gray-600 mb-4 editable" contenteditable="false">${position.benefits}</p>
-                                <a href="${position.link}" class="text-accent hover:underline font-medium editable" contenteditable="false">申请详情</a>
-                            `;
-                            positionsContainer.appendChild(positionElement);
-                        });
-                    }
-                    
-                    // 加载申请流程
-                    if (joinData.process && joinData.process.length > 0) {
-                        const processContainer = document.querySelector('.space-y-8');
-                        processContainer.innerHTML = '';
+                        // 加载英雄区域内容
+                        if (joinData.hero) {
+                            document.querySelector('header h1').textContent = joinData.hero.title;
+                            document.querySelector('header p').textContent = joinData.hero.description;
+                        }
                         
-                        joinData.process.forEach((step, index) => {
-                            const stepElement = document.createElement('div');
-                            stepElement.className = 'flex';
-                            stepElement.innerHTML = `
-                                <div class="flex-shrink-0 mr-4">
-                                    <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center font-bold text-xl">${index + 1}</div>
-                                </div>
-                                <div>
-                                    <h3 class="text-xl font-bold mb-2 editable" contenteditable="false">${step.title}</h3>
-                                    <p class="text-gray-600 editable" contenteditable="false">${step.description}</p>
-                                </div>
-                            `;
-                            processContainer.appendChild(stepElement);
-                        });
+                        // 加载职位信息
+                        if (joinData.positions && joinData.positions.length > 0) {
+                            const positionsContainer = document.querySelector('.grid.grid-cols-1.md\:grid-cols-2.gap-8');
+                            if (positionsContainer) {
+                                positionsContainer.innerHTML = '';
+                                
+                                joinData.positions.forEach(position => {
+                                    try {
+                                        const positionElement = document.createElement('div');
+                                        positionElement.className = 'bg-white rounded-lg shadow-md p-6 border-l-4 border-accent card-hover transition-all-300';
+                                        positionElement.innerHTML = `
+                                            <h3 class="text-xl font-bold mb-3 editable" contenteditable="false">${position.title}</h3>
+                                            <p class="text-gray-600 mb-4 editable" contenteditable="false">${position.description}</p>
+                                            <p class="text-gray-600 mb-4 editable" contenteditable="false">${position.requirements}</p>
+                                            <p class="text-gray-600 mb-4 editable" contenteditable="false">${position.benefits}</p>
+                                            <a href="${position.link}" class="text-accent hover:underline font-medium editable" contenteditable="false">申请详情</a>
+                                        `;
+                                        positionsContainer.appendChild(positionElement);
+                                    } catch (e) {
+                                        console.error('Error loading position:', e);
+                                    }
+                                });
+                            }
+                        }
+                        
+                        // 加载申请流程
+                        if (joinData.process && joinData.process.length > 0) {
+                            const processContainer = document.querySelector('.space-y-8');
+                            if (processContainer) {
+                                processContainer.innerHTML = '';
+                                
+                                joinData.process.forEach((step, index) => {
+                                    try {
+                                        const stepElement = document.createElement('div');
+                                        stepElement.className = 'flex';
+                                        stepElement.innerHTML = `
+                                            <div class="flex-shrink-0 mr-4">
+                                                <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center font-bold text-xl">${index + 1}</div>
+                                            </div>
+                                            <div>
+                                                <h3 class="text-xl font-bold mb-2 editable" contenteditable="false">${step.title}</h3>
+                                                <p class="text-gray-600 editable" contenteditable="false">${step.description}</p>
+                                            </div>
+                                        `;
+                                        processContainer.appendChild(stepElement);
+                                    } catch (e) {
+                                        console.error('Error loading process step:', e);
+                                    }
+                                });
+                            }
+                        }
+                        
+                        // 加载联系信息
+                        if (joinData.contact) {
+                            const contactInfo = document.querySelectorAll('.flex.items-start');
+                            contactInfo.forEach(info => {
+                                try {
+                                    const title = info.querySelector('h4').textContent;
+                                    if (title === '电子邮箱') info.querySelector('p').textContent = joinData.contact.email;
+                                    if (title === '电话') info.querySelector('p').textContent = joinData.contact.phone;
+                                    if (title === '办公地址') info.querySelector('p').textContent = joinData.contact.address;
+                                } catch (e) {
+                                    console.error('Error loading contact info:', e);
+                                }
+                            });
+                        }
                     }
-                    
-                    // 加载联系信息
-                    if (joinData.contact) {
-                        const contactInfo = document.querySelectorAll('.flex.items-start');
-                        contactInfo.forEach(info => {
-                            const title = info.querySelector('h4').textContent;
-                            if (title === '电子邮箱') info.querySelector('p').textContent = joinData.contact.email;
-                            if (title === '电话') info.querySelector('p').textContent = joinData.contact.phone;
-                            if (title === '办公地址') info.querySelector('p').textContent = joinData.contact.address;
-                        });
-                    }
+                    console.log('Join data loaded successfully');
+                } catch (e) {
+                    console.error('Error loading join data:', e);
                 }
             }
 
