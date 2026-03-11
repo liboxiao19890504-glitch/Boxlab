@@ -25,6 +25,55 @@
                 }
             }
         }
+// 保存所有修改到本地存储
+function saveAllChanges() {
+    try {
+        // 保存页面内容
+        const pageContent = document.documentElement.outerHTML;
+        localStorage.setItem('boxlabPageContent', pageContent);
+        alert('保存成功！刷新页面后修改会保持。');
+    } catch (error) {
+        console.error('保存失败:', error);
+        alert('保存失败，请检查浏览器存储空间。');
+    }
+}
+
+// 从本地存储加载内容
+function loadSavedChanges() {
+    try {
+        const savedContent = localStorage.getItem('boxlabPageContent');
+        if (savedContent) {
+            // 替换整个页面内容
+            document.open();
+            document.write(savedContent);
+            document.close();
+        }
+    } catch (error) {
+        console.error('加载失败:', error);
+    }
+}
+
+// 页面加载时尝试加载保存的内容
+window.addEventListener('load', function() {
+    // 延迟加载，确保页面完全渲染
+    setTimeout(loadSavedChanges, 100);
+});
+
+// 为编辑按钮添加保存功能
+editButton.addEventListener('click', function() {
+    if (isAuthenticated && isEditing) {
+        // 退出编辑模式前保存
+        saveAllChanges();
+    }
+});
+
+// 添加手动保存按钮
+const saveButton = document.createElement('button');
+saveButton.innerHTML = '<i class="fa fa-save"></i>';
+saveButton.title = '保存修改';
+saveButton.className = 'fixed bottom-20 right-8 bg-green-600 text-white w-12 h-12 rounded-full shadow-lg z-20 hover:bg-green-700 transition-all-300 flex items-center justify-center';
+saveButton.addEventListener('click', saveAllChanges);
+document.body.appendChild(saveButton);
     </script>
     <style type="text/tailwindcss">
         @layer utilities {
