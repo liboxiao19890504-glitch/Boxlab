@@ -73,161 +73,20 @@
         <div class="container mx-auto px-4">
             <!-- PI -->
             <h2 class="text-3xl font-bold mb-8 text-center editable" contenteditable="false">PI</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-                <!-- Senior PI -->
-                <div class="bg-white rounded-lg shadow-md p-8 card-hover transition-all-300">
-                    <div class="flex flex-col items-center">
-                        <div class="w-48 h-48 rounded-full overflow-hidden mb-6">
-                            <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=professional%20academic%20portrait%20of%20a%20senior%20university%20professor%20in%20formal%20attire%2C%20clean%20background%2C%20high%20quality%20professional%20photo&image_size=square_hd" alt="Senior PI" class="w-full h-full object-cover">
-                        </div>
-                        <div class="text-center">
-                            <h3 class="text-2xl font-bold mb-2 editable" contenteditable="false">Dr. Senior</h3>
-                            <p class="text-gray-600 mb-4 editable" contenteditable="false">Senior Principal Investigator</p>
-                            <p class="text-gray-600 mb-4 editable" contenteditable="false">所属学院 | 研究方向 | 专业领域</p>
-                            <div class="flex justify-center space-x-4 mt-4">
-                                <a href="#" class="text-accent hover:text-primary transition-all-300 editable" contenteditable="false">
-                                    <i class="fa fa-envelope text-xl"></i>
-                                </a>
-                                <a href="#" class="text-accent hover:text-primary transition-all-300 editable" contenteditable="false">
-                                    <i class="fa fa-google-scholar text-xl"></i>
-                                </a>
-                                <a href="#" class="text-accent hover:text-primary transition-all-300 editable" contenteditable="false">
-                                    <i class="fa fa-linkedin text-xl"></i>
-                                </a>
-                                <a href="#" class="text-accent hover:text-primary transition-all-300 editable" contenteditable="false">
-                                    <i class="fa fa-researchgate text-xl"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Junior PI -->
-                <div class="bg-white rounded-lg shadow-md p-8 card-hover transition-all-300">
-                    <div class="flex flex-col items-center">
-                        <div class="w-48 h-48 rounded-full overflow-hidden mb-6">
-                            <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=professional%20academic%20portrait%20of%20a%20junior%20university%20professor%20in%20formal%20attire%2C%20clean%20background%2C%20high%20quality%20professional%20photo&image_size=square_hd" alt="Junior PI" class="w-full h-full object-cover">
-                        </div>
-                        <div class="text-center">
-                            <h3 class="text-2xl font-bold mb-2 editable" contenteditable="false">Dr. Junior</h3>
-                            <p class="text-gray-600 mb-4 editable" contenteditable="false">Junior Principal Investigator</p>
-                            <p class="text-gray-600 mb-4 editable" contenteditable="false">所属学院 | 研究方向 | 专业领域</p>
-                            <div class="flex justify-center space-x-4 mt-4">
-                                <a href="#" class="text-accent hover:text-primary transition-all-300 editable" contenteditable="false">
-                                    <i class="fa fa-envelope text-xl"></i>
-                                </a>
-                                <a href="#" class="text-accent hover:text-primary transition-all-300 editable" contenteditable="false">
-                                    <i class="fa fa-google-scholar text-xl"></i>
-                                </a>
-                                <a href="#" class="text-accent hover:text-primary transition-all-300 editable" contenteditable="false">
-                                    <i class="fa fa-linkedin text-xl"></i>
-                                </a>
-                                <a href="#" class="text-accent hover:text-primary transition-all-300 editable" contenteditable="false">
-                                    <i class="fa fa-researchgate text-xl"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16" id="piContainer">
+                <!-- 空容器，用于添加PI -->
             </div>
 
             <!-- Now (当前成员) -->
             <h2 class="text-3xl font-bold mb-8 text-center editable" contenteditable="false">Now</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-                <!-- 成员1 -->
-                <div class="bg-white rounded-lg shadow-md p-6 card-hover transition-all-300">
-                    <div class="w-40 h-40 mx-auto mb-4 rounded-full overflow-hidden">
-                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=professional%20academic%20portrait%20of%20a%20young%20researcher%2C%20clean%20background%2C%20high%20quality%20professional%20photo&image_size=square_hd" alt="团队成员1" class="w-full h-full object-cover">
-                    </div>
-                    <h4 class="text-xl font-bold mb-2 text-center editable" contenteditable="false">成员姓名1</h4>
-                    <p class="text-gray-600 text-center mb-4 editable" contenteditable="false">博士后研究员</p>
-                    <p class="text-gray-600 text-center editable" contenteditable="false">研究方向：[研究方向]</p>
-                </div>
-                <!-- 成员2 -->
-                <div class="bg-white rounded-lg shadow-md p-6 card-hover transition-all-300">
-                    <div class="w-40 h-40 mx-auto mb-4 rounded-full overflow-hidden">
-                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=professional%20academic%20portrait%20of%20a%20female%20researcher%2C%20clean%20background%2C%20high%20quality%20professional%20photo&image_size=square_hd" alt="团队成员2" class="w-full h-full object-cover">
-                    </div>
-                    <h4 class="text-xl font-bold mb-2 text-center editable" contenteditable="false">成员姓名2</h4>
-                    <p class="text-gray-600 text-center mb-4 editable" contenteditable="false">博士研究生</p>
-                    <p class="text-gray-600 text-center editable" contenteditable="false">研究方向：[研究方向]</p>
-                </div>
-                <!-- 成员3 -->
-                <div class="bg-white rounded-lg shadow-md p-6 card-hover transition-all-300">
-                    <div class="w-40 h-40 mx-auto mb-4 rounded-full overflow-hidden">
-                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=professional%20academic%20portrait%20of%20a%20young%20male%20researcher%2C%20clean%20background%2C%20high%20quality%20professional%20photo&image_size=square_hd" alt="团队成员3" class="w-full h-full object-cover">
-                    </div>
-                    <h4 class="text-xl font-bold mb-2 text-center editable" contenteditable="false">成员姓名3</h4>
-                    <p class="text-gray-600 text-center mb-4 editable" contenteditable="false">博士研究生</p>
-                    <p class="text-gray-600 text-center editable" contenteditable="false">研究方向：[研究方向]</p>
-                </div>
-                <!-- 成员4 -->
-                <div class="bg-white rounded-lg shadow-md p-6 card-hover transition-all-300">
-                    <div class="w-40 h-40 mx-auto mb-4 rounded-full overflow-hidden">
-                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=professional%20academic%20portrait%20of%20a%20female%20researcher%2C%20clean%20background%2C%20high%20quality%20professional%20photo&image_size=square_hd" alt="团队成员4" class="w-full h-full object-cover">
-                    </div>
-                    <h4 class="text-xl font-bold mb-2 text-center editable" contenteditable="false">成员姓名4</h4>
-                    <p class="text-gray-600 text-center mb-4 editable" contenteditable="false">硕士研究生</p>
-                    <p class="text-gray-600 text-center editable" contenteditable="false">研究方向：[研究方向]</p>
-                </div>
-                <!-- 成员5 -->
-                <div class="bg-white rounded-lg shadow-md p-6 card-hover transition-all-300">
-                    <div class="w-40 h-40 mx-auto mb-4 rounded-full overflow-hidden">
-                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=professional%20academic%20portrait%20of%20a%20young%20male%20researcher%2C%20clean%20background%2C%20high%20quality%20professional%20photo&image_size=square_hd" alt="团队成员5" class="w-full h-full object-cover">
-                    </div>
-                    <h4 class="text-xl font-bold mb-2 text-center editable" contenteditable="false">成员姓名5</h4>
-                    <p class="text-gray-600 text-center mb-4 editable" contenteditable="false">硕士研究生</p>
-                    <p class="text-gray-600 text-center editable" contenteditable="false">研究方向：[研究方向]</p>
-                </div>
-                <!-- 成员6 -->
-                <div class="bg-white rounded-lg shadow-md p-6 card-hover transition-all-300">
-                    <div class="w-40 h-40 mx-auto mb-4 rounded-full overflow-hidden">
-                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=professional%20academic%20portrait%20of%20a%20young%20female%20researcher%2C%20clean%20background%2C%20high%20quality%20professional%20photo&image_size=square_hd" alt="团队成员6" class="w-full h-full object-cover">
-                    </div>
-                    <h4 class="text-xl font-bold mb-2 text-center editable" contenteditable="false">成员姓名6</h4>
-                    <p class="text-gray-600 text-center mb-4 editable" contenteditable="false">研究助理</p>
-                    <p class="text-gray-600 text-center editable" contenteditable="false">研究方向：[研究方向]</p>
-                </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8" id="currentContainer">
+                <!-- 空容器，用于添加当前成员 -->
             </div>
 
             <!-- Alumni (校友) -->
             <h2 class="text-3xl font-bold mt-16 mb-8 text-center editable" contenteditable="false">Alumni</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-                <!-- 校友1 -->
-                <div class="bg-white rounded-lg shadow-md p-6 card-hover transition-all-300">
-                    <h4 class="text-xl font-bold mb-2 editable" contenteditable="false">成员姓名7</h4>
-                    <p class="text-gray-600 mb-2 editable" contenteditable="false">Ph.D. 2024</p>
-                    <p class="text-gray-600 editable" contenteditable="false">现在职位：[职位名称]，[机构名称]</p>
-                </div>
-                <!-- 校友2 -->
-                <div class="bg-white rounded-lg shadow-md p-6 card-hover transition-all-300">
-                    <h4 class="text-xl font-bold mb-2 editable" contenteditable="false">成员姓名8</h4>
-                    <p class="text-gray-600 mb-2 editable" contenteditable="false">Ph.D. 2023</p>
-                    <p class="text-gray-600 editable" contenteditable="false">现在职位：[职位名称]，[机构名称]</p>
-                </div>
-                <!-- 校友3 -->
-                <div class="bg-white rounded-lg shadow-md p-6 card-hover transition-all-300">
-                    <h4 class="text-xl font-bold mb-2 editable" contenteditable="false">成员姓名9</h4>
-                    <p class="text-gray-600 mb-2 editable" contenteditable="false">Postdoc 2022</p>
-                    <p class="text-gray-600 editable" contenteditable="false">现在职位：[职位名称]，[机构名称]</p>
-                </div>
-                <!-- 校友4 -->
-                <div class="bg-white rounded-lg shadow-md p-6 card-hover transition-all-300">
-                    <h4 class="text-xl font-bold mb-2 editable" contenteditable="false">成员姓名10</h4>
-                    <p class="text-gray-600 mb-2 editable" contenteditable="false">Ph.D. 2022</p>
-                    <p class="text-gray-600 editable" contenteditable="false">现在职位：[职位名称]，[机构名称]</p>
-                </div>
-                <!-- 校友5 -->
-                <div class="bg-white rounded-lg shadow-md p-6 card-hover transition-all-300">
-                    <h4 class="text-xl font-bold mb-2 editable" contenteditable="false">成员姓名11</h4>
-                    <p class="text-gray-600 mb-2 editable" contenteditable="false">Master 2023</p>
-                    <p class="text-gray-600 editable" contenteditable="false">现在职位：[职位名称]，[机构名称]</p>
-                </div>
-                <!-- 校友6 -->
-                <div class="bg-white rounded-lg shadow-md p-6 card-hover transition-all-300">
-                    <h4 class="text-xl font-bold mb-2 editable" contenteditable="false">成员姓名12</h4>
-                    <p class="text-gray-600 mb-2 editable" contenteditable="false">Postdoc 2021</p>
-                    <p class="text-gray-600 editable" contenteditable="false">现在职位：[职位名称]，[机构名称]</p>
-                </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8" id="alumniContainer">
+                <!-- 空容器，用于添加校友 -->
             </div>
         </div>
     </section>
@@ -356,7 +215,7 @@
                     };
                     
                     // 保存PI信息
-                    const piCards = document.querySelectorAll('.grid.grid-cols-1.md\:grid-cols-2.gap-8 > div');
+                    const piCards = document.querySelectorAll('#piContainer > div');
                     piCards.forEach(card => {
                         try {
                             membersData.pis.push({
@@ -371,7 +230,7 @@
                     });
                     
                     // 保存当前成员
-                    const currentMembers = document.querySelectorAll('.grid.grid-cols-1.sm\:grid-cols-2.md\:grid-cols-3.lg\:grid-cols-4.gap-8 > div');
+                    const currentMembers = document.querySelectorAll('#currentContainer > div');
                     currentMembers.forEach(member => {
                         try {
                             membersData.current.push({
@@ -386,7 +245,7 @@
                     });
                     
                     // 保存校友
-                    const alumniMembers = document.querySelectorAll('.grid.grid-cols-1.sm\:grid-cols-2.md\:grid-cols-3.gap-8 > div');
+                    const alumniMembers = document.querySelectorAll('#alumniContainer > div');
                     alumniMembers.forEach(member => {
                         try {
                             membersData.alumni.push({
@@ -420,7 +279,7 @@
                         
                         // 加载PI数据
                         if (membersData.pis && membersData.pis.length > 0) {
-                            const piContainer = document.querySelector('.grid.grid-cols-1.md\:grid-cols-2.gap-8');
+                            const piContainer = document.getElementById('piContainer');
                             if (piContainer) {
                                 piContainer.innerHTML = '';
                                 
@@ -464,7 +323,7 @@
                         
                         // 加载当前成员
                         if (membersData.current && membersData.current.length > 0) {
-                            const currentContainer = document.querySelector('.grid.grid-cols-1.sm\:grid-cols-2.md\:grid-cols-3.lg\:grid-cols-4.gap-8');
+                            const currentContainer = document.getElementById('currentContainer');
                             if (currentContainer) {
                                 currentContainer.innerHTML = '';
                                 
@@ -490,7 +349,7 @@
                         
                         // 加载校友
                         if (membersData.alumni && membersData.alumni.length > 0) {
-                            const alumniContainer = document.querySelector('.grid.grid-cols-1.sm\:grid-cols-2.md\:grid-cols-3.gap-8');
+                            const alumniContainer = document.getElementById('alumniContainer');
                             if (alumniContainer) {
                                 alumniContainer.innerHTML = '';
                                 
@@ -515,6 +374,70 @@
                 } catch (e) {
                     console.error('Error loading members data:', e);
                 }
+            }
+
+            // 添加成员功能
+            function addPI() {
+                const piContainer = document.getElementById('piContainer');
+                const piElement = document.createElement('div');
+                piElement.className = 'bg-white rounded-lg shadow-md p-8 card-hover transition-all-300';
+                piElement.innerHTML = `
+                    <div class="flex flex-col items-center">
+                        <div class="w-48 h-48 rounded-full overflow-hidden mb-6">
+                            <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=professional%20academic%20portrait%20of%20a%20university%20professor%20in%20formal%20attire%2C%20clean%20background%2C%20high%20quality%20professional%20photo&image_size=square_hd" alt="PI" class="w-full h-full object-cover">
+                        </div>
+                        <div class="text-center">
+                            <h3 class="text-2xl font-bold mb-2 editable" contenteditable="false">Dr. 姓名</h3>
+                            <p class="text-gray-600 mb-4 editable" contenteditable="false">Principal Investigator</p>
+                            <p class="text-gray-600 mb-4 editable" contenteditable="false">所属学院 | 研究方向 | 专业领域</p>
+                            <div class="flex justify-center space-x-4 mt-4">
+                                <a href="#" class="text-accent hover:text-primary transition-all-300 editable" contenteditable="false">
+                                    <i class="fa fa-envelope text-xl"></i>
+                                </a>
+                                <a href="#" class="text-accent hover:text-primary transition-all-300 editable" contenteditable="false">
+                                    <i class="fa fa-google-scholar text-xl"></i>
+                                </a>
+                                <a href="#" class="text-accent hover:text-primary transition-all-300 editable" contenteditable="false">
+                                    <i class="fa fa-linkedin text-xl"></i>
+                                </a>
+                                <a href="#" class="text-accent hover:text-primary transition-all-300 editable" contenteditable="false">
+                                    <i class="fa fa-researchgate text-xl"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                piContainer.appendChild(piElement);
+                saveMembers();
+            }
+
+            function addCurrentMember() {
+                const currentContainer = document.getElementById('currentContainer');
+                const memberElement = document.createElement('div');
+                memberElement.className = 'bg-white rounded-lg shadow-md p-6 card-hover transition-all-300';
+                memberElement.innerHTML = `
+                    <div class="w-40 h-40 mx-auto mb-4 rounded-full overflow-hidden">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=professional%20academic%20portrait%20of%20a%20young%20researcher%2C%20clean%20background%2C%20high%20quality%20professional%20photo&image_size=square_hd" alt="团队成员" class="w-full h-full object-cover">
+                    </div>
+                    <h4 class="text-xl font-bold mb-2 text-center editable" contenteditable="false">成员姓名</h4>
+                    <p class="text-gray-600 text-center mb-4 editable" contenteditable="false">职位</p>
+                    <p class="text-gray-600 text-center editable" contenteditable="false">研究方向：[研究方向]</p>
+                `;
+                currentContainer.appendChild(memberElement);
+                saveMembers();
+            }
+
+            function addAlumni() {
+                const alumniContainer = document.getElementById('alumniContainer');
+                const alumniElement = document.createElement('div');
+                alumniElement.className = 'bg-white rounded-lg shadow-md p-6 card-hover transition-all-300';
+                alumniElement.innerHTML = `
+                    <h4 class="text-xl font-bold mb-2 editable" contenteditable="false">成员姓名</h4>
+                    <p class="text-gray-600 mb-2 editable" contenteditable="false">学位 年份</p>
+                    <p class="text-gray-600 editable" contenteditable="false">现在职位：[职位名称]，[机构名称]</p>
+                `;
+                alumniContainer.appendChild(alumniElement);
+                saveMembers();
             }
 
             // 编辑模式切换功能
@@ -573,6 +496,36 @@
                         });
                     } else {
                         container.classList.remove('cursor-pointer', 'hover:opacity-80');
+                    }
+                });
+
+                // 添加或移除添加按钮
+                const containers = [
+                    { id: 'piContainer', addFunction: addPI, label: '添加PI' },
+                    { id: 'currentContainer', addFunction: addCurrentMember, label: '添加成员' },
+                    { id: 'alumniContainer', addFunction: addAlumni, label: '添加校友' }
+                ];
+
+                containers.forEach(containerInfo => {
+                    const container = document.getElementById(containerInfo.id);
+                    const addButtonId = `${containerInfo.id}-add-button`;
+                    let addButton = document.getElementById(addButtonId);
+
+                    if (isEditing) {
+                        if (!addButton) {
+                            addButton = document.createElement('button');
+                            addButton.id = addButtonId;
+                            addButton.innerHTML = '<i class="fa fa-plus"></i>';
+                            addButton.title = containerInfo.label;
+                            addButton.className = 'fixed bottom-8 right-8 bg-primary text-white w-12 h-12 rounded-full shadow-lg z-20 hover:bg-secondary transition-all-300 flex items-center justify-center';
+                            addButton.style.bottom = `${8 + (containers.indexOf(containerInfo) * 64)}px`;
+                            addButton.addEventListener('click', containerInfo.addFunction);
+                            document.body.appendChild(addButton);
+                        }
+                    } else {
+                        if (addButton) {
+                            addButton.remove();
+                        }
                     }
                 });
 
