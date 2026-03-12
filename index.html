@@ -6,231 +6,186 @@
     <title>Boxlab - Qingdao University of Science and Technology</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* 引入青科大专属配色变量 */
+        /* 恢复沉稳客观的低饱和度配色体系 */
         :root { 
-            --qust-blue: #00468b;     /* 科大蓝 */
-            --qust-dark-blue: #002d5e;/* 深邃蓝 (用于渐变) */
-            --qust-gold: #d4b068;     /* 科大金 */
-            --qust-orange: #e87722;   /* 活力橙 */
-            --bg-light: #f4f6f9;      /* 浅灰背景 */
-            --text-dark: #1e293b;
+            --primary: #334155; 
+            --secondary: #475569; 
+            --accent: #3b82f6; 
+            --bg: #f8fafc; 
         }
 
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: var(--bg-light);
-            color: var(--text-dark);
+            background-color: var(--bg);
+            color: #333;
         }
         
-        /* 导航栏：科大蓝背景，悬停显示科大金 */
+        /* 导航栏：Flexbox 布局，左侧Logo，右侧菜单 */
         nav {
-            background-color: var(--qust-blue);
+            background-color: var(--primary);
             color: white;
-            padding: 15px 0;
+            padding: 12px 0;
             position: sticky;
             top: 0;
             z-index: 100;
             box-shadow: 0 2px 10px rgba(0,0,0,0.15);
         }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        
+        /* 青科大校徽与课题组名称融合 */
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .nav-logo img {
+            height: 46px;
+            width: 46px;
+            border-radius: 50%;
+            background-color: white;
+            object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: transform 0.3s;
+        }
+        .nav-logo img:hover {
+            transform: scale(1.05);
+        }
+        .nav-brand {
+            font-size: 1.4rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            color: white;
+        }
+
         nav ul {
             list-style: none;
             margin: 0;
             padding: 0;
             display: flex;
-            justify-content: center;
-        }
-        nav ul li {
-            margin: 0 20px;
+            gap: 20px;
         }
         nav ul li a {
-            color: white;
+            color: #e2e8f0;
             text-decoration: none;
-            font-weight: 500;
-            padding: 5px 10px;
-            border-radius: 4px;
+            padding: 8px 12px;
+            border-radius: 6px;
             transition: 0.3s;
+            font-weight: 500;
         }
         nav ul li a:hover {
-            color: var(--qust-gold);
             background-color: rgba(255,255,255,0.1);
+            color: white;
         }
 
-        /* 头部英雄区域：蓝底渐变 + 底部金色饰边 */
+        /* 英雄区域 */
         header {
-            background: linear-gradient(135deg, var(--qust-blue), var(--qust-dark-blue));
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
             padding: 70px 20px;
             text-align: center;
-            border-bottom: 5px solid var(--qust-gold);
         }
-        header h1 { margin-top: 0; font-size: 2.5rem; }
-        header p { font-size: 1.2rem; color: #e2e8f0; }
+        header h1 { margin-top: 0; font-size: 2.5rem; letter-spacing: 2px; }
+        header p { font-size: 1.15rem; color: #cbd5e1; }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        section {
-            padding: 40px 0;
-        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        section { padding: 50px 0; }
         
-        /* 区块标题使用科大蓝，底部加金色下划线 */
         section h2 {
-            color: var(--qust-blue);
-            border-bottom: 2px solid var(--qust-gold);
-            padding-bottom: 10px;
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 8px;
             display: inline-block;
             margin-bottom: 30px;
         }
 
-        .news-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-        }
+        /* 新闻卡片 */
+        .news-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; }
         .news-item {
-            background-color: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            transition: 0.3s;
-            border: 1px solid #e2e8f0;
+            background-color: white; border-radius: 10px; overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); transition: 0.3s; border: 1px solid #e2e8f0;
         }
-        .news-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            border-color: var(--qust-gold);
-        }
-        .news-item img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            cursor: pointer;
-            border-bottom: 3px solid var(--qust-gold);
-        }
-        .news-content {
-            padding: 20px;
-        }
-        .news-content h3 {
-            margin: 10px 0;
-            color: var(--qust-blue);
-            font-size: 1.1rem;
-        }
-        .news-content p:nth-child(2) { color: var(--qust-orange); font-size: 0.85rem; font-weight: bold; }
-        .news-content p:nth-child(3) { color: #475569; font-size: 0.95rem; line-height: 1.6; }
+        .news-item:hover { transform: translateY(-5px); box-shadow: 0 12px 20px rgba(0,0,0,0.08); }
+        .news-item img { width: 100%; height: 200px; object-fit: cover; cursor: pointer; border-bottom: 3px solid var(--accent); }
+        .news-content { padding: 25px; }
+        .news-content h3 { margin: 0 0 10px; color: #0f172a; font-size: 1.15rem; line-height: 1.4; }
+        .news-content p:nth-child(2) { color: var(--accent); font-size: 0.85rem; font-weight: 600; margin-bottom: 15px; }
+        .news-content p:nth-child(3) { color: #64748b; font-size: 0.95rem; line-height: 1.6; margin: 0; }
 
-        /* 页脚 */
-        footer {
-            background-color: var(--qust-blue);
-            color: white;
-            text-align: center;
-            padding: 25px 0;
-            border-top: 4px solid var(--qust-gold);
-        }
+        footer { background-color: var(--primary); color: white; text-align: center; padding: 25px 0; margin-top: 40px; }
 
-        /* 悬浮编辑按钮：使用活力橙，非常醒目 */
+        /* 编辑按钮 */
         .edit-btn {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background-color: var(--qust-orange);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(232, 119, 34, 0.4);
-            z-index: 1000;
-            font-size: 1.2rem;
-            transition: 0.3s;
+            position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; border-radius: 50%;
+            background-color: var(--primary); color: white; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.15); z-index: 1000; font-size: 1.2rem; transition: 0.3s;
         }
-        .edit-btn:hover {
-            transform: scale(1.1);
-            background-color: #d1661a;
-        }
+        .edit-btn:hover { transform: scale(1.1); background-color: #1e293b; }
 
-        /* 模态框及表单 */
+        /* 模态框样式 */
         .modal, .news-edit-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,45,94,0.6); /* 蓝底半透明遮罩 */
-            z-index: 2000;
-            backdrop-filter: blur(3px);
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(15, 23, 42, 0.6); z-index: 2000; backdrop-filter: blur(4px);
         }
         .modal-content, .news-edit-content {
-            background-color: white;
-            margin: 10% auto;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2);
+            background-color: white; margin: 10% auto; padding: 30px; border-radius: 12px;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
         }
-        .modal-content { width: 320px; }
+        .modal-content { width: 350px; }
         .news-edit-content { width: 500px; max-height: 90vh; overflow-y: auto; }
-        .modal-content h3, .news-edit-content h3 {
-            margin-top: 0;
-            color: var(--qust-blue);
-            border-bottom: 2px solid var(--qust-gold);
-            padding-bottom: 10px;
-        }
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; margin-bottom: 5px; font-weight: 600; color: #475569; font-size: 0.9rem;}
-        .form-group input, .form-group textarea {
-            width: 100%; padding: 10px; box-sizing: border-box;
-            border: 1px solid #cbd5e1; border-radius: 6px; transition: 0.3s;
-        }
-        .form-group input:focus, .form-group textarea:focus {
-            outline: none; border-color: var(--qust-blue); box-shadow: 0 0 0 3px rgba(0, 70, 139, 0.1);
-        }
+        .modal-content h3, .news-edit-content h3 { margin-top: 0; color: var(--primary); border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; }
+        
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display: block; margin-bottom: 6px; font-weight: 600; color: #475569; font-size: 0.9rem; }
+        .form-group input, .form-group textarea { width: 100%; padding: 12px; box-sizing: border-box; border: 1px solid #cbd5e1; border-radius: 6px; transition: 0.3s; }
+        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
         .form-group textarea { resize: vertical; min-height: 100px; }
 
-        /* 按钮样式 */
-        .btn { padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s; }
-        .btn-primary { background-color: var(--qust-blue); color: white; }
-        .btn-primary:hover { background-color: var(--qust-dark-blue); }
+        .btn { padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: 0.2s; }
+        .btn-primary { background-color: var(--primary); color: white; }
+        .btn-primary:hover { background-color: #1e293b; }
         .btn-secondary { background-color: #e2e8f0; color: #333; }
         .btn-secondary:hover { background-color: #cbd5e1; }
         .btn-group { display: flex; gap: 10px; justify-content: flex-end; margin-top: 25px; }
 
-        /* 添加新闻按钮 */
-        .add-news-btn {
-            display: block; margin: 30px auto; padding: 12px 30px;
-            background-color: var(--qust-orange); color: white;
-            border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 1rem;
-            box-shadow: 0 4px 10px rgba(232, 119, 34, 0.3); transition: 0.3s;
-        }
-        .add-news-btn:hover { background-color: #d1661a; transform: translateY(-2px); }
-
-        /* 编辑模式样式 */
-        .editable { border: 2px dashed transparent; padding: 5px; border-radius: 4px; transition: 0.2s; }
-        .editable:hover { border-color: rgba(255,255,255,0.3); }
-        .text-dark .editable:hover { border-color: rgba(0,70,139,0.3); }
-        .editable.active { border-color: var(--qust-gold); background-color: rgba(212, 176, 104, 0.1); }
+        /* 编辑模式与高亮 */
+        .add-news-btn { display: none; margin: 30px auto 0; padding: 12px 30px; background-color: var(--primary); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.1); transition: 0.3s; }
+        .add-news-btn:hover { background-color: #1e293b; transform: translateY(-2px); }
         
-        /* 图片上传区 */
+        .editable { border: 2px dashed transparent; padding: 2px 5px; border-radius: 4px; transition: 0.2s; }
+        .editable:hover { border-color: rgba(255,255,255,0.3); }
+        .text-dark .editable:hover { border-color: rgba(51, 65, 85, 0.3); }
+        .editable.active { border-color: var(--accent); background-color: rgba(59, 130, 246, 0.05); }
+        
         .image-upload { border: 2px dashed #cbd5e1; padding: 20px; text-align: center; margin-bottom: 15px; cursor: pointer; border-radius: 8px; background: #f8fafc; transition: 0.3s; }
-        .image-upload:hover { border-color: var(--qust-blue); background: white; }
+        .image-upload:hover { border-color: var(--accent); background: white; }
         #newsImagePreview { max-width: 100%; max-height: 200px; margin-top: 10px; border-radius: 4px; }
     </style>
 </head>
 <body>
     <nav>
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="publications.html">Publications</a></li>
-            <li><a href="members.html">Members</a></li>
-            <li><a href="researches.html">Researches & Cooperation</a></li>
-            <li><a href="join.html">Join Us</a></li>
-        </ul>
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="image_3c6abc.jpg" alt="QUST Logo">
+                <span class="nav-brand">Boxlab</span>
+            </div>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="publications.html">Publications</a></li>
+                <li><a href="members.html">Members</a></li>
+                <li><a href="researches.html">Researches & Cooperation</a></li>
+                <li><a href="join.html">Join Us</a></li>
+            </ul>
+        </div>
     </nav>
 
     <header>
@@ -281,7 +236,7 @@
 
     <div class="modal" id="loginModal">
         <div class="modal-content">
-            <h3>管理员登录</h3>
+            <h3 style="margin-top:0;">管理员登录</h3>
             <div class="form-group">
                 <label for="username">用户名</label>
                 <input type="text" id="username" placeholder="请输入用户名 (admin)">
@@ -299,7 +254,7 @@
 
     <div class="news-edit-modal" id="newsEditModal">
         <div class="news-edit-content">
-            <h3>编辑新闻</h3>
+            <h3 style="margin-top:0;">编辑新闻</h3>
             <input type="hidden" id="currentNewsIndex">
             <div class="form-group">
                 <label>新闻图片</label>
@@ -401,7 +356,7 @@
         
         function enterEditMode() {
             isEditMode = true;
-            document.getElementById('editBtn').style.display = 'none'; // 进入编辑后隐藏登录按钮
+            document.getElementById('editBtn').style.display = 'none'; 
             document.getElementById('addNewsBtn').style.display = 'block';
             
             const editableElements = document.querySelectorAll('.editable');
