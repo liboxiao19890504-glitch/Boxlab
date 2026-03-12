@@ -2,18 +2,63 @@ backend:
   name: github
   repo: liboxiao19890504-glitch/Boxlab
   branch: master
-  # 保留了您的认证地址
   base_url: https://sveltia-cms-auth.liboxiao19890504.workers.dev
 
-media_folder: "images" 
-public_folder: "images" 
+media_folder: "images"
+public_folder: "images"
 
 collections:
   - name: "site_data"
     label: "网站数据管理"
     files:
+      # ================= 新增：全局文字设置 =================
+      - file: "data/global.json"
+        label: "⚙️ 全局页面文字设置 (Global)"
+        name: "global"
+        fields:
+          - {label: "导航栏左上角名称", name: "nav_brand", widget: "string", default: "Box Lab"}
+          - {label: "底部版权信息", name: "footer_text", widget: "string", default: "© 2026 Box Lab. All Rights Reserved."}
+          - label: "1. 主页 (Home) 顶部文字"
+            name: "home"
+            widget: "object"
+            fields:
+              - {label: "大标题", name: "title", widget: "string", default: "Box Lab —— Thinking out of the Box"}
+              - {label: "副标题", name: "subtitle", widget: "string", default: "Junior PI: Dr. Boxiao Li (Senior PI: Jianming Zhang)"}
+          - label: "2. 发表论文 (Publications) 顶部文字"
+            name: "pub"
+            widget: "object"
+            fields:
+              - {label: "大标题", name: "title", widget: "string", default: "Publications"}
+              - {label: "副标题", name: "subtitle", widget: "string", default: "Selected Research Papers and Patents"}
+          - label: "3. 团队成员 (Members) 顶部文字"
+            name: "members"
+            widget: "object"
+            fields:
+              - {label: "大标题", name: "title", widget: "string", default: "Our Team"}
+              - {label: "副标题", name: "subtitle", widget: "string", default: "Innovation through collaboration and dedication"}
+          - label: "4. 研究与合作 (Researches) 页面文字"
+            name: "res"
+            widget: "object"
+            fields:
+              - {label: "大标题", name: "title", widget: "string", default: "Researches & Cooperation"}
+              - {label: "副标题", name: "subtitle", widget: "string", default: "Advancing Polymer Science through Innovation"}
+              - {label: "团队介绍标题", name: "intro_title", widget: "string", default: "About Our Research Group"}
+              - {label: "团队介绍正文", name: "intro_desc", widget: "text", default: "We are a dynamic research group focused on..."}
+              - {label: "团队介绍配图", name: "intro_img", widget: "image", required: false}
+          - label: "5. 加入我们 (Join Us) 页面文字"
+            name: "join"
+            widget: "object"
+            fields:
+              - {label: "大标题", name: "title", widget: "string", default: "Join Box Lab"}
+              - {label: "副标题", name: "subtitle", widget: "string", default: "Building the future of functional polymers"}
+              - {label: "Why Choose Us 正文", name: "intro_desc", widget: "text", default: "We are highly motivated to push the boundaries..."}
+              - {label: "联系邮箱", name: "email", widget: "string", default: "investigator@university.edu"}
+              - {label: "实验室地址", name: "location", widget: "string", default: "School of Materials Science, Main Campus"}
+              - {label: "申请备注", name: "note", widget: "text", default: "Please include your CV, transcript, and a brief statement..."}
+
+      # ================= 下面是原来的列表数据 =================
       - file: "data/news.json"
-        label: "1. 主页新闻 (News)"
+        label: "1. 主页新闻列表 (News)"
         name: "news"
         fields:
           - name: "items"
@@ -21,13 +66,12 @@ collections:
             widget: "list"
             fields:
               - {label: "新闻标题", name: "title", widget: "string"}
-              # ↓↓↓ 就是这行做了修复，改成了 datetime 和 time_format: false ↓↓↓
               - {label: "发布日期", name: "date", widget: "datetime", format: "YYYY-MM-DD", time_format: false}
               - {label: "正文内容", name: "content", widget: "text"}
               - {label: "新闻配图", name: "image", widget: "image", required: false}
               
       - file: "data/publications.json"
-        label: "2. 发表论文 (Publications)"
+        label: "2. 发表论文列表 (Publications)"
         name: "publications"
         fields:
           - name: "items"
@@ -41,21 +85,21 @@ collections:
               - {label: "DOI链接", name: "doi", widget: "string", required: false}
               
       - file: "data/members.json"
-        label: "3. 团队成员 (Members)"
+        label: "3. 团队成员列表 (Members)"
         name: "members"
         fields:
           - name: "items"
             label: "成员列表"
             widget: "list"
             fields:
-              - {label: "分类", name: "category", widget: "string", hint: "例如：Principal Investigator 或 Ph.D. Students"}
+              - {label: "分类", name: "category", widget: "string", hint: "如：Principal Investigator"}
               - {label: "姓名", name: "name", widget: "string"}
               - {label: "头衔/角色", name: "role", widget: "string"}
               - {label: "研究方向/简介", name: "detail", widget: "text"}
               - {label: "照片", name: "img", widget: "image", required: false}
               
       - file: "data/researches.json"
-        label: "4. 研究与合作 (Researches)"
+        label: "4. 研究与合作列表 (Researches)"
         name: "researches"
         fields:
           - name: "items"
@@ -75,7 +119,7 @@ collections:
               - {label: "Logo配图", name: "img", widget: "image", required: false}
               
       - file: "data/positions.json"
-        label: "5. 招聘信息 (Join Us)"
+        label: "5. 招聘职位列表 (Join Us)"
         name: "positions"
         fields:
           - name: "items"
@@ -83,6 +127,6 @@ collections:
             widget: "list"
             fields:
               - {label: "职位名称", name: "title", widget: "string"}
-              - {label: "标签", name: "badge", widget: "string", hint: "例如：Urgent 或 Fully Funded"}
+              - {label: "标签", name: "badge", widget: "string", hint: "如：Urgent"}
               - {label: "职位描述", name: "desc", widget: "text"}
               - {label: "职位要求", name: "reqs", widget: "text"}
