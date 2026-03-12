@@ -6,49 +6,89 @@
     <title>Publications - Boxlab</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* 继承主页基础样式 */
-        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f0f0f0; }
-        header { background: linear-gradient(to right, #334155, #475569); color: white; padding: 40px 20px; text-align: center; }
-        nav { background-color: #334155; color: white; padding: 15px 0; position: sticky; top: 0; z-index: 100; }
-        nav ul { list-style: none; margin: 0; padding: 0; display: flex; justify-content: center; }
-        nav ul li { margin: 0 20px; }
-        nav ul li a { color: white; text-decoration: none; }
-        .container { max-width: 1000px; margin: 0 auto; padding: 20px; }
+        /* 基础样式与色彩系统 */
+        :root { --primary: #334155; --secondary: #475569; --accent: #3b82f6; --bg: #f8fafc; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; background-color: var(--bg); color: #333; }
+        header { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; padding: 50px 20px; text-align: center; }
+        nav { background-color: var(--primary); color: white; padding: 15px 0; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        nav ul { list-style: none; margin: 0; padding: 0; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        nav ul li a { color: white; text-decoration: none; padding: 8px 15px; border-radius: 6px; transition: background 0.3s; }
+        nav ul li a:hover { background-color: rgba(255,255,255,0.1); }
+        .container { max-width: 1000px; margin: 0 auto; padding: 30px 20px; min-height: 60vh; }
         
-        /* 论文特有样式 */
-        .pub-year-section { margin-bottom: 40px; }
-        .year-title { border-bottom: 2px solid #334155; color: #334155; padding-bottom: 5px; margin-bottom: 20px; }
+        /* 论文列表排版 */
+        .pub-year-section { margin-bottom: 40px; animation: fadeIn 0.5s ease-in; }
+        .year-title { border-bottom: 2px solid var(--primary); color: var(--primary); padding-bottom: 8px; margin-bottom: 25px; font-size: 1.8rem; }
         .pub-item { 
-            background: white; padding: 20px; border-radius: 8px; margin-bottom: 15px; 
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: 0.3s; position: relative;
+            background: white; padding: 25px; border-radius: 10px; margin-bottom: 20px; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02); border: 1px solid #e2e8f0;
+            position: relative; transition: all 0.3s ease; display: flex; gap: 15px;
         }
-        .pub-item:hover { transform: translateX(5px); }
-        .pub-title { font-weight: bold; color: #1e293b; display: block; margin-bottom: 5px; }
-        .pub-authors { color: #64748b; font-size: 0.95em; }
-        .pub-journal { font-style: italic; color: #475569; }
-        .pub-link { color: #3b82f6; text-decoration: none; font-size: 0.9em; margin-top: 8px; display: inline-block; }
+        .pub-item:hover { transform: translateY(-3px); box-shadow: 0 10px 15px rgba(0,0,0,0.05); border-color: #cbd5e1; }
+        .pub-icon { color: var(--secondary); font-size: 1.5rem; margin-top: 3px; }
+        .pub-content { flex: 1; }
+        .pub-title { font-weight: 700; color: #0f172a; font-size: 1.1rem; margin-bottom: 8px; display: block; line-height: 1.4; }
+        .pub-authors { color: #475569; font-size: 0.95em; margin-bottom: 5px; }
+        .pub-journal { font-style: italic; color: #059669; font-weight: 500; margin-bottom: 10px; }
+        .pub-link { 
+            display: inline-flex; align-items: center; gap: 5px; color: var(--accent); 
+            text-decoration: none; font-size: 0.9em; font-weight: 500;
+            background: #eff6ff; padding: 5px 12px; border-radius: 20px; transition: 0.2s;
+        }
+        .pub-link:hover { background: #dbeafe; }
 
-        /* 编辑相关样式 */
-        .edit-btn { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; border-radius: 50%; background-color: #334155; color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1000; }
-        .modal, .pub-edit-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; }
-        .modal-content { background: white; margin: 10% auto; padding: 25px; border-radius: 8px; width: 450px; }
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; margin-bottom: 5px; font-size: 14px; }
-        .form-group input, .form-group select { width: 100%; padding: 10px; box-sizing: border-box; border: 1px solid #ddd; border-radius: 4px; }
-        .btn-group { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
-        .btn { padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; }
-        .btn-primary { background-color: #334155; color: white; }
-        .btn-secondary { background-color: #94a3b8; color: white; }
-        .add-pub-btn { display: none; margin: 20px auto; background: #334155; color: white; padding: 10px 30px; border: none; border-radius: 4px; cursor: pointer; }
+        /* 管理员控制台 (仅编辑模式显示) */
+        .admin-panel {
+            display: none; background: white; padding: 15px 20px; border-radius: 8px;
+            margin-bottom: 30px; border: 2px dashed var(--accent);
+            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
+        }
+        .admin-panel.active { display: flex; }
         
-        /* 编辑模式高亮 */
-        .editable-active { border: 1px dashed #334155; cursor: pointer; }
-        footer { background-color: #334155; color: white; text-align: center; padding: 20px 0; margin-top: 50px; }
+        /* 编辑按钮与模态框 */
+        .item-edit-btn { 
+            display: none; position: absolute; right: 20px; top: 20px; 
+            background: #f1f5f9; color: var(--primary); border: none; 
+            padding: 8px; border-radius: 6px; cursor: pointer; transition: 0.2s;
+        }
+        .item-edit-btn:hover { background: #e2e8f0; }
+        .pub-item.editable-active .item-edit-btn { display: block; }
+        
+        .floating-login-btn { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; border-radius: 50%; background-color: var(--primary); color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.15); font-size: 1.2rem; transition: 0.3s; }
+        .floating-login-btn:hover { transform: scale(1.1); }
+        
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); z-index: 2000; backdrop-filter: blur(4px); }
+        .modal-content { background: white; margin: 5vh auto; padding: 30px; border-radius: 12px; width: 90%; max-width: 500px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); animation: slideDown 0.3s ease-out; }
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display: block; margin-bottom: 6px; font-weight: 600; color: #334155; font-size: 0.9rem; }
+        .form-group input, .form-group textarea { width: 100%; padding: 12px; box-sizing: border-box; border: 1px solid #cbd5e1; border-radius: 6px; font-family: inherit; transition: border 0.3s; }
+        .form-group input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
+        
+        .btn-group { display: flex; gap: 12px; justify-content: flex-end; margin-top: 25px; }
+        .btn { padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: 0.2s; }
+        .btn-primary { background-color: var(--primary); color: white; }
+        .btn-primary:hover { background-color: #1e293b; }
+        .btn-success { background-color: #10b981; color: white; }
+        .btn-danger { background-color: #ef4444; color: white; }
+
+        /* 编辑模式下的高亮样式 */
+        [contenteditable="true"] { outline: 2px dashed rgba(255,255,255,0.5); padding: 2px 5px; border-radius: 4px; transition: 0.2s; }
+        [contenteditable="true"]:focus { outline: 2px solid var(--accent); background: rgba(255,255,255,0.1); }
+        .text-dark [contenteditable="true"] { outline-color: #cbd5e1; }
+        .text-dark [contenteditable="true"]:focus { outline-color: var(--accent); background: rgba(59, 130, 246, 0.05); }
+
+        footer { background-color: var(--primary); color: white; text-align: center; padding: 25px 0; margin-top: auto; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* 隐藏文件上传 input */
+        #importFile { display: none; }
     </style>
 </head>
 <body>
     <nav>
-        <ul>
+        <ul id="mainNav">
             <li><a href="index.html">Home</a></li>
             <li><a href="publications.html">Publications</a></li>
             <li><a href="members.html">Members</a></li>
@@ -58,185 +98,326 @@
     </nav>
 
     <header>
-        <h1>Publications</h1>
-        <p>Selected Research Papers and Patents</p>
+        <h1 id="pageTitle">Publications</h1>
+        <p id="pageSubtitle">Selected Research Papers and Patents</p>
     </header>
 
-    <div class="container">
-        <button class="add-pub-btn" id="addPubBtn">Add New Publication</button>
-        <div id="pubList">
-            <div class="pub-year-section" data-year="2026">
-                <h2 class="year-title">2026</h2>
-                <div class="pub-item" onclick="handleItemClick(this)">
-                    <span class="pub-title">Advanced Polymer Synthesis via Diels-Alder Reactions</span>
-                    <span class="pub-authors">Your Name*, Student A, Colleague B</span>
-                    <div class="pub-journal">Nature Materials, 2026, 15, 123-130</div>
-                    <a href="#" class="pub-link" target="_blank">DOI: 10.1038/s41563-026-xxxx</a>
-                </div>
+    <div class="container text-dark">
+        <div class="admin-panel" id="adminPanel" style="display: none;">
+            <div>
+                <span style="font-weight: 600; color: var(--primary);"><i class="fas fa-shield-alt"></i> Admin Mode Active</span>
+                <span style="font-size: 0.85rem; color: #64748b; margin-left: 10px;">Click texts to edit directly. Manage publications below.</span>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button class="btn btn-success" id="exportBtn"><i class="fas fa-download"></i> Backup Data</button>
+                <button class="btn" style="background: #e2e8f0; color: #333;" onclick="document.getElementById('importFile').click()"><i class="fas fa-upload"></i> Restore Data</button>
+                <input type="file" id="importFile" accept=".json">
+                <button class="btn btn-primary" id="addPubBtn"><i class="fas fa-plus"></i> Add Publication</button>
             </div>
         </div>
+
+        <div id="pubList">
+            </div>
     </div>
 
     <footer>
-        <p>&copy; 2026 Boxlab. All Rights Reserved.</p>
+        <p id="footerText">&copy; 2026 Boxlab. All Rights Reserved.</p>
     </footer>
 
-    <div class="edit-btn" id="editBtn"><i class="fas fa-pencil-alt"></i></div>
+    <div class="floating-login-btn" id="loginTriggerBtn"><i class="fas fa-cog"></i></div>
 
     <div class="modal" id="loginModal">
         <div class="modal-content">
-            <h3>Admin Login</h3>
-            <div class="form-group"><label>Username</label><input type="text" id="username" value="admin"></div>
-            <div class="form-group"><label>Password</label><input type="password" id="password" value="password"></div>
+            <h3 style="margin-top:0; color: var(--primary);">Admin Login</h3>
+            <div class="form-group"><label>Username</label><input type="text" id="username" placeholder="admin"></div>
+            <div class="form-group"><label>Password</label><input type="password" id="password" placeholder="password"></div>
             <div class="btn-group">
-                <button class="btn btn-secondary" onclick="closeModal('loginModal')">Cancel</button>
+                <button class="btn" style="background:#e2e8f0; color:#333;" onclick="closeModal('loginModal')">Cancel</button>
                 <button class="btn btn-primary" id="submitLogin">Login</button>
             </div>
         </div>
     </div>
 
-    <div class="pub-edit-modal" id="pubEditModal">
+    <div class="modal" id="pubEditModal">
         <div class="modal-content">
-            <h3 id="modalTitle">Edit Publication</h3>
-            <input type="hidden" id="editIndex">
-            <div class="form-group"><label>Year</label><input type="number" id="pubYear" placeholder="2026"></div>
-            <div class="form-group"><label>Title</label><input type="text" id="editPubTitle"></div>
-            <div class="form-group"><label>Authors</label><input type="text" id="editAuthors"></div>
-            <div class="form-group"><label>Journal/Info</label><input type="text" id="editJournal"></div>
-            <div class="form-group"><label>DOI Link</label><input type="text" id="editDoi"></div>
-            <div class="btn-group">
-                <button class="btn btn-secondary" onclick="closeModal('pubEditModal')">Cancel</button>
-                <button class="btn" id="deletePub" style="background: #ef4444; color: white;">Delete</button>
-                <button class="btn btn-primary" id="savePub">Save</button>
+            <h3 id="modalTitle" style="margin-top:0; color: var(--primary);">Edit Publication</h3>
+            <div class="form-group"><label>Publication Year</label><input type="number" id="pubYear" placeholder="e.g. 2026"></div>
+            <div class="form-group"><label>Title</label><textarea id="editPubTitle" rows="3" placeholder="Paper title..."></textarea></div>
+            <div class="form-group"><label>Authors</label><input type="text" id="editAuthors" placeholder="A. Smith, B. Doe*"></div>
+            <div class="form-group"><label>Journal / Details</label><input type="text" id="editJournal" placeholder="Nature Materials, 2026, 15, 123-130"></div>
+            <div class="form-group"><label>DOI Link (URL)</label><input type="url" id="editDoi" placeholder="https://doi.org/10..."></div>
+            
+            <input type="hidden" id="editOriginalTitle"> <div class="btn-group">
+                <button class="btn" style="background:#e2e8f0; color:#333;" onclick="closeModal('pubEditModal')">Cancel</button>
+                <button class="btn btn-danger" id="deletePub" style="display:none;">Delete</button>
+                <button class="btn btn-primary" id="savePub">Save Changes</button>
             </div>
         </div>
     </div>
 
     <script>
         let isEditMode = false;
-        let currentEditingElement = null;
+
+        // 默认数据，契合聚氨酯、气凝胶、Diels-Alder自修复相关研究
+        const defaultData = [
+            { year: "2026", title: "Structurally Controlled Self-Healing Polyurethane Composites via Diels-Alder Click Chemistry", authors: "Your Name*, Student A, Colleague B", journal: "Advanced Functional Materials, 2026, 36(4), 2501234", doi: "#" },
+            { year: "2026", title: "Carbon Nanotube Aerogel Integrated Polyurethane for Highly Sensitive Flexible Compression Sensors", authors: "Student C, Your Name*, Colleague D", journal: "ACS Nano, 2026, 20(2), 1542-1553", doi: "#" },
+            { year: "2025", title: "Variable-Temperature 2D-IR Correlation Spectroscopy Analysis of Vitrimer Polymer Dynamics", authors: "Student E, Your Name*", journal: "Macromolecules, 2025, 58(11), 3845-3852", doi: "#" }
+        ];
 
         document.addEventListener('DOMContentLoaded', () => {
-            loadPubs();
-            initLogin();
+            loadAllContent();
+            setupEventListeners();
         });
 
-        function initLogin() {
-            document.getElementById('editBtn').onclick = () => document.getElementById('loginModal').style.display = 'block';
-            document.getElementById('submitLogin').onclick = () => {
-                if(document.getElementById('username').value === 'admin' && document.getElementById('password').value === 'password') {
-                    isEditMode = true;
-                    document.getElementById('loginModal').style.display = 'none';
-                    document.getElementById('addPubBtn').style.display = 'block';
-                    document.querySelectorAll('.pub-item').forEach(el => el.classList.add('editable-active'));
-                } else { alert('Wrong credentials'); }
-            };
-        }
-
-        function handleItemClick(element) {
-            if(!isEditMode) return;
-            currentEditingElement = element;
-            const modal = document.getElementById('pubEditModal');
-            document.getElementById('modalTitle').innerText = "Edit Publication";
-            document.getElementById('pubYear').value = element.closest('.pub-year-section').dataset.year;
-            document.getElementById('editPubTitle').value = element.querySelector('.pub-title').innerText;
-            document.getElementById('editAuthors').value = element.querySelector('.pub-authors').innerText;
-            document.getElementById('editJournal').value = element.querySelector('.pub-journal').innerText;
-            document.getElementById('editDoi').value = element.querySelector('.pub-link').href;
-            modal.style.display = 'block';
-        }
-
-        document.getElementById('addPubBtn').onclick = () => {
-            currentEditingElement = null;
-            document.getElementById('modalTitle').innerText = "Add New Publication";
-            document.getElementById('pubEditModal').style.display = 'block';
-            document.querySelectorAll('#pubEditModal input').forEach(i => i.value = '');
-        };
-
-        document.getElementById('savePub').onclick = () => {
-            const data = {
-                year: document.getElementById('pubYear').value,
-                title: document.getElementById('editPubTitle').value,
-                authors: document.getElementById('editAuthors').value,
-                journal: document.getElementById('editJournal').value,
-                doi: document.getElementById('editDoi').value
+        function setupEventListeners() {
+            // 登录相关
+            document.getElementById('loginTriggerBtn').onclick = () => document.getElementById('loginModal').style.display = 'block';
+            document.getElementById('submitLogin').onclick = handleLogin;
+            
+            // 模态框点击外部关闭
+            window.onclick = (e) => {
+                if (e.target.classList.contains('modal')) e.target.style.display = 'none';
             };
 
-            if(currentEditingElement) {
-                // 更新逻辑
-                currentEditingElement.querySelector('.pub-title').innerText = data.title;
-                currentEditingElement.querySelector('.pub-authors').innerText = data.authors;
-                currentEditingElement.querySelector('.pub-journal').innerText = data.journal;
-                currentEditingElement.querySelector('.pub-link').href = data.doi;
-                // 如果年份变了，保存时会自动重新排列
-            } else {
-                // 新增逻辑：简单起见，重新渲染列表
-                addNewToUI(data);
-            }
-            savePubs();
-            closeModal('pubEditModal');
-            location.reload(); // 刷新以应用年份排序
-        };
-
-        document.getElementById('deletePub').onclick = () => {
-            if(confirm('Delete this entry?') && currentEditingElement) {
-                currentEditingElement.remove();
-                savePubs();
-                closeModal('pubEditModal');
-            }
-        };
-
-        function addNewToUI(data) {
-            let yearSection = document.querySelector(`.pub-year-section[data-year="${data.year}"]`);
-            if(!yearSection) {
-                const container = document.getElementById('pubList');
-                container.innerHTML += `<div class="pub-year-section" data-year="${data.year}"><h2 class="year-title">${data.year}</h2></div>`;
-                yearSection = document.querySelector(`.pub-year-section[data-year="${data.year}"]`);
-            }
-            // 实际保存逻辑在savePubs中处理
+            // 数据管理相关
+            document.getElementById('addPubBtn').onclick = openAddModal;
+            document.getElementById('savePub').onclick = savePublicationEntry;
+            document.getElementById('deletePub').onclick = deletePublicationEntry;
+            
+            // 导入导出相关
+            document.getElementById('exportBtn').onclick = exportData;
+            document.getElementById('importFile').addEventListener('change', importData);
         }
 
-        function savePubs() {
-            const sections = document.querySelectorAll('.pub-year-section');
-            const allData = [];
-            sections.forEach(sec => {
-                const year = sec.dataset.year;
-                sec.querySelectorAll('.pub-item').forEach(item => {
-                    allData.push({
-                        year: year,
-                        title: item.querySelector('.pub-title').innerText,
-                        authors: item.querySelector('.pub-authors').innerText,
-                        journal: item.querySelector('.pub-journal').innerText,
-                        doi: item.querySelector('.pub-link').href
-                    });
-                });
+        function handleLogin() {
+            if(document.getElementById('username').value === 'admin' && document.getElementById('password').value === 'password') {
+                enableEditMode();
+                document.getElementById('loginModal').style.display = 'none';
+            } else { 
+                alert('Invalid credentials. (Hint: admin / password)'); 
+            }
+        }
+
+        function enableEditMode() {
+            isEditMode = true;
+            document.getElementById('loginTriggerBtn').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'flex';
+            
+            // 启用静态文字编辑 (只有在编辑模式下才绑定 input 事件，防止平时浪费性能)
+            const editableIds = ['pageTitle', 'pageSubtitle', 'footerText'];
+            editableIds.forEach(id => {
+                const el = document.getElementById(id);
+                el.contentEditable = true;
+                el.addEventListener('blur', saveStaticContent); // 失去焦点时保存
             });
-            localStorage.setItem('boxlabPubs', JSON.stringify(allData));
+            
+            document.querySelectorAll('#mainNav a').forEach(a => {
+                a.contentEditable = true;
+                a.addEventListener('blur', saveStaticContent);
+            });
+            
+            // 为所有的论文条目加上编辑按钮
+            document.querySelectorAll('.pub-item').forEach(el => el.classList.add('editable-active'));
         }
 
-        function loadPubs() {
+        // --- 核心 CRUD 逻辑 ---
+
+        function openAddModal() {
+            document.getElementById('modalTitle').innerText = "Add New Publication";
+            document.getElementById('pubYear').value = new Date().getFullYear();
+            document.getElementById('editPubTitle').value = '';
+            document.getElementById('editAuthors').value = '';
+            document.getElementById('editJournal').value = '';
+            document.getElementById('editDoi').value = '';
+            document.getElementById('editOriginalTitle').value = ''; // 标记为新增
+            
+            document.getElementById('deletePub').style.display = 'none';
+            document.getElementById('pubEditModal').style.display = 'block';
+        }
+
+        function openEditModal(title) {
+            if(!isEditMode) return;
+            const allPubs = getPubsData();
+            const pub = allPubs.find(p => p.title === title);
+            if(!pub) return;
+
+            document.getElementById('modalTitle').innerText = "Edit Publication";
+            document.getElementById('pubYear').value = pub.year;
+            document.getElementById('editPubTitle').value = pub.title;
+            document.getElementById('editAuthors').value = pub.authors;
+            document.getElementById('editJournal').value = pub.journal;
+            document.getElementById('editDoi').value = pub.doi;
+            document.getElementById('editOriginalTitle').value = pub.title; // 记录原标题以便修改
+            
+            document.getElementById('deletePub').style.display = 'block';
+            document.getElementById('pubEditModal').style.display = 'block';
+        }
+
+        function savePublicationEntry() {
+            const data = {
+                year: document.getElementById('pubYear').value || new Date().getFullYear().toString(),
+                title: document.getElementById('editPubTitle').value.trim(),
+                authors: document.getElementById('editAuthors').value.trim(),
+                journal: document.getElementById('editJournal').value.trim(),
+                doi: document.getElementById('editDoi').value.trim()
+            };
+
+            if (!data.title) { alert('Title is required!'); return; }
+
+            const originalTitle = document.getElementById('editOriginalTitle').value;
+            let allPubs = getPubsData();
+            
+            if (originalTitle) {
+                // 编辑现有：找到并替换
+                const index = allPubs.findIndex(p => p.title === originalTitle);
+                if(index > -1) allPubs[index] = data;
+            } else {
+                // 新增
+                allPubs.push(data);
+            }
+            
+            localStorage.setItem('boxlabPubs', JSON.stringify(allPubs));
+            closeModal('pubEditModal');
+            renderPubs(allPubs);
+            if(isEditMode) enableEditMode(); // 重新应用编辑按钮
+        }
+
+        function deletePublicationEntry() {
+            if(!confirm('Are you sure you want to delete this publication?')) return;
+            
+            const originalTitle = document.getElementById('editOriginalTitle').value;
+            let allPubs = getPubsData();
+            allPubs = allPubs.filter(p => p.title !== originalTitle);
+            
+            localStorage.setItem('boxlabPubs', JSON.stringify(allPubs));
+            closeModal('pubEditModal');
+            renderPubs(allPubs);
+            if(isEditMode) enableEditMode();
+        }
+
+        // --- 渲染与加载逻辑 ---
+
+        function getPubsData() {
             const saved = localStorage.getItem('boxlabPubs');
-            if(!saved) return;
-            const allData = JSON.parse(saved).sort((a,b) => b.year - a.year);
+            return saved ? JSON.parse(saved) : defaultData;
+        }
+
+        function renderPubs(pubs) {
             const container = document.getElementById('pubList');
             container.innerHTML = '';
             
+            // 按年份降序排序
+            const sortedPubs = [...pubs].sort((a, b) => parseInt(b.year) - parseInt(a.year));
+            
             let currentYear = "";
-            allData.forEach(item => {
+            sortedPubs.forEach(item => {
+                // 渲染年份分隔线
                 if(item.year !== currentYear) {
                     currentYear = item.year;
-                    container.innerHTML += `<div class="pub-year-section" data-year="${currentYear}"><h2 class="year-title">${currentYear}</h2></div>`;
+                    const yearSec = document.createElement('div');
+                    yearSec.className = 'pub-year-section';
+                    yearSec.dataset.year = currentYear;
+                    
+                    // 这里允许对年份文本进行编辑
+                    yearSec.innerHTML = `<h2 class="year-title" ${isEditMode ? 'contenteditable="true"' : ''} onblur="updateYear(this, '${currentYear}')">${currentYear}</h2><div class="year-items-container"></div>`;
+                    container.appendChild(yearSec);
                 }
-                const sec = container.querySelector(`.pub-year-section[data-year="${currentYear}"]`);
-                sec.innerHTML += `
-                    <div class="pub-item" onclick="handleItemClick(this)">
+                
+                const secContainer = container.querySelector(`.pub-year-section[data-year="${currentYear}"] .year-items-container`);
+                
+                const itemDiv = document.createElement('div');
+                itemDiv.className = `pub-item ${isEditMode ? 'editable-active' : ''}`;
+                
+                // 修复单双引号导致传参错误的问题，使用 encodeURIComponent
+                const safeTitle = encodeURIComponent(item.title).replace(/'/g, "%27");
+                
+                itemDiv.innerHTML = `
+                    <div class="pub-icon"><i class="fas fa-file-alt"></i></div>
+                    <div class="pub-content">
                         <span class="pub-title">${item.title}</span>
-                        <span class="pub-authors">${item.authors}</span>
+                        <div class="pub-authors">${item.authors}</div>
                         <div class="pub-journal">${item.journal}</div>
-                        <a href="${item.doi}" class="pub-link" target="_blank">DOI Link</a>
+                        ${item.doi && item.doi !== '#' ? `<a href="${item.doi}" class="pub-link" target="_blank"><i class="fas fa-link"></i> Link / DOI</a>` : ''}
                     </div>
+                    <button class="item-edit-btn" onclick="openEditModal(decodeURIComponent('${safeTitle}'))" title="Edit this paper"><i class="fas fa-pencil-alt"></i></button>
                 `;
+                secContainer.appendChild(itemDiv);
             });
+        }
+
+        // 修改年份快捷操作
+        function updateYear(el, oldYear) {
+            const newYear = el.innerText.trim();
+            if(newYear === oldYear || !newYear) return;
+            
+            let allPubs = getPubsData();
+            allPubs.forEach(p => { if(p.year === oldYear) p.year = newYear; });
+            localStorage.setItem('boxlabPubs', JSON.stringify(allPubs));
+            renderPubs(allPubs);
+            if(isEditMode) enableEditMode();
+        }
+
+        function loadAllContent() {
+            renderPubs(getPubsData());
+
+            // 加载静态文字 (如果没有则保留HTML里的默认值)
+            const staticData = JSON.parse(localStorage.getItem('boxlabPubsStatic') || '{}');
+            if(staticData.title) document.getElementById('pageTitle').innerText = staticData.title;
+            if(staticData.subtitle) document.getElementById('pageSubtitle').innerText = staticData.subtitle;
+            if(staticData.footer) document.getElementById('footerText').innerText = staticData.footer;
+            if(staticData.nav && staticData.nav.length > 0) {
+                document.querySelectorAll('#mainNav a').forEach((a, i) => {
+                    if(staticData.nav[i]) a.innerText = staticData.nav[i];
+                });
+            }
+        }
+
+        function saveStaticContent() {
+            const staticData = {
+                title: document.getElementById('pageTitle').innerText,
+                subtitle: document.getElementById('pageSubtitle').innerText,
+                footer: document.getElementById('footerText').innerText,
+                nav: Array.from(document.querySelectorAll('#mainNav a')).map(a => a.innerText)
+            };
+            localStorage.setItem('boxlabPubsStatic', JSON.stringify(staticData));
+        }
+
+        // --- 数据导入导出 (防止数据丢失) ---
+        function exportData() {
+            const pubs = localStorage.getItem('boxlabPubs') || JSON.stringify(defaultData);
+            const blob = new Blob([pubs], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `boxlab_publications_${new Date().toISOString().slice(0,10)}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if(Array.isArray(data)) {
+                        localStorage.setItem('boxlabPubs', JSON.stringify(data));
+                        renderPubs(data);
+                        if(isEditMode) enableEditMode();
+                        alert('Data imported successfully!');
+                    } else {
+                        alert('Invalid JSON format for publications.');
+                    }
+                } catch (error) {
+                    alert('Error reading file. Make sure it is a valid JSON backup.');
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = ''; // Reset file input
         }
 
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
