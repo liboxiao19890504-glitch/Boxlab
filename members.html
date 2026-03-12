@@ -6,47 +6,87 @@
     <title>Members - Boxlab</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f0f0f0; }
-        header { background: linear-gradient(to right, #334155, #475569); color: white; padding: 40px 20px; text-align: center; }
-        nav { background-color: #334155; color: white; padding: 15px 0; position: sticky; top: 0; z-index: 100; }
-        nav ul { list-style: none; margin: 0; padding: 0; display: flex; justify-content: center; }
-        nav ul li { margin: 0 20px; }
-        nav ul li a { color: white; text-decoration: none; }
-        .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+        /* 基础样式与色彩系统 (与 publications 保持一致) */
+        :root { --primary: #334155; --secondary: #475569; --accent: #3b82f6; --bg: #f8fafc; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; background-color: var(--bg); color: #333; display: flex; flex-direction: column; min-height: 100vh; }
+        header { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; padding: 50px 20px; text-align: center; }
+        nav { background-color: var(--primary); color: white; padding: 15px 0; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        nav ul { list-style: none; margin: 0; padding: 0; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        nav ul li a { color: white; text-decoration: none; padding: 8px 15px; border-radius: 6px; transition: background 0.3s; }
+        nav ul li a:hover { background-color: rgba(255,255,255,0.1); }
+        .container { max-width: 1100px; margin: 0 auto; padding: 30px 20px; flex: 1; width: 100%; box-sizing: border-box; }
+        
+        /* 管理员控制台 */
+        .admin-panel {
+            display: none; background: white; padding: 15px 20px; border-radius: 8px;
+            margin-bottom: 30px; border: 2px dashed var(--accent);
+            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
+        }
+        .admin-panel.active { display: flex; }
 
-        /* 成员卡片网格 */
-        .member-section { margin-bottom: 50px; }
-        .section-title { border-bottom: 2px solid #334155; color: #334155; padding-bottom: 5px; margin-bottom: 30px; }
-        .member-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 25px; }
+        /* 成员卡片网格系统 */
+        .member-section { margin-bottom: 50px; animation: fadeIn 0.5s ease-in; }
+        .section-title { border-bottom: 2px solid var(--primary); color: var(--primary); padding-bottom: 8px; margin-bottom: 25px; font-size: 1.8rem; }
+        .member-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 25px; }
         
         .member-card { 
             background: white; border-radius: 12px; overflow: hidden; 
             box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center; 
-            padding-bottom: 20px; transition: 0.3s; position: relative;
+            transition: all 0.3s ease; position: relative; border: 1px solid #e2e8f0;
+            display: flex; flex-direction: column; height: 100%;
         }
-        .member-card:hover { transform: translateY(-5px); }
-        .member-photo { width: 100%; height: 240px; object-fit: cover; background-color: #e2e8f0; }
-        .member-info h3 { margin: 15px 0 5px; color: #1e293b; }
-        .member-info p { margin: 5px 0; color: #64748b; font-size: 0.9em; padding: 0 10px; }
+        .member-card:hover { transform: translateY(-5px); box-shadow: 0 12px 20px rgba(0,0,0,0.08); border-color: #cbd5e1; }
+        .member-photo { width: 100%; height: 260px; object-fit: cover; background-color: #e2e8f0; border-bottom: 3px solid var(--accent); }
+        .member-info { padding: 20px 15px; flex: 1; display: flex; flex-direction: column; justify-content: flex-start; }
+        .member-info h3 { margin: 0 0 8px; color: #0f172a; font-size: 1.25rem; }
+        .member-info .role { color: var(--accent); font-weight: 600; font-size: 0.95rem; margin-bottom: 10px; }
+        .member-info .detail { color: #64748b; font-size: 0.9rem; line-height: 1.5; margin: 0; }
         
-        /* 编辑功能相关 */
-        .edit-btn { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; border-radius: 50%; background-color: #334155; color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1000; }
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; }
-        .modal-content { background: white; margin: 5% auto; padding: 25px; border-radius: 8px; width: 450px; }
-        .form-group { margin-bottom: 12px; }
-        .form-group label { display: block; margin-bottom: 5px; font-size: 14px; }
-        .form-group input, .form-group select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
-        .btn-group { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
-        .btn { padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; }
-        .add-member-btn { display: none; margin: 0 auto 20px; background: #334155; color: white; padding: 10px 25px; border: none; border-radius: 4px; cursor: pointer; }
+        /* 编辑按钮与交互 */
+        .item-edit-btn { 
+            display: none; position: absolute; right: 10px; top: 10px; 
+            background: rgba(255,255,255,0.9); color: var(--primary); border: none; 
+            width: 36px; height: 36px; border-radius: 50%; cursor: pointer; transition: 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2); z-index: 10;
+        }
+        .item-edit-btn:hover { background: var(--primary); color: white; }
+        .member-card.editable-active .item-edit-btn { display: block; }
         
-        .editable-active { border: 2px dashed #334155 !important; cursor: pointer; }
-        footer { background-color: #334155; color: white; text-align: center; padding: 20px 0; }
+        .floating-login-btn { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; border-radius: 50%; background-color: var(--primary); color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.15); font-size: 1.2rem; transition: 0.3s; }
+        .floating-login-btn:hover { transform: scale(1.1); }
+        
+        /* 模态框与表单 */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); z-index: 2000; backdrop-filter: blur(4px); }
+        .modal-content { background: white; margin: 5vh auto; padding: 30px; border-radius: 12px; width: 90%; max-width: 500px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); animation: slideDown 0.3s ease-out; max-height: 90vh; overflow-y: auto; }
+        .form-group { margin-bottom: 18px; text-align: left; }
+        .form-group label { display: block; margin-bottom: 6px; font-weight: 600; color: #334155; font-size: 0.9rem; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px; box-sizing: border-box; border: 1px solid #cbd5e1; border-radius: 6px; font-family: inherit; transition: border 0.3s; }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
+        
+        .btn-group { display: flex; gap: 12px; justify-content: flex-end; margin-top: 25px; }
+        .btn { padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: 0.2s; }
+        .btn-primary { background-color: var(--primary); color: white; }
+        .btn-primary:hover { background-color: #1e293b; }
+        .btn-success { background-color: #10b981; color: white; }
+        .btn-danger { background-color: #ef4444; color: white; }
+
+        /* 编辑模式下文字高亮 */
+        [contenteditable="true"] { outline: 2px dashed rgba(255,255,255,0.5); padding: 2px 5px; border-radius: 4px; transition: 0.2s; }
+        [contenteditable="true"]:focus { outline: 2px solid var(--accent); background: rgba(255,255,255,0.1); }
+        .text-dark [contenteditable="true"] { outline-color: #cbd5e1; }
+        .text-dark [contenteditable="true"]:focus { outline-color: var(--accent); background: rgba(59, 130, 246, 0.05); }
+
+        footer { background-color: var(--primary); color: white; text-align: center; padding: 25px 0; margin-top: auto; width: 100%; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        #importFile { display: none; }
     </style>
 </head>
 <body>
     <nav>
-        <ul>
+        <ul id="mainNav">
             <li><a href="index.html">Home</a></li>
             <li><a href="publications.html">Publications</a></li>
             <li><a href="members.html">Members</a></li>
@@ -56,168 +96,329 @@
     </nav>
 
     <header>
-        <h1>Group Members</h1>
-        <p>Innovation through collaboration and dedication</p>
+        <h1 id="pageTitle">Our Team</h1>
+        <p id="pageSubtitle">Innovation through collaboration and dedication</p>
     </header>
 
-    <div class="container">
-        <button class="add-member-btn" id="addMemberBtn">Add New Member</button>
-
-        <div class="member-section">
-            <h2 class="section-title">Principal Investigator</h2>
-            <div class="member-grid" id="pi-grid">
-                <div class="member-card" onclick="openEdit(this, 'PI')">
-                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=professional%20academic%20portrait%2C%20male%2C%20lab%20background&image_size=portrait_3_4" class="member-photo">
-                    <div class="member-info">
-                        <h3>Dr. Name</h3>
-                        <p>Principal Investigator</p>
-                        <p>Email: investigator@university.edu</p>
-                    </div>
-                </div>
+    <div class="container text-dark">
+        <div class="admin-panel" id="adminPanel">
+            <div>
+                <span style="font-weight: 600; color: var(--primary);"><i class="fas fa-shield-alt"></i> Admin Mode Active</span>
+                <span style="font-size: 0.85rem; color: #64748b; margin-left: 10px;">Click titles to edit. Manage member cards below.</span>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button class="btn btn-success" id="exportBtn"><i class="fas fa-download"></i> Backup JSON</button>
+                <button class="btn" style="background: #e2e8f0; color: #333;" onclick="document.getElementById('importFile').click()"><i class="fas fa-upload"></i> Restore</button>
+                <input type="file" id="importFile" accept=".json">
+                <button class="btn btn-primary" id="addMemberBtn"><i class="fas fa-plus"></i> Add Member</button>
             </div>
         </div>
 
-        <div class="member-section">
-            <h2 class="section-title">Research Team</h2>
-            <div class="member-grid" id="team-grid">
-                <div class="member-card" onclick="openEdit(this, 'Student')">
-                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=student%20portrait%2C%20smiling%2C%20academic%20setting&image_size=portrait_3_4" class="member-photo">
-                    <div class="member-info">
-                        <h3>Sample Student</h3>
-                        <p>PhD Candidate</p>
-                        <p>Research: Polymer Synthesis</p>
-                    </div>
-                </div>
+        <div id="membersContainer">
             </div>
-        </div>
     </div>
 
-    <footer><p>&copy; 2026 Boxlab. All Rights Reserved.</p></footer>
+    <footer>
+        <p id="footerText">&copy; 2026 Boxlab. All Rights Reserved.</p>
+    </footer>
 
-    <div class="edit-btn" id="editBtn"><i class="fas fa-pencil-alt"></i></div>
+    <div class="floating-login-btn" id="loginTriggerBtn"><i class="fas fa-cog"></i></div>
 
     <div class="modal" id="loginModal">
         <div class="modal-content">
-            <h3>Admin Login</h3>
-            <div class="form-group"><input type="text" id="username" placeholder="Username"></div>
-            <div class="form-group"><input type="password" id="password" placeholder="Password"></div>
-            <button class="btn" style="background:#334155; color:white; width:100%" id="submitLogin">Login</button>
+            <h3 style="margin-top:0; color: var(--primary);">Admin Login</h3>
+            <div class="form-group"><label>Username</label><input type="text" id="username" placeholder="admin"></div>
+            <div class="form-group"><label>Password</label><input type="password" id="password" placeholder="password"></div>
+            <div class="btn-group">
+                <button class="btn" style="background:#e2e8f0; color:#333;" onclick="closeModal('loginModal')">Cancel</button>
+                <button class="btn btn-primary" id="submitLogin">Login</button>
+            </div>
         </div>
     </div>
 
     <div class="modal" id="memberEditModal">
         <div class="modal-content">
-            <h3>Edit Member Information</h3>
-            <div class="form-group"><label>Photo URL</label><input type="text" id="mPhoto"></div>
-            <div class="form-group"><label>Name</label><input type="text" id="mName"></div>
-            <div class="form-group"><label>Role/Year</label><input type="text" id="mRole"></div>
-            <div class="form-group"><label>Research/Email</label><input type="text" id="mDetail"></div>
-            <div class="form-group">
+            <h3 id="modalTitle" style="margin-top:0; color: var(--primary);">Edit Member</h3>
+            <input type="hidden" id="editMemberId"> <div class="form-group">
                 <label>Category</label>
-                <select id="mCat">
-                    <option value="pi-grid">PI</option>
-                    <option value="team-grid">Research Team</option>
+                <select id="mCategory">
+                    <option value="Principal Investigator">Principal Investigator</option>
+                    <option value="Postdoctoral Researchers">Postdoctoral Researchers</option>
+                    <option value="Ph.D. Students">Ph.D. Students</option>
+                    <option value="Master Students">Master Students</option>
+                    <option value="Alumni">Alumni</option>
                 </select>
             </div>
+            <div class="form-group"><label>Name</label><input type="text" id="mName" placeholder="Dr. John Doe"></div>
+            <div class="form-group"><label>Role / Title</label><input type="text" id="mRole" placeholder="Principal Investigator"></div>
+            <div class="form-group"><label>Research Focus / Detail</label><textarea id="mDetail" rows="3" placeholder="Polymer Synthesis, Self-healing Materials..."></textarea></div>
+            <div class="form-group"><label>Photo URL</label><input type="url" id="mPhoto" placeholder="https://example.com/photo.jpg">
+                <small style="color:#64748b; display:block; margin-top:4px;">Leave empty for default avatar.</small>
+            </div>
+
             <div class="btn-group">
-                <button class="btn" onclick="closeModal()" style="background:#94a3b8; color:white">Cancel</button>
-                <button class="btn" id="deleteMember" style="background:#ef4444; color:white">Delete</button>
-                <button class="btn" id="saveMember" style="background:#334155; color:white">Save</button>
+                <button class="btn" style="background:#e2e8f0; color:#333;" onclick="closeModal('memberEditModal')">Cancel</button>
+                <button class="btn btn-danger" id="deleteMember" style="display:none;">Delete</button>
+                <button class="btn btn-primary" id="saveMember">Save Changes</button>
             </div>
         </div>
     </div>
 
     <script>
         let isEditMode = false;
-        let currentTarget = null;
 
-        // 登录逻辑
-        document.getElementById('editBtn').onclick = () => document.getElementById('loginModal').style.display='block';
-        document.getElementById('submitLogin').onclick = () => {
-            if(document.getElementById('username').value==='admin' && document.getElementById('password').value==='password'){
-                isEditMode = true;
-                document.getElementById('loginModal').style.display='none';
-                document.getElementById('addMemberBtn').style.display='block';
-                document.querySelectorAll('.member-card').forEach(c => c.classList.add('editable-active'));
+        // 预设团队数据，契合 PI、聚氨酯、自修复、气凝胶背景
+        const defaultMembers = [
+            { id: "1", category: "Principal Investigator", name: "Dr. Name", role: "Principal Investigator", detail: "Research Focus: Polyurethane Synthesis, Diels-Alder Self-Healing Polymers, Flexible Sensors.", img: "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=professional%20academic%20portrait%2C%20male%2C%20lab%20background&image_size=portrait_3_4" },
+            { id: "2", category: "Postdoctoral Researchers", name: "Dr. Alice Chen", role: "Postdoctoral Fellow", detail: "Research Focus: Carbon Nanotube Aerogel Assembly & Composite Materials.", img: "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=female%20scientist%20portrait%2C%20professional%2C%20clean%20background&image_size=portrait_3_4" },
+            { id: "3", category: "Ph.D. Students", name: "Bob Smith", role: "Ph.D. Candidate (Year 3)", detail: "Research Focus: Ion-based Flexible Sensors using PU composites.", img: "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=young%20male%20student%20portrait%2C%20smiling%2C%20university%20background&image_size=portrait_3_4" },
+            { id: "4", category: "Ph.D. Students", name: "Carol Wang", role: "Ph.D. Candidate (Year 1)", detail: "Research Focus: Vitrimer Polymers & 2D-IR correlation spectroscopy.", img: "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=young%20female%20student%20portrait%2C%20academic&image_size=portrait_3_4" }
+        ];
+
+        // 固定的分类顺序，控制渲染时的先后顺序
+        const categoryOrder = ["Principal Investigator", "Postdoctoral Researchers", "Ph.D. Students", "Master Students", "Alumni"];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadAllContent();
+            setupEventListeners();
+        });
+
+        function setupEventListeners() {
+            document.getElementById('loginTriggerBtn').onclick = () => document.getElementById('loginModal').style.display = 'block';
+            document.getElementById('submitLogin').onclick = handleLogin;
+            
+            window.onclick = (e) => { if (e.target.classList.contains('modal')) e.target.style.display = 'none'; };
+
+            document.getElementById('addMemberBtn').onclick = openAddModal;
+            document.getElementById('saveMember').onclick = saveMemberEntry;
+            document.getElementById('deleteMember').onclick = deleteMemberEntry;
+            
+            document.getElementById('exportBtn').onclick = exportData;
+            document.getElementById('importFile').addEventListener('change', importData);
+        }
+
+        function handleLogin() {
+            if(document.getElementById('username').value === 'admin' && document.getElementById('password').value === 'password') {
+                enableEditMode();
+                document.getElementById('loginModal').style.display = 'none';
+            } else { 
+                alert('Invalid credentials.'); 
             }
-        };
+        }
 
-        function openEdit(el, type) {
+        function enableEditMode() {
+            isEditMode = true;
+            document.getElementById('loginTriggerBtn').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'flex';
+            
+            // 启用静态文字编辑
+            const editableIds = ['pageTitle', 'pageSubtitle', 'footerText'];
+            editableIds.forEach(id => {
+                const el = document.getElementById(id);
+                el.contentEditable = true;
+                el.addEventListener('blur', saveStaticContent);
+            });
+            
+            document.querySelectorAll('#mainNav a').forEach(a => {
+                a.contentEditable = true;
+                a.addEventListener('blur', saveStaticContent);
+            });
+            
+            // 显示成员卡片的编辑按钮
+            document.querySelectorAll('.member-card').forEach(el => el.classList.add('editable-active'));
+        }
+
+        // --- 核心 CRUD 逻辑 ---
+
+        function openAddModal() {
+            document.getElementById('modalTitle').innerText = "Add New Member";
+            document.getElementById('editMemberId').value = ""; // 空 ID 表示新增
+            
+            document.getElementById('mCategory').value = "Ph.D. Students";
+            document.getElementById('mName').value = '';
+            document.getElementById('mRole').value = '';
+            document.getElementById('mDetail').value = '';
+            document.getElementById('mPhoto').value = '';
+            
+            document.getElementById('deleteMember').style.display = 'none';
+            document.getElementById('memberEditModal').style.display = 'block';
+        }
+
+        function openEditModal(id) {
             if(!isEditMode) return;
-            currentTarget = el;
-            document.getElementById('mPhoto').value = el.querySelector('img').src;
-            document.getElementById('mName').value = el.querySelector('h3').innerText;
-            document.getElementById('mRole').value = el.querySelectorAll('p')[0].innerText;
-            document.getElementById('mDetail').value = el.querySelectorAll('p')[1].innerText;
-            document.getElementById('memberEditModal').style.display='block';
+            const allMembers = getMembersData();
+            const member = allMembers.find(m => m.id === id);
+            if(!member) return;
+
+            document.getElementById('modalTitle').innerText = "Edit Member";
+            document.getElementById('editMemberId').value = member.id;
+            
+            document.getElementById('mCategory').value = member.category || "Ph.D. Students";
+            document.getElementById('mName').value = member.name;
+            document.getElementById('mRole').value = member.role;
+            document.getElementById('mDetail').value = member.detail;
+            document.getElementById('mPhoto').value = member.img;
+            
+            document.getElementById('deleteMember').style.display = 'block';
+            document.getElementById('memberEditModal').style.display = 'block';
         }
 
-        document.getElementById('addMemberBtn').onclick = () => {
-            currentTarget = null;
-            document.querySelectorAll('#memberEditModal input').forEach(i => i.value='');
-            document.getElementById('memberEditModal').style.display='block';
-        };
-
-        document.getElementById('saveMember').onclick = () => {
+        function saveMemberEntry() {
             const data = {
-                img: document.getElementById('mPhoto').value || 'https://via.placeholder.com/300x400',
-                name: document.getElementById('mName').value,
-                role: document.getElementById('mRole').value,
-                detail: document.getElementById('mDetail').value,
-                cat: document.getElementById('mCat').value
+                category: document.getElementById('mCategory').value,
+                name: document.getElementById('mName').value.trim(),
+                role: document.getElementById('mRole').value.trim(),
+                detail: document.getElementById('mDetail').value.trim(),
+                img: document.getElementById('mPhoto').value.trim() || 'https://via.placeholder.com/300x400.png?text=No+Photo'
             };
 
-            if(currentTarget) {
-                currentTarget.querySelector('img').src = data.img;
-                currentTarget.querySelector('h3').innerText = data.name;
-                currentTarget.querySelectorAll('p')[0].innerText = data.role;
-                currentTarget.querySelectorAll('p')[1].innerText = data.detail;
+            if (!data.name) { alert('Name is required!'); return; }
+
+            const id = document.getElementById('editMemberId').value;
+            let allMembers = getMembersData();
+            
+            if (id) {
+                // 编辑现有
+                data.id = id;
+                const index = allMembers.findIndex(m => m.id === id);
+                if(index > -1) allMembers[index] = data;
             } else {
-                const grid = document.getElementById(data.cat);
-                const newCard = document.createElement('div');
-                newCard.className = 'member-card editable-active';
-                newCard.onclick = function() { openEdit(this); };
-                newCard.innerHTML = `
-                    <img src="${data.img}" class="member-photo">
-                    <div class="member-info">
-                        <h3>${data.name}</h3>
-                        <p>${data.role}</p>
-                        <p>${data.detail}</p>
-                    </div>
-                `;
-                grid.appendChild(newCard);
+                // 新增，生成唯一ID
+                data.id = Date.now().toString();
+                allMembers.push(data);
             }
-            saveAll();
-            closeModal();
-        };
+            
+            localStorage.setItem('boxlabMembersV2', JSON.stringify(allMembers));
+            closeModal('memberEditModal');
+            renderMembers(allMembers);
+            if(isEditMode) enableEditMode();
+        }
 
-        document.getElementById('deleteMember').onclick = () => {
-            if(currentTarget && confirm('Delete this member?')) {
-                currentTarget.remove();
-                saveAll();
-                closeModal();
+        function deleteMemberEntry() {
+            if(!confirm('Are you sure you want to delete this member?')) return;
+            
+            const id = document.getElementById('editMemberId').value;
+            let allMembers = getMembersData();
+            allMembers = allMembers.filter(m => m.id !== id);
+            
+            localStorage.setItem('boxlabMembersV2', JSON.stringify(allMembers));
+            closeModal('memberEditModal');
+            renderMembers(allMembers);
+            if(isEditMode) enableEditMode();
+        }
+
+        // --- 渲染与加载逻辑 ---
+
+        function getMembersData() {
+            const saved = localStorage.getItem('boxlabMembersV2');
+            return saved ? JSON.parse(saved) : defaultMembers;
+        }
+
+        function renderMembers(members) {
+            const container = document.getElementById('membersContainer');
+            container.innerHTML = '';
+            
+            // 按类别分组
+            const grouped = {};
+            members.forEach(m => {
+                if(!grouped[m.category]) grouped[m.category] = [];
+                grouped[m.category].push(m);
+            });
+
+            // 按预设顺序渲染类别
+            categoryOrder.forEach(category => {
+                if(grouped[category] && grouped[category].length > 0) {
+                    const section = document.createElement('div');
+                    section.className = 'member-section';
+                    
+                    section.innerHTML = `<h2 class="section-title" ${isEditMode ? 'contenteditable="true"' : ''}>${category}</h2>`;
+                    
+                    const grid = document.createElement('div');
+                    grid.className = 'member-grid';
+                    
+                    grouped[category].forEach(member => {
+                        const card = document.createElement('div');
+                        card.className = `member-card ${isEditMode ? 'editable-active' : ''}`;
+                        card.innerHTML = `
+                            <button class="item-edit-btn" onclick="openEditModal('${member.id}')" title="Edit Member"><i class="fas fa-pencil-alt"></i></button>
+                            <img src="${member.img}" class="member-photo" alt="${member.name}" onerror="this.src='https://via.placeholder.com/300x400.png?text=Image+Error'">
+                            <div class="member-info">
+                                <h3>${member.name}</h3>
+                                <div class="role">${member.role}</div>
+                                <p class="detail">${member.detail}</p>
+                            </div>
+                        `;
+                        grid.appendChild(card);
+                    });
+                    
+                    section.appendChild(grid);
+                    container.appendChild(section);
+                }
+            });
+        }
+
+        function loadAllContent() {
+            renderMembers(getMembersData());
+
+            const staticData = JSON.parse(localStorage.getItem('boxlabMembersStatic') || '{}');
+            if(staticData.title) document.getElementById('pageTitle').innerText = staticData.title;
+            if(staticData.subtitle) document.getElementById('pageSubtitle').innerText = staticData.subtitle;
+            if(staticData.footer) document.getElementById('footerText').innerText = staticData.footer;
+            if(staticData.nav && staticData.nav.length > 0) {
+                document.querySelectorAll('#mainNav a').forEach((a, i) => {
+                    if(staticData.nav[i]) a.innerText = staticData.nav[i];
+                });
             }
-        };
+        }
 
-        function saveAll() {
-            const data = {
-                pi: document.getElementById('pi-grid').innerHTML,
-                team: document.getElementById('team-grid').innerHTML
+        function saveStaticContent() {
+            const staticData = {
+                title: document.getElementById('pageTitle').innerText,
+                subtitle: document.getElementById('pageSubtitle').innerText,
+                footer: document.getElementById('footerText').innerText,
+                nav: Array.from(document.querySelectorAll('#mainNav a')).map(a => a.innerText)
             };
-            localStorage.setItem('boxlabMembers', JSON.stringify(data));
+            localStorage.setItem('boxlabMembersStatic', JSON.stringify(staticData));
         }
 
-        function loadAll() {
-            const saved = localStorage.getItem('boxlabMembers');
-            if(saved) {
-                const data = JSON.parse(saved);
-                document.getElementById('pi-grid').innerHTML = data.pi;
-                document.getElementById('team-grid').innerHTML = data.team;
-            }
+        // --- 数据导入导出 ---
+        function exportData() {
+            const data = localStorage.getItem('boxlabMembersV2') || JSON.stringify(defaultMembers);
+            const blob = new Blob([data], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `boxlab_members_${new Date().toISOString().slice(0,10)}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
         }
 
-        function closeModal() { document.getElementById('memberEditModal').style.display='none'; }
-        window.onload = loadAll;
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if(Array.isArray(data)) {
+                        localStorage.setItem('boxlabMembersV2', JSON.stringify(data));
+                        renderMembers(data);
+                        if(isEditMode) enableEditMode();
+                        alert('Data imported successfully!');
+                    } else {
+                        alert('Invalid JSON format.');
+                    }
+                } catch (error) {
+                    alert('Error reading file. Make sure it is a valid JSON backup.');
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = ''; 
+        }
+
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
     </script>
 </body>
 </html>
