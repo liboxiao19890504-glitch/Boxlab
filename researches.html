@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Researches & Cooperation - Boxlab</title>
+    <title>Researches - Box Lab</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --primary: #334155; --secondary: #475569; --accent: #3b82f6; --bg: #f8fafc; }
         body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; background-color: var(--bg); color: #333; display: flex; flex-direction: column; min-height: 100vh; }
         
-        /* 统一导航栏样式 */
         nav { background-color: var(--primary); color: white; padding: 12px 0; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.15); }
         .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
         .nav-logo { display: flex; align-items: center; gap: 15px; }
@@ -19,8 +18,6 @@
         nav ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 20px; }
         nav ul li a { color: #e2e8f0; text-decoration: none; padding: 8px 12px; border-radius: 6px; transition: 0.3s; font-weight: 500; }
         nav ul li a:hover { background-color: rgba(255,255,255,0.1); color: white; }
-        #navLogoImg.editable.active { cursor: pointer; border: 2px dashed rgba(255,255,255,0.8); }
-        .nav-brand.editable.active { border-color: rgba(255,255,255,0.6); background-color: rgba(255,255,255,0.1); outline: 2px dashed rgba(255,255,255,0.5); padding: 2px 5px; border-radius: 4px;}
 
         header { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; padding: 50px 20px; text-align: center; }
         .container { max-width: 1100px; margin: 0 auto; padding: 30px 20px; flex: 1; width: 100%; box-sizing: border-box; }
@@ -47,57 +44,48 @@
 
         .coop-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
         .coop-card { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); border: 1px solid #e2e8f0; position: relative; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; text-align: center; }
-        .coop-card:hover { border-color: var(--accent); }
         .coop-logo { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin-bottom: 15px; border: 2px solid #f1f5f9; }
         .coop-info h3 { margin: 0 0 5px; color: #0f172a; font-size: 1.1rem; }
         .coop-info h4 { margin: 0 0 10px; color: var(--accent); font-size: 0.85rem; font-weight: 600; text-transform: uppercase; }
-        .coop-info p { color: #64748b; font-size: 0.85rem; line-height: 1.5; margin: 0; }
 
         .item-edit-btn { display: none; position: absolute; right: 10px; top: 10px; background: rgba(255,255,255,0.9); color: var(--primary); border: none; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; transition: 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.2); z-index: 10; }
-        .item-edit-btn:hover { background: var(--primary); color: white; }
         .editable-active .item-edit-btn { display: block; }
-        
         .floating-login-btn { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; border-radius: 50%; background-color: var(--primary); color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.15); font-size: 1.2rem; transition: 0.3s; }
-        .floating-login-btn:hover { transform: scale(1.1); background-color: #1e293b;}
         
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); z-index: 2000; backdrop-filter: blur(4px); }
-        .modal-content { background: white; margin: 5vh auto; padding: 30px; border-radius: 12px; width: 90%; max-width: 500px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); animation: slideDown 0.3s ease-out; max-height: 90vh; overflow-y: auto; }
+        .modal-content { background: white; margin: 5vh auto; padding: 30px; border-radius: 12px; width: 90%; max-width: 500px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); animation: slideDown 0.3s ease-out; }
         .form-group { margin-bottom: 18px; text-align: left; }
         .form-group label { display: block; margin-bottom: 6px; font-weight: 600; color: #334155; font-size: 0.9rem; }
-        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px; box-sizing: border-box; border: 1px solid #cbd5e1; border-radius: 6px; font-family: inherit; }
-        
+        .form-group input, .form-group textarea { width: 100%; padding: 12px; box-sizing: border-box; border: 1px solid #cbd5e1; border-radius: 6px; }
         .btn-group { display: flex; gap: 12px; justify-content: flex-end; margin-top: 25px; }
         .btn { padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: 0.2s; }
         .btn-primary { background-color: var(--primary); color: white; }
-        .btn-success { background-color: #10b981; color: white; }
         .btn-danger { background-color: #ef4444; color: white; }
+        .btn-success { background-color: #10b981; color: white; }
         .btn-sm { padding: 5px 10px; font-size: 0.85rem; }
 
         .image-upload { border: 2px dashed #cbd5e1; padding: 20px; text-align: center; margin-bottom: 15px; cursor: pointer; border-radius: 8px; background: #f8fafc; transition: 0.3s; }
-        .image-upload:hover { border-color: var(--accent); background: white; }
         #logoPreview { max-width: 100%; max-height: 200px; margin-top: 10px; border-radius: 4px; }
 
         [contenteditable="true"] { outline: 2px dashed rgba(255,255,255,0.3); padding: 2px 5px; border-radius: 4px; transition: 0.2s; cursor: text; }
-        [contenteditable="true"]:hover { outline-color: rgba(59, 130, 246, 0.5); background: rgba(255,255,255,0.05); }
         [contenteditable="true"]:focus { outline: 2px solid var(--accent); background: rgba(255,255,255,0.1); }
-        .text-dark [contenteditable="true"] { outline-color: rgba(51, 65, 85, 0.2); }
-        .text-dark [contenteditable="true"]:hover { outline-color: var(--accent); background: rgba(59, 130, 246, 0.05); }
-        .text-dark [contenteditable="true"]:focus { outline-color: var(--accent); background: rgba(59, 130, 246, 0.1); }
+        .text-dark [contenteditable="true"] { outline-color: #cbd5e1; }
+        .text-dark [contenteditable="true"]:focus { outline-color: var(--accent); background: rgba(59, 130, 246, 0.05); }
+        #navLogoImg.editable.active { cursor: pointer; border: 2px dashed rgba(255,255,255,0.8); }
+        .nav-brand.editable.active { border-color: rgba(255,255,255,0.6); background-color: rgba(255,255,255,0.1); }
 
         footer { background-color: var(--primary); color: white; text-align: center; padding: 25px 0; margin-top: auto; width: 100%; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-        #importFile { display: none; }
     </style>
 </head>
 <body>
     <nav>
         <div class="nav-container">
             <div class="nav-logo">
-                <img src="image_3c6abc.jpg" alt="Logo" title="Logo" id="navLogoImg">
-                <span class="nav-brand editable" contenteditable="false" id="navBrandText">Boxlab</span>
+                <img src="logo.jpg" alt="Logo" title="Logo" id="navLogoImg" onerror="this.src='https://via.placeholder.com/46'">
+                <span class="nav-brand editable" contenteditable="false" id="navBrandText">Box Lab</span>
             </div>
-            <ul id="mainNav">
+            <ul>
                 <li><a href="index.html">Home</a></li>
                 <li><a href="publications.html">Publications</a></li>
                 <li><a href="members.html">Members</a></li>
@@ -119,9 +107,9 @@
                 <span style="font-size: 0.85rem; color: #64748b; margin-left: 10px;">Click texts to edit directly. Use camera icons to change images.</span>
             </div>
             <div style="display: flex; gap: 10px;">
-                <button class="btn btn-success" id="exportBtn"><i class="fas fa-download"></i> Backup Data</button>
-                <button class="btn" style="background: #e2e8f0; color: #333;" onclick="document.getElementById('importFile').click()"><i class="fas fa-upload"></i> Restore</button>
-                <input type="file" id="importFile" accept=".json">
+                <button class="btn btn-success" id="exportBtn"><i class="fas fa-download"></i> Backup</button>
+                <button class="btn" style="background:#e2e8f0; color:#333;" onclick="document.getElementById('importFile').click()"><i class="fas fa-upload"></i> Restore</button>
+                <input type="file" id="importFile" accept=".json" style="display:none;">
             </div>
         </div>
 
@@ -140,21 +128,16 @@
         <div class="coop-grid" id="coopContainer"></div>
     </div>
 
-    <footer>
-        <p id="footerText">&copy; 2026 Boxlab. All Rights Reserved.</p>
-    </footer>
+    <footer><p id="footerText">&copy; 2026 Box Lab. All Rights Reserved.</p></footer>
 
     <div class="floating-login-btn" id="loginTriggerBtn" title="管理员登录"><i class="fas fa-magic"></i></div>
 
     <div class="modal" id="loginModal">
         <div class="modal-content">
-            <h3 style="margin-top:0; color: var(--primary);">Admin Login</h3>
+            <h3 style="margin-top:0;">管理员登录</h3>
             <div class="form-group"><label>Username</label><input type="text" id="username" placeholder="admin"></div>
             <div class="form-group"><label>Password</label><input type="password" id="password" placeholder="password"></div>
-            <div class="btn-group">
-                <button class="btn" style="background:#e2e8f0; color:#333;" onclick="closeModal('loginModal')">Cancel</button>
-                <button class="btn btn-primary" id="submitLogin">Login</button>
-            </div>
+            <div class="btn-group"><button class="btn" style="background:#e2e8f0; color:#333;" onclick="closeModal('loginModal')">Cancel</button><button class="btn btn-primary" id="submitLogin">Login</button></div>
         </div>
     </div>
 
@@ -166,7 +149,7 @@
                 <div class="image-upload" id="logoUploadArea">
                     <p><i class="fas fa-cloud-upload-alt"></i> 点击上传图片</p>
                     <input type="file" id="logoFileInput" accept="image/*" style="display: none;">
-                    <img id="logoPreview" src="" alt="预览" style="display: none;">
+                    <img id="logoPreview" src="" alt="预览" style="display: none; max-height:120px;">
                 </div>
             </div>
             <div class="btn-group">
@@ -178,12 +161,12 @@
 
     <div class="modal" id="settingsModal">
         <div class="modal-content">
-            <h3 id="modalTitle" style="margin-top:0; color: var(--primary);">Image & Settings</h3>
+            <h3 id="modalTitle" style="margin-top:0;">Image & Settings</h3>
             <input type="hidden" id="editItemId"><input type="hidden" id="editItemType"> 
-            <div class="form-group"><label>Image / Logo URL</label><input type="url" id="itemImg" placeholder="https://..."></div>
+            <div class="form-group"><label>Image / Logo URL</label><input type="url" id="itemImg"></div>
             <div class="btn-group">
                 <button class="btn" style="background:#e2e8f0; color:#333;" onclick="closeModal('settingsModal')">Cancel</button>
-                <button class="btn btn-danger" id="deleteItemBtn" style="display:none;">Delete Block</button>
+                <button class="btn btn-danger" id="deleteItemBtn" style="display:none;">Delete</button>
                 <button class="btn btn-primary" id="saveSettingsBtn">Save Image</button>
             </div>
         </div>
@@ -191,10 +174,10 @@
 
     <div class="modal" id="addModal">
         <div class="modal-content">
-            <h3 id="addModalTitle" style="margin-top:0; color: var(--primary);">Add New</h3>
+            <h3 id="addModalTitle" style="margin-top:0;">Add New</h3>
             <input type="hidden" id="addItemType"> 
             <div class="form-group" id="addNameGroup"><label id="addNameLabel">Title / Name</label><input type="text" id="addName"></div>
-            <div class="form-group" id="addInstGroup" style="display:none;"><label>Institution / Company</label><input type="text" id="addInst"></div>
+            <div class="form-group" id="addInstGroup" style="display:none;"><label>Institution</label><input type="text" id="addInst"></div>
             <div class="form-group"><label>Description</label><textarea id="addDesc" rows="3"></textarea></div>
             <div class="form-group"><label>Image URL</label><input type="url" id="addImg"></div>
             <div class="btn-group">
@@ -206,51 +189,25 @@
 
     <script>
         let isEditMode = false;
-
         const defaultData = {
-            intro: {
-                title: "About Our Research Group",
-                desc: "We are a dynamic research group focused on the synthesis and application of advanced polymer materials. Led by our Principal Investigator, our team specializes in the design of high-performance polyurethanes (PU), structurally controlled self-healing materials via Diels-Alder click chemistry, and the assembly of carbon nanotube/graphene aerogel composites.",
-                img: "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=modern%20chemistry%20laboratory%2C%20clean%20benches%2C%20scientific%20equipment%2C%20high%20quality%20photo&image_size=landscape_4_3"
-            },
-            researches: [
-                { id: "r1", title: "Self-Healing Polyurethanes via Diels-Alder Reaction", desc: "Designing novel polyurethane architectures utilizing reversible Diels-Alder bonds to achieve intrinsic self-healing capabilities.", img: "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=molecular%20structure%2C%20polymer%20chain%2C%20scientific%20illustration%2C%20blue%20tone&image_size=landscape_4_3" },
-                { id: "r2", title: "Aerogel Composites for Flexible Ionic Sensors", desc: "Supported by the NSFC, we assemble carbon nanotube (CNT) and graphene aerogels within polymer matrices to create highly sensitive sensors.", img: "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=flexible%20electronic%20sensor%20on%20skin%2C%20high%20tech%2C%20glowing%20lines&image_size=landscape_4_3" }
-            ],
-            coops: [
-                { id: "c1", name: "Advanced Spectroscopy Lab", inst: "University Partner", desc: "Collaborating on Variable-Temperature 2D-IR correlation spectroscopy analysis of Vitrimer polymers.", img: "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=university%20logo%2C%20shield%2C%20academic%2C%20minimalist&image_size=square_1_1" }
-            ]
+            intro: { title: "About Our Research Group", desc: "We focus on the synthesis and application of advanced polymer materials.", img: "https://via.placeholder.com/600x400.png?text=Lab" },
+            researches: [{ id: "r1", title: "Self-Healing Polyurethanes", desc: "Designing novel polyurethane architectures.", img: "https://via.placeholder.com/400x300.png?text=Research+1" }],
+            coops: [{ id: "c1", name: "Partner University", inst: "Academic", desc: "Collaborating on spectroscopy.", img: "https://via.placeholder.com/150.png?text=Logo" }]
         };
 
-        document.addEventListener('DOMContentLoaded', () => {
-            loadAllContent();
-            setupEventListeners();
-        });
+        document.addEventListener('DOMContentLoaded', () => { loadAllContent(); setupEventListeners(); });
 
         function setupEventListeners() {
             document.getElementById('loginTriggerBtn').onclick = () => document.getElementById('loginModal').style.display = 'block';
             document.getElementById('submitLogin').onclick = handleLogin;
             window.onclick = (e) => { if (e.target.classList.contains('modal')) e.target.style.display = 'none'; };
 
-            // Logo 上传
             document.getElementById('logoUploadArea').addEventListener('click', () => document.getElementById('logoFileInput').click());
             document.getElementById('logoFileInput').addEventListener('change', function(e) {
-                const file = e.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        const preview = document.getElementById('logoPreview');
-                        preview.src = e.target.result; preview.style.display = 'block';
-                    };
-                    reader.readAsDataURL(file);
-                }
+                if (e.target.files[0]) { const reader = new FileReader(); reader.onload = function(e) { document.getElementById('logoPreview').src = e.target.result; document.getElementById('logoPreview').style.display = 'block'; }; reader.readAsDataURL(e.target.files[0]); }
             });
             document.getElementById('saveLogoBtn').addEventListener('click', function() {
-                const newSrc = document.getElementById('logoPreview').src;
-                if(newSrc) {
-                    document.getElementById('navLogoImg').src = newSrc;
-                    saveGlobalNav();
-                }
+                if(document.getElementById('logoPreview').src) { document.getElementById('navLogoImg').src = document.getElementById('logoPreview').src; saveGlobalNav(); }
                 closeModal('logoEditModal');
             });
 
@@ -264,62 +221,31 @@
         }
 
         function handleLogin() {
-            if(document.getElementById('username').value === 'admin' && document.getElementById('password').value === 'password') {
-                enableEditMode(); document.getElementById('loginModal').style.display = 'none';
-            } else { alert('Invalid credentials.'); }
+            if(document.getElementById('username').value === 'admin' && document.getElementById('password').value === 'password') { enableEditMode(); document.getElementById('loginModal').style.display = 'none'; } else { alert('Error.'); }
         }
 
         function enableEditMode() {
-            isEditMode = true;
-            document.getElementById('loginTriggerBtn').style.display = 'none';
-            document.getElementById('adminPanel').style.display = 'flex';
-            document.getElementById('addResBtn').style.display = 'inline-block';
-            document.getElementById('addCoopBtn').style.display = 'inline-block';
+            isEditMode = true; document.getElementById('loginTriggerBtn').style.display = 'none'; document.getElementById('adminPanel').style.display = 'flex';
+            document.getElementById('addResBtn').style.display = 'inline-block'; document.getElementById('addCoopBtn').style.display = 'inline-block';
             
-            ['pageTitle', 'pageSubtitle', 'footerText', 'resTitle', 'coopTitle'].forEach(id => {
-                const el = document.getElementById(id);
-                if(el) { el.contentEditable = true; el.addEventListener('blur', saveStaticContent); }
-            });
-            document.querySelectorAll('#mainNav a').forEach(a => {
-                a.contentEditable = true; a.addEventListener('blur', saveStaticContent);
-            });
+            ['pageTitle', 'pageSubtitle', 'footerText', 'resTitle', 'coopTitle'].forEach(id => { const el = document.getElementById(id); if(el){ el.contentEditable = true; el.addEventListener('blur', saveStaticContent); } });
             
             const navBrand = document.getElementById('navBrandText');
-            if(navBrand) {
-                navBrand.contentEditable = true;
-                navBrand.classList.add('active');
-                navBrand.addEventListener('blur', saveGlobalNav);
-            }
-            
+            if(navBrand) { navBrand.contentEditable = true; navBrand.classList.add('active'); navBrand.addEventListener('blur', saveGlobalNav); }
             const navLogo = document.getElementById('navLogoImg');
-            if(navLogo) {
-                navLogo.classList.add('editable', 'active');
-                navLogo.title = '点击修改 Logo';
-                navLogo.onclick = function() {
-                    if (!isEditMode) return;
-                    document.getElementById('logoPreview').src = this.src;
-                    document.getElementById('logoPreview').style.display = 'block';
-                    document.getElementById('logoEditModal').style.display = 'block';
-                };
-            }
-
+            if(navLogo) { navLogo.classList.add('editable', 'active'); navLogo.title = 'Edit Logo'; navLogo.onclick = function() { if(isEditMode){ document.getElementById('logoPreview').src = this.src; document.getElementById('logoPreview').style.display = 'block'; document.getElementById('logoEditModal').style.display = 'block'; } }; }
+            
             renderAll(getRCData());
         }
 
-        // 全局共享导航
         function loadGlobalNav() {
-            const savedData = localStorage.getItem('boxlabData');
-            if (savedData) {
-                const data = JSON.parse(savedData);
-                if(data.navLogoSrc) document.getElementById('navLogoImg').src = data.navLogoSrc;
-                if(data.navBrand) document.getElementById('navBrandText').textContent = data.navBrand;
-            }
+            const data = JSON.parse(localStorage.getItem('boxlabData') || '{}');
+            if(data.navLogoSrc) document.getElementById('navLogoImg').src = data.navLogoSrc;
+            if(data.navBrand) document.getElementById('navBrandText').textContent = data.navBrand;
         }
         function saveGlobalNav() {
-            const savedData = localStorage.getItem('boxlabData');
-            let data = savedData ? JSON.parse(savedData) : {};
-            data.navLogoSrc = document.getElementById('navLogoImg').src;
-            data.navBrand = document.getElementById('navBrandText').textContent;
+            let data = JSON.parse(localStorage.getItem('boxlabData') || '{}');
+            data.navLogoSrc = document.getElementById('navLogoImg').src; data.navBrand = document.getElementById('navBrandText').textContent;
             localStorage.setItem('boxlabData', JSON.stringify(data));
         }
 
@@ -327,182 +253,55 @@
             const newValue = element.innerText.trim(); let data = getRCData();
             if(data.intro[field] !== newValue) { data.intro[field] = newValue; localStorage.setItem('boxlabRCData', JSON.stringify(data)); }
         }
-
         function updateListText(type, id, field, element) {
             const newValue = element.innerText.trim(); let data = getRCData();
-            let list = type === 'research' ? data.researches : data.coops;
-            let item = list.find(i => i.id === id);
+            let list = type === 'research' ? data.researches : data.coops; let item = list.find(i => i.id === id);
             if(item && item[field] !== newValue) { item[field] = newValue; localStorage.setItem('boxlabRCData', JSON.stringify(data)); }
         }
 
         function openImageSettings(type, id) {
-            if(!isEditMode) return;
-            const data = getRCData();
-            document.getElementById('editItemType').value = type;
-            document.getElementById('editItemId').value = id;
-            if(type === 'intro') {
-                document.getElementById('itemImg').value = data.intro.img;
-                document.getElementById('deleteItemBtn').style.display = 'none'; 
-            } else {
-                let list = type === 'research' ? data.researches : data.coops;
-                let item = list.find(i => i.id === id);
-                document.getElementById('itemImg').value = item.img;
-                document.getElementById('deleteItemBtn').style.display = 'inline-block';
-            }
+            if(!isEditMode) return; const data = getRCData(); document.getElementById('editItemType').value = type; document.getElementById('editItemId').value = id;
+            if(type === 'intro') { document.getElementById('itemImg').value = data.intro.img; document.getElementById('deleteItemBtn').style.display = 'none'; } 
+            else { let list = type === 'research' ? data.researches : data.coops; let item = list.find(i => i.id === id); document.getElementById('itemImg').value = item.img; document.getElementById('deleteItemBtn').style.display = 'inline-block'; }
             document.getElementById('settingsModal').style.display = 'block';
         }
-
         function saveImageSettings() {
-            const type = document.getElementById('editItemType').value;
-            const id = document.getElementById('editItemId').value;
-            const imgUrl = document.getElementById('itemImg').value.trim() || 'https://via.placeholder.com/400';
-            let data = getRCData();
-            if(type === 'intro') { data.intro.img = imgUrl; } 
-            else {
-                let list = type === 'research' ? data.researches : data.coops;
-                let item = list.find(i => i.id === id); if(item) item.img = imgUrl;
-            }
-            localStorage.setItem('boxlabRCData', JSON.stringify(data));
-            closeModal('settingsModal'); renderAll(data);
+            const type = document.getElementById('editItemType').value; const id = document.getElementById('editItemId').value; const imgUrl = document.getElementById('itemImg').value.trim() || 'https://via.placeholder.com/400';
+            let data = getRCData(); if(type === 'intro') { data.intro.img = imgUrl; } else { let list = type === 'research' ? data.researches : data.coops; let item = list.find(i => i.id === id); if(item) item.img = imgUrl; }
+            localStorage.setItem('boxlabRCData', JSON.stringify(data)); closeModal('settingsModal'); renderAll(data);
         }
-
         function deleteItem() {
-            if(!confirm('Are you sure you want to delete this block?')) return;
-            const type = document.getElementById('editItemType').value;
-            const id = document.getElementById('editItemId').value;
-            let data = getRCData();
-            if(type === 'research') { data.researches = data.researches.filter(i => i.id !== id); } 
-            else if (type === 'coop') { data.coops = data.coops.filter(i => i.id !== id); }
-            localStorage.setItem('boxlabRCData', JSON.stringify(data));
-            closeModal('settingsModal'); renderAll(data);
+            if(!confirm('Delete?')) return; const type = document.getElementById('editItemType').value; const id = document.getElementById('editItemId').value; let data = getRCData();
+            if(type === 'research') { data.researches = data.researches.filter(i => i.id !== id); } else { data.coops = data.coops.filter(i => i.id !== id); }
+            localStorage.setItem('boxlabRCData', JSON.stringify(data)); closeModal('settingsModal'); renderAll(data);
         }
-
         function openAddModal(type) {
-            document.getElementById('addItemType').value = type;
-            ['addName', 'addInst', 'addDesc', 'addImg'].forEach(id => document.getElementById(id).value = '');
-            if(type === 'research') {
-                document.getElementById('addModalTitle').innerText = "Add Research Direction";
-                document.getElementById('addNameLabel').innerText = "Project Title";
-                document.getElementById('addInstGroup').style.display = 'none';
-            } else {
-                document.getElementById('addModalTitle').innerText = "Add Partner / Team";
-                document.getElementById('addNameLabel').innerText = "Team / Partner Name";
-                document.getElementById('addInstGroup').style.display = 'block';
-            }
+            document.getElementById('addItemType').value = type; ['addName', 'addInst', 'addDesc', 'addImg'].forEach(id => document.getElementById(id).value = '');
+            if(type === 'research') { document.getElementById('addModalTitle').innerText = "Add Research"; document.getElementById('addInstGroup').style.display = 'none'; } 
+            else { document.getElementById('addModalTitle').innerText = "Add Partner"; document.getElementById('addInstGroup').style.display = 'block'; }
             document.getElementById('addModal').style.display = 'block';
         }
-
         function saveNewItem() {
-            const type = document.getElementById('addItemType').value;
-            let data = getRCData();
-            const newItem = { id: Date.now().toString(), img: document.getElementById('addImg').value.trim() || 'https://via.placeholder.com/400' };
-            if(type === 'research') {
-                newItem.title = document.getElementById('addName').value.trim() || "New Research";
-                newItem.desc = document.getElementById('addDesc').value.trim();
-                data.researches.push(newItem);
-            } else {
-                newItem.name = document.getElementById('addName').value.trim() || "New Partner";
-                newItem.inst = document.getElementById('addInst').value.trim();
-                newItem.desc = document.getElementById('addDesc').value.trim();
-                data.coops.push(newItem);
-            }
-            localStorage.setItem('boxlabRCData', JSON.stringify(data));
-            closeModal('addModal'); renderAll(data);
+            const type = document.getElementById('addItemType').value; let data = getRCData(); const newItem = { id: Date.now().toString(), img: document.getElementById('addImg').value.trim() || 'https://via.placeholder.com/400' };
+            if(type === 'research') { newItem.title = document.getElementById('addName').value.trim(); newItem.desc = document.getElementById('addDesc').value.trim(); data.researches.push(newItem); } 
+            else { newItem.name = document.getElementById('addName').value.trim(); newItem.inst = document.getElementById('addInst').value.trim(); newItem.desc = document.getElementById('addDesc').value.trim(); data.coops.push(newItem); }
+            localStorage.setItem('boxlabRCData', JSON.stringify(data)); closeModal('addModal'); renderAll(data);
         }
 
         function getRCData() { return JSON.parse(localStorage.getItem('boxlabRCData')) || defaultData; }
-
         function renderAll(data) {
-            const introContainer = document.getElementById('introContainer');
             const introEdit = isEditMode ? 'contenteditable="true"' : '';
-            introContainer.innerHTML = `
-                <div class="${isEditMode ? 'intro-box editable-active' : 'intro-box'}">
-                    <button class="item-edit-btn" onclick="openImageSettings('intro', '0')"><i class="fas fa-camera"></i></button>
-                    <div class="intro-content">
-                        <h2 ${introEdit} onblur="updateIntroText('title', this)">${data.intro.title}</h2>
-                        <p ${introEdit} onblur="updateIntroText('desc', this)">${data.intro.desc}</p>
-                    </div>
-                    <div class="intro-img-container"><img src="${data.intro.img}" class="intro-img"></div>
-                </div>`;
-
-            const resContainer = document.getElementById('researchesContainer');
-            resContainer.innerHTML = '';
-            data.researches.forEach(res => {
-                resContainer.innerHTML += `
-                    <div class="${isEditMode ? 'research-card editable-active' : 'research-card'}">
-                        <button class="item-edit-btn" onclick="openImageSettings('research', '${res.id}')"><i class="fas fa-camera"></i></button>
-                        <img src="${res.img}" class="research-img">
-                        <div class="research-info">
-                            <h3 ${introEdit} onblur="updateListText('research', '${res.id}', 'title', this)">${res.title}</h3>
-                            <p ${introEdit} onblur="updateListText('research', '${res.id}', 'desc', this)">${res.desc}</p>
-                        </div>
-                    </div>`;
-            });
-
-            const coopContainer = document.getElementById('coopContainer');
-            coopContainer.innerHTML = '';
-            data.coops.forEach(coop => {
-                coopContainer.innerHTML += `
-                    <div class="${isEditMode ? 'coop-card editable-active' : 'coop-card'}">
-                        <button class="item-edit-btn" onclick="openImageSettings('coop', '${coop.id}')"><i class="fas fa-camera"></i></button>
-                        <img src="${coop.img}" class="coop-logo">
-                        <div class="coop-info">
-                            <h3 ${introEdit} onblur="updateListText('coop', '${coop.id}', 'name', this)">${coop.name}</h3>
-                            <h4 ${introEdit} onblur="updateListText('coop', '${coop.id}', 'inst', this)">${coop.inst}</h4>
-                            <p ${introEdit} onblur="updateListText('coop', '${coop.id}', 'desc', this)">${coop.desc}</p>
-                        </div>
-                    </div>`;
-            });
+            document.getElementById('introContainer').innerHTML = `<div class="${isEditMode ? 'intro-box editable-active' : 'intro-box'}"><button class="item-edit-btn" onclick="openImageSettings('intro', '0')"><i class="fas fa-camera"></i></button><div class="intro-content"><h2 ${introEdit} onblur="updateIntroText('title', this)">${data.intro.title}</h2><p ${introEdit} onblur="updateIntroText('desc', this)">${data.intro.desc}</p></div><div class="intro-img-container"><img src="${data.intro.img}" class="intro-img"></div></div>`;
+            const resContainer = document.getElementById('researchesContainer'); resContainer.innerHTML = '';
+            data.researches.forEach(res => { resContainer.innerHTML += `<div class="${isEditMode ? 'research-card editable-active' : 'research-card'}"><button class="item-edit-btn" onclick="openImageSettings('research', '${res.id}')"><i class="fas fa-camera"></i></button><img src="${res.img}" class="research-img"><div class="research-info"><h3 ${introEdit} onblur="updateListText('research', '${res.id}', 'title', this)">${res.title}</h3><p ${introEdit} onblur="updateListText('research', '${res.id}', 'desc', this)">${res.desc}</p></div></div>`; });
+            const coopContainer = document.getElementById('coopContainer'); coopContainer.innerHTML = '';
+            data.coops.forEach(coop => { coopContainer.innerHTML += `<div class="${isEditMode ? 'coop-card editable-active' : 'coop-card'}"><button class="item-edit-btn" onclick="openImageSettings('coop', '${coop.id}')"><i class="fas fa-camera"></i></button><img src="${coop.img}" class="coop-logo"><div class="coop-info"><h3 ${introEdit} onblur="updateListText('coop', '${coop.id}', 'name', this)">${coop.name}</h3><h4 ${introEdit} onblur="updateListText('coop', '${coop.id}', 'inst', this)">${coop.inst}</h4><p ${introEdit} onblur="updateListText('coop', '${coop.id}', 'desc', this)">${coop.desc}</p></div></div>`; });
         }
 
-        function loadAllContent() {
-            loadGlobalNav();
-            renderAll(getRCData());
-            const staticData = JSON.parse(localStorage.getItem('boxlabRCStatic') || '{}');
-            ['pageTitle', 'pageSubtitle', 'footerText', 'resTitle', 'coopTitle'].forEach(id => {
-                if(staticData[id] && document.getElementById(id)) document.getElementById(id).innerText = staticData[id];
-            });
-            if(staticData.nav && staticData.nav.length > 0) {
-                document.querySelectorAll('#mainNav a').forEach((a, i) => { if(staticData.nav[i]) a.innerText = staticData.nav[i]; });
-            }
-        }
-
-        function saveStaticContent() {
-            const staticData = {
-                pageTitle: document.getElementById('pageTitle').innerText,
-                pageSubtitle: document.getElementById('pageSubtitle').innerText,
-                footerText: document.getElementById('footerText').innerText,
-                resTitle: document.getElementById('resTitle').innerText,
-                coopTitle: document.getElementById('coopTitle').innerText,
-                nav: Array.from(document.querySelectorAll('#mainNav a')).map(a => a.innerText)
-            };
-            localStorage.setItem('boxlabRCStatic', JSON.stringify(staticData));
-        }
-
-        function exportData() {
-            const data = localStorage.getItem('boxlabRCData') || JSON.stringify(defaultData);
-            const blob = new Blob([data], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a'); a.href = url;
-            a.download = `boxlab_research_coop_${new Date().toISOString().slice(0,10)}.json`;
-            a.click(); URL.revokeObjectURL(url);
-        }
-
-        function importData(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const data = JSON.parse(e.target.result);
-                    if(data.intro && data.researches && data.coops) {
-                        localStorage.setItem('boxlabRCData', JSON.stringify(data)); renderAll(data); alert('Data imported successfully!');
-                    }
-                } catch { alert('Error reading file.'); }
-            };
-            reader.readAsText(file); event.target.value = ''; 
-        }
-
+        function loadAllContent() { loadGlobalNav(); renderAll(getRCData()); const s = JSON.parse(localStorage.getItem('boxlabRCStatic') || '{}'); ['pageTitle', 'pageSubtitle', 'footerText', 'resTitle', 'coopTitle'].forEach(id => { if(s[id] && document.getElementById(id)) document.getElementById(id).innerText = s[id]; }); }
+        function saveStaticContent() { const s = {}; ['pageTitle', 'pageSubtitle', 'footerText', 'resTitle', 'coopTitle'].forEach(id => { if(document.getElementById(id)) s[id] = document.getElementById(id).innerText; }); localStorage.setItem('boxlabRCStatic', JSON.stringify(s)); }
+        function exportData() { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(getRCData())], {type: 'application/json'})); a.download = 'boxlab_rc.json'; a.click(); }
+        function importData(event) { const file = event.target.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = function(e) { try { const data = JSON.parse(e.target.result); if(data.intro) { localStorage.setItem('boxlabRCData', JSON.stringify(data)); renderAll(data); } } catch (e) {} }; reader.readAsText(file); event.target.value = ''; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
     </script>
 </body>
