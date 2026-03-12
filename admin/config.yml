@@ -2,9 +2,9 @@
 
 backend:
   name: github
-  repo: liboxiao19890504-glitch/Boxlab
+  repo: liboxiao19890504/Boxlab          # ← 改成这个！正确用户名
   branch: master
-  base_url: https://sveltia-cms-auth.liboxiao19890504.workers.dev   # ← 这行必须有！
+  base_url: https://sveltia-cms-auth.liboxia19890504.workers.dev   # Worker URL 保持不变
 
 media_folder: assets/uploads
 public_folder: /uploads
