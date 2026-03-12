@@ -6,79 +6,60 @@
     <title>Researches & Cooperation - Boxlab</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* 基础样式与色彩系统 */
         :root { --primary: #334155; --secondary: #475569; --accent: #3b82f6; --bg: #f8fafc; }
         body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; background-color: var(--bg); color: #333; display: flex; flex-direction: column; min-height: 100vh; }
+        
+        /* 统一导航栏样式 */
+        nav { background-color: var(--primary); color: white; padding: 12px 0; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.15); }
+        .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
+        .nav-logo { display: flex; align-items: center; gap: 15px; }
+        .nav-logo img { height: 46px; width: 46px; border-radius: 50%; background-color: white; object-fit: cover; border: 2px solid rgba(255, 255, 255, 0.9); box-shadow: 0 2px 5px rgba(0,0,0,0.2); transition: transform 0.3s; }
+        .nav-logo img:hover { transform: scale(1.05); }
+        .nav-brand { font-size: 1.4rem; font-weight: bold; letter-spacing: 1px; color: white; }
+        nav ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 20px; }
+        nav ul li a { color: #e2e8f0; text-decoration: none; padding: 8px 12px; border-radius: 6px; transition: 0.3s; font-weight: 500; }
+        nav ul li a:hover { background-color: rgba(255,255,255,0.1); color: white; }
+        #navLogoImg.editable.active { cursor: pointer; border: 2px dashed rgba(255,255,255,0.8); }
+        .nav-brand.editable.active { border-color: rgba(255,255,255,0.6); background-color: rgba(255,255,255,0.1); outline: 2px dashed rgba(255,255,255,0.5); padding: 2px 5px; border-radius: 4px;}
+
         header { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; padding: 50px 20px; text-align: center; }
-        nav { background-color: var(--primary); color: white; padding: 15px 0; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        nav ul { list-style: none; margin: 0; padding: 0; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
-        nav ul li a { color: white; text-decoration: none; padding: 8px 15px; border-radius: 6px; transition: background 0.3s; }
-        nav ul li a:hover { background-color: rgba(255,255,255,0.1); }
         .container { max-width: 1100px; margin: 0 auto; padding: 30px 20px; flex: 1; width: 100%; box-sizing: border-box; }
         
-        /* 管理员控制台 */
-        .admin-panel {
-            display: none; background: white; padding: 15px 20px; border-radius: 8px;
-            margin-bottom: 30px; border: 2px dashed var(--accent);
-            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
-        }
+        .admin-panel { display: none; background: white; padding: 15px 20px; border-radius: 8px; margin-bottom: 30px; border: 2px dashed var(--accent); justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
         .admin-panel.active { display: flex; }
 
-        /* 统一的区块标题 */
         .section-title { border-bottom: 2px solid var(--primary); color: var(--primary); padding-bottom: 8px; margin-top: 40px; margin-bottom: 25px; font-size: 1.8rem; display: flex; justify-content: space-between; align-items: center; }
         
-        /* --- 团队介绍板块 (Team Intro) --- */
-        .intro-box { 
-            display: flex; gap: 30px; background: white; border-radius: 12px; padding: 30px; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; position: relative;
-            flex-wrap: wrap;
-        }
+        .intro-box { display: flex; gap: 30px; background: white; border-radius: 12px; padding: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; position: relative; flex-wrap: wrap; }
         .intro-img-container { flex: 1; min-width: 300px; position: relative; }
-        .intro-img { width: 100%; height: 100%; min-height: 250px; object-fit: cover; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .intro-img { width: 100%; height: 100%; min-height: 250px; object-fit: cover; border-radius: 8px; }
         .intro-content { flex: 2; min-width: 300px; display: flex; flex-direction: column; }
         .intro-content h2 { margin-top: 0; color: #0f172a; }
         .intro-content p { color: #475569; line-height: 1.7; text-align: justify; }
 
-        /* --- 研究方向板块 (Researches) --- */
         .research-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; }
-        .research-card { 
-            background: white; border-radius: 12px; overflow: hidden; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #e2e8f0;
-            position: relative; transition: all 0.3s ease; display: flex; flex-direction: column;
-        }
+        .research-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; position: relative; transition: all 0.3s ease; display: flex; flex-direction: column; }
         .research-card:hover { transform: translateY(-5px); box-shadow: 0 12px 20px rgba(0,0,0,0.08); }
         .research-img { width: 100%; height: 200px; object-fit: cover; border-bottom: 3px solid var(--accent); }
         .research-info { padding: 20px; flex: 1; }
         .research-info h3 { margin: 0 0 10px; color: #0f172a; font-size: 1.25rem; }
         .research-info p { color: #64748b; font-size: 0.95rem; line-height: 1.6; margin: 0; }
 
-        /* --- 合作团队板块 (Cooperation) --- */
         .coop-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
-        .coop-card { 
-            background: white; border-radius: 10px; padding: 20px; 
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04); border: 1px solid #e2e8f0;
-            position: relative; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; text-align: center;
-        }
+        .coop-card { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); border: 1px solid #e2e8f0; position: relative; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; text-align: center; }
         .coop-card:hover { border-color: var(--accent); }
         .coop-logo { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin-bottom: 15px; border: 2px solid #f1f5f9; }
         .coop-info h3 { margin: 0 0 5px; color: #0f172a; font-size: 1.1rem; }
         .coop-info h4 { margin: 0 0 10px; color: var(--accent); font-size: 0.85rem; font-weight: 600; text-transform: uppercase; }
         .coop-info p { color: #64748b; font-size: 0.85rem; line-height: 1.5; margin: 0; }
 
-        /* 编辑按钮 */
-        .item-edit-btn { 
-            display: none; position: absolute; right: 10px; top: 10px; 
-            background: rgba(255,255,255,0.9); color: var(--primary); border: none; 
-            width: 36px; height: 36px; border-radius: 50%; cursor: pointer; transition: 0.2s;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2); z-index: 10;
-        }
+        .item-edit-btn { display: none; position: absolute; right: 10px; top: 10px; background: rgba(255,255,255,0.9); color: var(--primary); border: none; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; transition: 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.2); z-index: 10; }
         .item-edit-btn:hover { background: var(--primary); color: white; }
         .editable-active .item-edit-btn { display: block; }
         
         .floating-login-btn { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; border-radius: 50%; background-color: var(--primary); color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.15); font-size: 1.2rem; transition: 0.3s; }
-        .floating-login-btn:hover { transform: scale(1.1); }
+        .floating-login-btn:hover { transform: scale(1.1); background-color: #1e293b;}
         
-        /* 模态框与表单 */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); z-index: 2000; backdrop-filter: blur(4px); }
         .modal-content { background: white; margin: 5vh auto; padding: 30px; border-radius: 12px; width: 90%; max-width: 500px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); animation: slideDown 0.3s ease-out; max-height: 90vh; overflow-y: auto; }
         .form-group { margin-bottom: 18px; text-align: left; }
@@ -88,12 +69,14 @@
         .btn-group { display: flex; gap: 12px; justify-content: flex-end; margin-top: 25px; }
         .btn { padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: 0.2s; }
         .btn-primary { background-color: var(--primary); color: white; }
-        .btn-primary:hover { background-color: #1e293b; }
         .btn-success { background-color: #10b981; color: white; }
         .btn-danger { background-color: #ef4444; color: white; }
         .btn-sm { padding: 5px 10px; font-size: 0.85rem; }
 
-        /* 编辑模式下文字高亮 */
+        .image-upload { border: 2px dashed #cbd5e1; padding: 20px; text-align: center; margin-bottom: 15px; cursor: pointer; border-radius: 8px; background: #f8fafc; transition: 0.3s; }
+        .image-upload:hover { border-color: var(--accent); background: white; }
+        #logoPreview { max-width: 100%; max-height: 200px; margin-top: 10px; border-radius: 4px; }
+
         [contenteditable="true"] { outline: 2px dashed rgba(255,255,255,0.3); padding: 2px 5px; border-radius: 4px; transition: 0.2s; cursor: text; }
         [contenteditable="true"]:hover { outline-color: rgba(59, 130, 246, 0.5); background: rgba(255,255,255,0.05); }
         [contenteditable="true"]:focus { outline: 2px solid var(--accent); background: rgba(255,255,255,0.1); }
@@ -109,13 +92,19 @@
 </head>
 <body>
     <nav>
-        <ul id="mainNav">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="publications.html">Publications</a></li>
-            <li><a href="members.html">Members</a></li>
-            <li><a href="researches.html">Researches & Cooperation</a></li>
-            <li><a href="join.html">Join Us</a></li>
-        </ul>
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="image_3c6abc.jpg" alt="Logo" title="Logo" id="navLogoImg">
+                <span class="nav-brand editable" contenteditable="false" id="navBrandText">Boxlab</span>
+            </div>
+            <ul id="mainNav">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="publications.html">Publications</a></li>
+                <li><a href="members.html">Members</a></li>
+                <li><a href="researches.html">Researches & Cooperation</a></li>
+                <li><a href="join.html">Join Us</a></li>
+            </ul>
+        </div>
     </nav>
 
     <header>
@@ -155,7 +144,7 @@
         <p id="footerText">&copy; 2026 Boxlab. All Rights Reserved.</p>
     </footer>
 
-    <div class="floating-login-btn" id="loginTriggerBtn"><i class="fas fa-cog"></i></div>
+    <div class="floating-login-btn" id="loginTriggerBtn" title="管理员登录"><i class="fas fa-magic"></i></div>
 
     <div class="modal" id="loginModal">
         <div class="modal-content">
@@ -169,14 +158,29 @@
         </div>
     </div>
 
+    <div class="modal" id="logoEditModal">
+        <div class="modal-content">
+            <h3 style="margin-top:0; color: var(--primary);">更换 Logo</h3>
+            <div class="form-group">
+                <label>上传新 Logo</label>
+                <div class="image-upload" id="logoUploadArea">
+                    <p><i class="fas fa-cloud-upload-alt"></i> 点击上传图片</p>
+                    <input type="file" id="logoFileInput" accept="image/*" style="display: none;">
+                    <img id="logoPreview" src="" alt="预览" style="display: none;">
+                </div>
+            </div>
+            <div class="btn-group">
+                <button class="btn" style="background:#e2e8f0; color:#333;" onclick="closeModal('logoEditModal')">取消</button>
+                <button class="btn btn-primary" id="saveLogoBtn">保存</button>
+            </div>
+        </div>
+    </div>
+
     <div class="modal" id="settingsModal">
         <div class="modal-content">
             <h3 id="modalTitle" style="margin-top:0; color: var(--primary);">Image & Settings</h3>
-            <p style="font-size: 0.85rem; color: #64748b; margin-top: -10px; margin-bottom: 20px;">Texts can be edited directly on the page.</p>
-            
-            <input type="hidden" id="editItemId">
-            <input type="hidden" id="editItemType"> <div class="form-group"><label>Image / Logo URL</label><input type="url" id="itemImg" placeholder="https://..."></div>
-
+            <input type="hidden" id="editItemId"><input type="hidden" id="editItemType"> 
+            <div class="form-group"><label>Image / Logo URL</label><input type="url" id="itemImg" placeholder="https://..."></div>
             <div class="btn-group">
                 <button class="btn" style="background:#e2e8f0; color:#333;" onclick="closeModal('settingsModal')">Cancel</button>
                 <button class="btn btn-danger" id="deleteItemBtn" style="display:none;">Delete Block</button>
@@ -188,11 +192,11 @@
     <div class="modal" id="addModal">
         <div class="modal-content">
             <h3 id="addModalTitle" style="margin-top:0; color: var(--primary);">Add New</h3>
-            <input type="hidden" id="addItemType"> <div class="form-group" id="addNameGroup"><label id="addNameLabel">Title / Name</label><input type="text" id="addName"></div>
+            <input type="hidden" id="addItemType"> 
+            <div class="form-group" id="addNameGroup"><label id="addNameLabel">Title / Name</label><input type="text" id="addName"></div>
             <div class="form-group" id="addInstGroup" style="display:none;"><label>Institution / Company</label><input type="text" id="addInst"></div>
             <div class="form-group"><label>Description</label><textarea id="addDesc" rows="3"></textarea></div>
             <div class="form-group"><label>Image URL</label><input type="url" id="addImg"></div>
-
             <div class="btn-group">
                 <button class="btn" style="background:#e2e8f0; color:#333;" onclick="closeModal('addModal')">Cancel</button>
                 <button class="btn btn-primary" id="saveNewBtn">Add</button>
@@ -203,22 +207,18 @@
     <script>
         let isEditMode = false;
 
-        // 默认数据，深入契合聚氨酯、自修复、气凝胶、变温红外、汽车软管等方向
         const defaultData = {
             intro: {
                 title: "About Our Research Group",
-                desc: "We are a dynamic research group focused on the synthesis and application of advanced polymer materials. Led by our Principal Investigator, our team specializes in the design of high-performance polyurethanes (PU), structurally controlled self-healing materials via Diels-Alder click chemistry, and the assembly of carbon nanotube/graphene aerogel composites. We are dedicated to translating fundamental polymer science into cutting-edge applications, ranging from highly sensitive flexible ionic sensors to industrial-grade automotive rubber hoses.",
+                desc: "We are a dynamic research group focused on the synthesis and application of advanced polymer materials. Led by our Principal Investigator, our team specializes in the design of high-performance polyurethanes (PU), structurally controlled self-healing materials via Diels-Alder click chemistry, and the assembly of carbon nanotube/graphene aerogel composites.",
                 img: "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=modern%20chemistry%20laboratory%2C%20clean%20benches%2C%20scientific%20equipment%2C%20high%20quality%20photo&image_size=landscape_4_3"
             },
             researches: [
-                { id: "r1", title: "Self-Healing Polyurethanes via Diels-Alder Reaction", desc: "Designing novel polyurethane architectures utilizing reversible Diels-Alder bonds to achieve intrinsic self-healing capabilities and structural control, enhancing material longevity and reliability.", img: "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=molecular%20structure%2C%20polymer%20chain%2C%20scientific%20illustration%2C%20blue%20tone&image_size=landscape_4_3" },
-                { id: "r2", title: "Aerogel Composites for Flexible Ionic Sensors", desc: "Supported by the NSFC, we assemble carbon nanotube (CNT) and graphene aerogels within polymer matrices to create highly sensitive, flexible compression sensors for advanced electronics.", img: "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=flexible%20electronic%20sensor%20on%20skin%2C%20high%20tech%2C%20glowing%20lines&image_size=landscape_4_3" },
-                { id: "r3", title: "High-Performance Automotive Rubber Materials", desc: "Through corporate partnerships, we research and optimize NBR (Nitrile Butadiene Rubber) and CSM (Chlorosulfonated Polyethylene) materials to improve the durability and chemical resistance of automotive rubber hoses.", img: "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=automotive%20engine%20parts%2C%20black%20rubber%20hoses%2C%20industrial%20setting&image_size=landscape_4_3" }
+                { id: "r1", title: "Self-Healing Polyurethanes via Diels-Alder Reaction", desc: "Designing novel polyurethane architectures utilizing reversible Diels-Alder bonds to achieve intrinsic self-healing capabilities.", img: "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=molecular%20structure%2C%20polymer%20chain%2C%20scientific%20illustration%2C%20blue%20tone&image_size=landscape_4_3" },
+                { id: "r2", title: "Aerogel Composites for Flexible Ionic Sensors", desc: "Supported by the NSFC, we assemble carbon nanotube (CNT) and graphene aerogels within polymer matrices to create highly sensitive sensors.", img: "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=flexible%20electronic%20sensor%20on%20skin%2C%20high%20tech%2C%20glowing%20lines&image_size=landscape_4_3" }
             ],
             coops: [
-                { id: "c1", name: "Advanced Spectroscopy Lab", inst: "University Partner", desc: "Collaborating on Variable-Temperature 2D-IR correlation spectroscopy analysis of Vitrimer polymers using Opus and Origin software.", img: "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=university%20logo%2C%20shield%2C%20academic%2C%20minimalist&image_size=square_1_1" },
-                { id: "c2", name: "AutoParts Manufacturing Co.", inst: "Corporate Partner", desc: "Joint R&D project focusing on technical guidance and formulation optimization for next-generation automotive rubber hoses.", img: "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=corporate%20logo%2C%20automotive%20industry%2C%20gear%20shape%2C%20blue%20and%20silver&image_size=square_1_1" },
-                { id: "c3", name: "Prof. Zhang's Research Team", inst: "National Institute of Materials", desc: "Collaborative research on novel aerogel capsule assembly techniques for energy storage applications.", img: "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=abstract%20team%20logo%2C%20scientific%2C%20nodes%20and%20connections&image_size=square_1_1" }
+                { id: "c1", name: "Advanced Spectroscopy Lab", inst: "University Partner", desc: "Collaborating on Variable-Temperature 2D-IR correlation spectroscopy analysis of Vitrimer polymers.", img: "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=university%20logo%2C%20shield%2C%20academic%2C%20minimalist&image_size=square_1_1" }
             ]
         };
 
@@ -232,24 +232,40 @@
             document.getElementById('submitLogin').onclick = handleLogin;
             window.onclick = (e) => { if (e.target.classList.contains('modal')) e.target.style.display = 'none'; };
 
-            // Modals
+            // Logo 上传
+            document.getElementById('logoUploadArea').addEventListener('click', () => document.getElementById('logoFileInput').click());
+            document.getElementById('logoFileInput').addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const preview = document.getElementById('logoPreview');
+                        preview.src = e.target.result; preview.style.display = 'block';
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+            document.getElementById('saveLogoBtn').addEventListener('click', function() {
+                const newSrc = document.getElementById('logoPreview').src;
+                if(newSrc) {
+                    document.getElementById('navLogoImg').src = newSrc;
+                    saveGlobalNav();
+                }
+                closeModal('logoEditModal');
+            });
+
             document.getElementById('saveSettingsBtn').onclick = saveImageSettings;
             document.getElementById('deleteItemBtn').onclick = deleteItem;
             document.getElementById('saveNewBtn').onclick = saveNewItem;
-
-            // Add Buttons
             document.getElementById('addResBtn').onclick = () => openAddModal('research');
             document.getElementById('addCoopBtn').onclick = () => openAddModal('coop');
-            
-            // Backup
             document.getElementById('exportBtn').onclick = exportData;
             document.getElementById('importFile').addEventListener('change', importData);
         }
 
         function handleLogin() {
             if(document.getElementById('username').value === 'admin' && document.getElementById('password').value === 'password') {
-                enableEditMode();
-                document.getElementById('loginModal').style.display = 'none';
+                enableEditMode(); document.getElementById('loginModal').style.display = 'none';
             } else { alert('Invalid credentials.'); }
         }
 
@@ -268,40 +284,65 @@
                 a.contentEditable = true; a.addEventListener('blur', saveStaticContent);
             });
             
+            const navBrand = document.getElementById('navBrandText');
+            if(navBrand) {
+                navBrand.contentEditable = true;
+                navBrand.classList.add('active');
+                navBrand.addEventListener('blur', saveGlobalNav);
+            }
+            
+            const navLogo = document.getElementById('navLogoImg');
+            if(navLogo) {
+                navLogo.classList.add('editable', 'active');
+                navLogo.title = '点击修改 Logo';
+                navLogo.onclick = function() {
+                    if (!isEditMode) return;
+                    document.getElementById('logoPreview').src = this.src;
+                    document.getElementById('logoPreview').style.display = 'block';
+                    document.getElementById('logoEditModal').style.display = 'block';
+                };
+            }
+
             renderAll(getRCData());
         }
 
-        // --- Live Edit Save Logic ---
-        function updateIntroText(field, element) {
-            const newValue = element.innerText.trim();
-            let data = getRCData();
-            if(data.intro[field] !== newValue) {
-                data.intro[field] = newValue;
-                localStorage.setItem('boxlabRCData', JSON.stringify(data));
+        // 全局共享导航
+        function loadGlobalNav() {
+            const savedData = localStorage.getItem('boxlabData');
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                if(data.navLogoSrc) document.getElementById('navLogoImg').src = data.navLogoSrc;
+                if(data.navBrand) document.getElementById('navBrandText').textContent = data.navBrand;
             }
+        }
+        function saveGlobalNav() {
+            const savedData = localStorage.getItem('boxlabData');
+            let data = savedData ? JSON.parse(savedData) : {};
+            data.navLogoSrc = document.getElementById('navLogoImg').src;
+            data.navBrand = document.getElementById('navBrandText').textContent;
+            localStorage.setItem('boxlabData', JSON.stringify(data));
+        }
+
+        function updateIntroText(field, element) {
+            const newValue = element.innerText.trim(); let data = getRCData();
+            if(data.intro[field] !== newValue) { data.intro[field] = newValue; localStorage.setItem('boxlabRCData', JSON.stringify(data)); }
         }
 
         function updateListText(type, id, field, element) {
-            const newValue = element.innerText.trim();
-            let data = getRCData();
+            const newValue = element.innerText.trim(); let data = getRCData();
             let list = type === 'research' ? data.researches : data.coops;
             let item = list.find(i => i.id === id);
-            if(item && item[field] !== newValue) {
-                item[field] = newValue;
-                localStorage.setItem('boxlabRCData', JSON.stringify(data));
-            }
+            if(item && item[field] !== newValue) { item[field] = newValue; localStorage.setItem('boxlabRCData', JSON.stringify(data)); }
         }
 
-        // --- Modals Logic ---
         function openImageSettings(type, id) {
             if(!isEditMode) return;
             const data = getRCData();
             document.getElementById('editItemType').value = type;
             document.getElementById('editItemId').value = id;
-            
             if(type === 'intro') {
                 document.getElementById('itemImg').value = data.intro.img;
-                document.getElementById('deleteItemBtn').style.display = 'none'; // Cannot delete intro block
+                document.getElementById('deleteItemBtn').style.display = 'none'; 
             } else {
                 let list = type === 'research' ? data.researches : data.coops;
                 let item = list.find(i => i.id === id);
@@ -315,45 +356,30 @@
             const type = document.getElementById('editItemType').value;
             const id = document.getElementById('editItemId').value;
             const imgUrl = document.getElementById('itemImg').value.trim() || 'https://via.placeholder.com/400';
-            
             let data = getRCData();
-            if(type === 'intro') {
-                data.intro.img = imgUrl;
-            } else {
+            if(type === 'intro') { data.intro.img = imgUrl; } 
+            else {
                 let list = type === 'research' ? data.researches : data.coops;
-                let item = list.find(i => i.id === id);
-                if(item) item.img = imgUrl;
+                let item = list.find(i => i.id === id); if(item) item.img = imgUrl;
             }
-            
             localStorage.setItem('boxlabRCData', JSON.stringify(data));
-            closeModal('settingsModal');
-            renderAll(data);
+            closeModal('settingsModal'); renderAll(data);
         }
 
         function deleteItem() {
             if(!confirm('Are you sure you want to delete this block?')) return;
             const type = document.getElementById('editItemType').value;
             const id = document.getElementById('editItemId').value;
-            
             let data = getRCData();
-            if(type === 'research') {
-                data.researches = data.researches.filter(i => i.id !== id);
-            } else if (type === 'coop') {
-                data.coops = data.coops.filter(i => i.id !== id);
-            }
-            
+            if(type === 'research') { data.researches = data.researches.filter(i => i.id !== id); } 
+            else if (type === 'coop') { data.coops = data.coops.filter(i => i.id !== id); }
             localStorage.setItem('boxlabRCData', JSON.stringify(data));
-            closeModal('settingsModal');
-            renderAll(data);
+            closeModal('settingsModal'); renderAll(data);
         }
 
         function openAddModal(type) {
             document.getElementById('addItemType').value = type;
-            document.getElementById('addName').value = '';
-            document.getElementById('addInst').value = '';
-            document.getElementById('addDesc').value = '';
-            document.getElementById('addImg').value = '';
-            
+            ['addName', 'addInst', 'addDesc', 'addImg'].forEach(id => document.getElementById(id).value = '');
             if(type === 'research') {
                 document.getElementById('addModalTitle').innerText = "Add Research Direction";
                 document.getElementById('addNameLabel').innerText = "Project Title";
@@ -369,12 +395,7 @@
         function saveNewItem() {
             const type = document.getElementById('addItemType').value;
             let data = getRCData();
-            
-            const newItem = {
-                id: Date.now().toString(),
-                img: document.getElementById('addImg').value.trim() || 'https://via.placeholder.com/400'
-            };
-            
+            const newItem = { id: Date.now().toString(), img: document.getElementById('addImg').value.trim() || 'https://via.placeholder.com/400' };
             if(type === 'research') {
                 newItem.title = document.getElementById('addName').value.trim() || "New Research";
                 newItem.desc = document.getElementById('addDesc').value.trim();
@@ -385,80 +406,61 @@
                 newItem.desc = document.getElementById('addDesc').value.trim();
                 data.coops.push(newItem);
             }
-            
             localStorage.setItem('boxlabRCData', JSON.stringify(data));
-            closeModal('addModal');
-            renderAll(data);
+            closeModal('addModal'); renderAll(data);
         }
 
-        // --- Data & Rendering Logic ---
-
-        function getRCData() {
-            return JSON.parse(localStorage.getItem('boxlabRCData')) || defaultData;
-        }
+        function getRCData() { return JSON.parse(localStorage.getItem('boxlabRCData')) || defaultData; }
 
         function renderAll(data) {
-            // Render Intro
             const introContainer = document.getElementById('introContainer');
-            const introEdit = isEditMode ? 'contenteditable="true" title="Click to edit text"' : '';
-            const introClass = isEditMode ? 'intro-box editable-active' : 'intro-box';
-            
+            const introEdit = isEditMode ? 'contenteditable="true"' : '';
             introContainer.innerHTML = `
-                <div class="${introClass}">
+                <div class="${isEditMode ? 'intro-box editable-active' : 'intro-box'}">
                     <button class="item-edit-btn" onclick="openImageSettings('intro', '0')"><i class="fas fa-camera"></i></button>
                     <div class="intro-content">
                         <h2 ${introEdit} onblur="updateIntroText('title', this)">${data.intro.title}</h2>
                         <p ${introEdit} onblur="updateIntroText('desc', this)">${data.intro.desc}</p>
                     </div>
-                    <div class="intro-img-container">
-                        <img src="${data.intro.img}" class="intro-img" onerror="this.src='https://via.placeholder.com/600x400.png?text=Image+Error'">
-                    </div>
-                </div>
-            `;
+                    <div class="intro-img-container"><img src="${data.intro.img}" class="intro-img"></div>
+                </div>`;
 
-            // Render Researches
             const resContainer = document.getElementById('researchesContainer');
             resContainer.innerHTML = '';
             data.researches.forEach(res => {
-                const cardClass = isEditMode ? 'research-card editable-active' : 'research-card';
                 resContainer.innerHTML += `
-                    <div class="${cardClass}">
+                    <div class="${isEditMode ? 'research-card editable-active' : 'research-card'}">
                         <button class="item-edit-btn" onclick="openImageSettings('research', '${res.id}')"><i class="fas fa-camera"></i></button>
-                        <img src="${res.img}" class="research-img" onerror="this.src='https://via.placeholder.com/400x300.png?text=Image+Error'">
+                        <img src="${res.img}" class="research-img">
                         <div class="research-info">
                             <h3 ${introEdit} onblur="updateListText('research', '${res.id}', 'title', this)">${res.title}</h3>
                             <p ${introEdit} onblur="updateListText('research', '${res.id}', 'desc', this)">${res.desc}</p>
                         </div>
-                    </div>
-                `;
+                    </div>`;
             });
 
-            // Render Cooperations
             const coopContainer = document.getElementById('coopContainer');
             coopContainer.innerHTML = '';
             data.coops.forEach(coop => {
-                const cardClass = isEditMode ? 'coop-card editable-active' : 'coop-card';
                 coopContainer.innerHTML += `
-                    <div class="${cardClass}">
+                    <div class="${isEditMode ? 'coop-card editable-active' : 'coop-card'}">
                         <button class="item-edit-btn" onclick="openImageSettings('coop', '${coop.id}')"><i class="fas fa-camera"></i></button>
-                        <img src="${coop.img}" class="coop-logo" onerror="this.src='https://via.placeholder.com/150.png?text=Logo'">
+                        <img src="${coop.img}" class="coop-logo">
                         <div class="coop-info">
                             <h3 ${introEdit} onblur="updateListText('coop', '${coop.id}', 'name', this)">${coop.name}</h3>
                             <h4 ${introEdit} onblur="updateListText('coop', '${coop.id}', 'inst', this)">${coop.inst}</h4>
                             <p ${introEdit} onblur="updateListText('coop', '${coop.id}', 'desc', this)">${coop.desc}</p>
                         </div>
-                    </div>
-                `;
+                    </div>`;
             });
         }
 
         function loadAllContent() {
+            loadGlobalNav();
             renderAll(getRCData());
             const staticData = JSON.parse(localStorage.getItem('boxlabRCStatic') || '{}');
             ['pageTitle', 'pageSubtitle', 'footerText', 'resTitle', 'coopTitle'].forEach(id => {
-                if(staticData[id] && document.getElementById(id)) {
-                    document.getElementById(id).innerText = staticData[id];
-                }
+                if(staticData[id] && document.getElementById(id)) document.getElementById(id).innerText = staticData[id];
             });
             if(staticData.nav && staticData.nav.length > 0) {
                 document.querySelectorAll('#mainNav a').forEach((a, i) => { if(staticData.nav[i]) a.innerText = staticData.nav[i]; });
@@ -477,13 +479,11 @@
             localStorage.setItem('boxlabRCStatic', JSON.stringify(staticData));
         }
 
-        // --- Import / Export ---
         function exportData() {
             const data = localStorage.getItem('boxlabRCData') || JSON.stringify(defaultData);
             const blob = new Blob([data], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
+            const a = document.createElement('a'); a.href = url;
             a.download = `boxlab_research_coop_${new Date().toISOString().slice(0,10)}.json`;
             a.click(); URL.revokeObjectURL(url);
         }
@@ -496,14 +496,11 @@
                 try {
                     const data = JSON.parse(e.target.result);
                     if(data.intro && data.researches && data.coops) {
-                        localStorage.setItem('boxlabRCData', JSON.stringify(data));
-                        renderAll(data);
-                        alert('Data imported successfully!');
-                    } else { alert('Invalid format.'); }
+                        localStorage.setItem('boxlabRCData', JSON.stringify(data)); renderAll(data); alert('Data imported successfully!');
+                    }
                 } catch { alert('Error reading file.'); }
             };
-            reader.readAsText(file);
-            event.target.value = ''; 
+            reader.readAsText(file); event.target.value = ''; 
         }
 
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }

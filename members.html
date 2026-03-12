@@ -6,35 +6,33 @@
     <title>Members - Boxlab</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* 基础样式与色彩系统 */
         :root { --primary: #334155; --secondary: #475569; --accent: #3b82f6; --bg: #f8fafc; }
         body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; background-color: var(--bg); color: #333; display: flex; flex-direction: column; min-height: 100vh; }
+        
+        /* 统一导航栏样式 */
+        nav { background-color: var(--primary); color: white; padding: 12px 0; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.15); }
+        .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
+        .nav-logo { display: flex; align-items: center; gap: 15px; }
+        .nav-logo img { height: 46px; width: 46px; border-radius: 50%; background-color: white; object-fit: cover; border: 2px solid rgba(255, 255, 255, 0.9); box-shadow: 0 2px 5px rgba(0,0,0,0.2); transition: transform 0.3s; }
+        .nav-logo img:hover { transform: scale(1.05); }
+        .nav-brand { font-size: 1.4rem; font-weight: bold; letter-spacing: 1px; color: white; }
+        nav ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 20px; }
+        nav ul li a { color: #e2e8f0; text-decoration: none; padding: 8px 12px; border-radius: 6px; transition: 0.3s; font-weight: 500; }
+        nav ul li a:hover { background-color: rgba(255,255,255,0.1); color: white; }
+        #navLogoImg.editable.active { cursor: pointer; border: 2px dashed rgba(255,255,255,0.8); }
+        .nav-brand.editable.active { border-color: rgba(255,255,255,0.6); background-color: rgba(255,255,255,0.1); outline: 2px dashed rgba(255,255,255,0.5); padding: 2px 5px; border-radius: 4px;}
+
         header { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; padding: 50px 20px; text-align: center; }
-        nav { background-color: var(--primary); color: white; padding: 15px 0; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        nav ul { list-style: none; margin: 0; padding: 0; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
-        nav ul li a { color: white; text-decoration: none; padding: 8px 15px; border-radius: 6px; transition: background 0.3s; }
-        nav ul li a:hover { background-color: rgba(255,255,255,0.1); }
         .container { max-width: 1100px; margin: 0 auto; padding: 30px 20px; flex: 1; width: 100%; box-sizing: border-box; }
         
-        /* 管理员控制台 */
-        .admin-panel {
-            display: none; background: white; padding: 15px 20px; border-radius: 8px;
-            margin-bottom: 30px; border: 2px dashed var(--accent);
-            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
-        }
+        .admin-panel { display: none; background: white; padding: 15px 20px; border-radius: 8px; margin-bottom: 30px; border: 2px dashed var(--accent); justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
         .admin-panel.active { display: flex; }
 
-        /* 成员卡片网格系统 */
         .member-section { margin-bottom: 50px; animation: fadeIn 0.5s ease-in; }
         .section-title { border-bottom: 2px solid var(--primary); color: var(--primary); padding-bottom: 8px; margin-bottom: 25px; font-size: 1.8rem; }
         .member-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 25px; }
         
-        .member-card { 
-            background: white; border-radius: 12px; overflow: hidden; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center; 
-            transition: all 0.3s ease; position: relative; border: 1px solid #e2e8f0;
-            display: flex; flex-direction: column; height: 100%;
-        }
+        .member-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center; transition: all 0.3s ease; position: relative; border: 1px solid #e2e8f0; display: flex; flex-direction: column; height: 100%; }
         .member-card:hover { transform: translateY(-5px); box-shadow: 0 12px 20px rgba(0,0,0,0.08); border-color: #cbd5e1; }
         .member-photo { width: 100%; height: 260px; object-fit: cover; background-color: #e2e8f0; border-bottom: 3px solid var(--accent); }
         .member-info { padding: 20px 15px; flex: 1; display: flex; flex-direction: column; justify-content: flex-start; }
@@ -42,63 +40,58 @@
         .member-info .role { color: var(--accent); font-weight: 600; font-size: 0.95rem; margin-bottom: 10px; min-height: 1.2em; }
         .member-info .detail { color: #64748b; font-size: 0.9rem; line-height: 1.5; margin: 0; min-height: 1.5em; text-align: left; }
         
-        /* 编辑按钮与交互 */
-        .item-edit-btn { 
-            display: none; position: absolute; right: 10px; top: 10px; 
-            background: rgba(255,255,255,0.9); color: var(--primary); border: none; 
-            width: 36px; height: 36px; border-radius: 50%; cursor: pointer; transition: 0.2s;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2); z-index: 10;
-        }
+        .item-edit-btn { display: none; position: absolute; right: 10px; top: 10px; background: rgba(255,255,255,0.9); color: var(--primary); border: none; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; transition: 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.2); z-index: 10; }
         .item-edit-btn:hover { background: var(--primary); color: white; }
         .member-card.editable-active .item-edit-btn { display: block; }
         
         .floating-login-btn { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; border-radius: 50%; background-color: var(--primary); color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.15); font-size: 1.2rem; transition: 0.3s; }
         .floating-login-btn:hover { transform: scale(1.1); }
         
-        /* 模态框与表单 */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); z-index: 2000; backdrop-filter: blur(4px); }
         .modal-content { background: white; margin: 5vh auto; padding: 30px; border-radius: 12px; width: 90%; max-width: 500px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); animation: slideDown 0.3s ease-out; max-height: 90vh; overflow-y: auto; }
         .form-group { margin-bottom: 18px; text-align: left; }
         .form-group label { display: block; margin-bottom: 6px; font-weight: 600; color: #334155; font-size: 0.9rem; }
-        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px; box-sizing: border-box; border: 1px solid #cbd5e1; border-radius: 6px; font-family: inherit; transition: border 0.3s; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px; box-sizing: border-box; border: 1px solid #cbd5e1; border-radius: 6px; transition: border 0.3s; }
         .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
         
         .btn-group { display: flex; gap: 12px; justify-content: flex-end; margin-top: 25px; }
         .btn { padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: 0.2s; }
         .btn-primary { background-color: var(--primary); color: white; }
-        .btn-primary:hover { background-color: #1e293b; }
         .btn-success { background-color: #10b981; color: white; }
         .btn-danger { background-color: #ef4444; color: white; }
 
-        /* 编辑模式下文字高亮（全局直接可编辑） */
-        [contenteditable="true"] { 
-            outline: 2px dashed rgba(255,255,255,0.3); padding: 2px 5px; border-radius: 4px; transition: 0.2s; cursor: text;
-        }
+        .image-upload { border: 2px dashed #cbd5e1; padding: 20px; text-align: center; margin-bottom: 15px; cursor: pointer; border-radius: 8px; background: #f8fafc; transition: 0.3s; }
+        .image-upload:hover { border-color: var(--accent); background: white; }
+        #logoPreview { max-width: 100%; max-height: 200px; margin-top: 10px; border-radius: 4px; }
+
+        [contenteditable="true"] { outline: 2px dashed rgba(255,255,255,0.3); padding: 2px 5px; border-radius: 4px; transition: 0.2s; cursor: text; }
         [contenteditable="true"]:hover { outline-color: rgba(59, 130, 246, 0.5); background: rgba(255,255,255,0.05); }
         [contenteditable="true"]:focus { outline: 2px solid var(--accent); background: rgba(255,255,255,0.1); }
-        
-        /* 亮色背景下的文字高亮 */
         .text-dark [contenteditable="true"] { outline-color: rgba(51, 65, 85, 0.2); }
         .text-dark [contenteditable="true"]:hover { outline-color: var(--accent); background: rgba(59, 130, 246, 0.05); }
         .text-dark [contenteditable="true"]:focus { outline-color: var(--accent); background: rgba(59, 130, 246, 0.1); }
 
         footer { background-color: var(--primary); color: white; text-align: center; padding: 25px 0; margin-top: auto; width: 100%; }
-        
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-        
         #importFile { display: none; }
     </style>
 </head>
 <body>
     <nav>
-        <ul id="mainNav">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="publications.html">Publications</a></li>
-            <li><a href="members.html">Members</a></li>
-            <li><a href="researches.html">Researches</a></li>
-            <li><a href="join.html">Join Us</a></li>
-        </ul>
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="image_3c6abc.jpg" alt="Logo" title="Logo" id="navLogoImg">
+                <span class="nav-brand editable" contenteditable="false" id="navBrandText">Boxlab</span>
+            </div>
+            <ul id="mainNav">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="publications.html">Publications</a></li>
+                <li><a href="members.html">Members</a></li>
+                <li><a href="researches.html">Researches & Cooperation</a></li>
+                <li><a href="join.html">Join Us</a></li>
+            </ul>
+        </div>
     </nav>
 
     <header>
@@ -110,7 +103,7 @@
         <div class="admin-panel" id="adminPanel">
             <div>
                 <span style="font-weight: 600; color: var(--primary);"><i class="fas fa-magic"></i> Live Edit Active</span>
-                <span style="font-size: 0.85rem; color: #64748b; margin-left: 10px;">Click ANY text (names, roles, titles) to type and edit directly. Changes save automatically when you click away.</span>
+                <span style="font-size: 0.85rem; color: #64748b; margin-left: 10px;">Click ANY text to type and edit directly. Changes save automatically.</span>
             </div>
             <div style="display: flex; gap: 10px;">
                 <button class="btn btn-success" id="exportBtn"><i class="fas fa-download"></i> Backup Data</button>
@@ -120,15 +113,14 @@
             </div>
         </div>
 
-        <div id="membersContainer">
-            </div>
+        <div id="membersContainer"></div>
     </div>
 
     <footer>
         <p id="footerText">&copy; 2026 Boxlab. All Rights Reserved.</p>
     </footer>
 
-    <div class="floating-login-btn" id="loginTriggerBtn"><i class="fas fa-cog"></i></div>
+    <div class="floating-login-btn" id="loginTriggerBtn" title="管理员登录"><i class="fas fa-magic"></i></div>
 
     <div class="modal" id="loginModal">
         <div class="modal-content">
@@ -142,15 +134,32 @@
         </div>
     </div>
 
+    <div class="modal" id="logoEditModal">
+        <div class="modal-content">
+            <h3 style="margin-top:0; color: var(--primary);">更换 Logo</h3>
+            <div class="form-group">
+                <label>上传新 Logo</label>
+                <div class="image-upload" id="logoUploadArea">
+                    <p><i class="fas fa-cloud-upload-alt"></i> 点击上传图片</p>
+                    <input type="file" id="logoFileInput" accept="image/*" style="display: none;">
+                    <img id="logoPreview" src="" alt="预览" style="display: none;">
+                </div>
+            </div>
+            <div class="btn-group">
+                <button class="btn" style="background:#e2e8f0; color:#333;" onclick="closeModal('logoEditModal')">取消</button>
+                <button class="btn btn-primary" id="saveLogoBtn">保存</button>
+            </div>
+        </div>
+    </div>
+
     <div class="modal" id="memberSettingsModal">
         <div class="modal-content">
             <h3 id="modalTitle" style="margin-top:0; color: var(--primary);">Member Settings</h3>
             <p style="font-size: 0.85rem; color: #64748b; margin-top: -10px; margin-bottom: 20px;">Text details (Name, Role, etc.) can be edited directly on the page.</p>
             <input type="hidden" id="editMemberId">
-            
             <div class="form-group">
                 <label>Category (Group)</label>
-                <input type="text" id="mCategory" placeholder="e.g. Principal Investigator, Ph.D. Students" list="categoryHints">
+                <input type="text" id="mCategory" list="categoryHints">
                 <datalist id="categoryHints">
                     <option value="Principal Investigator">
                     <option value="Postdoctoral Researchers">
@@ -160,7 +169,6 @@
                 </datalist>
             </div>
             <div class="form-group"><label>Photo URL</label><input type="url" id="mPhoto" placeholder="https://example.com/photo.jpg"></div>
-
             <div class="btn-group">
                 <button class="btn" style="background:#e2e8f0; color:#333;" onclick="closeModal('memberSettingsModal')">Cancel</button>
                 <button class="btn btn-danger" id="deleteMember" style="display:none;">Delete Member</button>
@@ -177,7 +185,6 @@
             <div class="form-group"><label>Role / Title</label><input type="text" id="newRole" placeholder="Ph.D. Candidate"></div>
             <div class="form-group"><label>Details</label><textarea id="newDetail" rows="2" placeholder="Research interests..."></textarea></div>
             <div class="form-group"><label>Photo URL</label><input type="url" id="newPhoto" placeholder="(Optional) URL to image"></div>
-
             <div class="btn-group">
                 <button class="btn" style="background:#e2e8f0; color:#333;" onclick="closeModal('addMemberModal')">Cancel</button>
                 <button class="btn btn-primary" id="saveNewMember">Add Member</button>
@@ -187,14 +194,11 @@
 
     <script>
         let isEditMode = false;
-
         const defaultMembers = [
             { id: "1", category: "Principal Investigator", name: "Dr. Name", role: "Principal Investigator", detail: "Research Focus: Polyurethane Synthesis, Diels-Alder Self-Healing Polymers, Flexible Sensors.", img: "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=professional%20academic%20portrait%2C%20male%2C%20lab%20background&image_size=portrait_3_4" },
             { id: "2", category: "Postdoctoral Researchers", name: "Dr. Alice Chen", role: "Postdoctoral Fellow", detail: "Research Focus: Carbon Nanotube Aerogel Assembly & Composite Materials.", img: "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=female%20scientist%20portrait%2C%20professional%2C%20clean%20background&image_size=portrait_3_4" },
             { id: "3", category: "Ph.D. Students", name: "Bob Smith", role: "Ph.D. Candidate (Year 3)", detail: "Research Focus: Ion-based Flexible Sensors using PU composites.", img: "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=young%20male%20student%20portrait%2C%20smiling%2C%20university%20background&image_size=portrait_3_4" }
         ];
-
-        // 基础分类顺序，用户新增的分类会自动追加到后面
         const baseCategoryOrder = ["Principal Investigator", "Postdoctoral Researchers", "Ph.D. Students", "Master Students", "Alumni"];
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -207,9 +211,30 @@
             document.getElementById('submitLogin').onclick = handleLogin;
             window.onclick = (e) => { if (e.target.classList.contains('modal')) e.target.style.display = 'none'; };
 
+            // Logo 上传
+            document.getElementById('logoUploadArea').addEventListener('click', () => document.getElementById('logoFileInput').click());
+            document.getElementById('logoFileInput').addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const preview = document.getElementById('logoPreview');
+                        preview.src = e.target.result; preview.style.display = 'block';
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+            document.getElementById('saveLogoBtn').addEventListener('click', function() {
+                const newSrc = document.getElementById('logoPreview').src;
+                if(newSrc) {
+                    document.getElementById('navLogoImg').src = newSrc;
+                    saveGlobalNav();
+                }
+                closeModal('logoEditModal');
+            });
+
             document.getElementById('addMemberBtn').onclick = () => document.getElementById('addMemberModal').style.display = 'block';
             document.getElementById('saveNewMember').onclick = addNewMember;
-            
             document.getElementById('saveMemberSettings').onclick = saveMemberSettings;
             document.getElementById('deleteMember').onclick = deleteMemberEntry;
             
@@ -229,24 +254,54 @@
             document.getElementById('loginTriggerBtn').style.display = 'none';
             document.getElementById('adminPanel').style.display = 'flex';
             
-            // 启用头尾部的文字直接编辑
             ['pageTitle', 'pageSubtitle', 'footerText'].forEach(id => {
                 const el = document.getElementById(id);
-                el.contentEditable = true;
-                el.addEventListener('blur', saveStaticContent);
+                el.contentEditable = true; el.addEventListener('blur', saveStaticContent);
             });
             
             document.querySelectorAll('#mainNav a').forEach(a => {
-                a.contentEditable = true;
-                a.addEventListener('blur', saveStaticContent);
+                a.contentEditable = true; a.addEventListener('blur', saveStaticContent);
             });
+
+            const navBrand = document.getElementById('navBrandText');
+            if(navBrand) {
+                navBrand.contentEditable = true;
+                navBrand.classList.add('active');
+                navBrand.addEventListener('blur', saveGlobalNav);
+            }
             
-            // 重新渲染列表以应用成员的 inline-editable 属性
+            const navLogo = document.getElementById('navLogoImg');
+            if(navLogo) {
+                navLogo.classList.add('editable', 'active');
+                navLogo.title = '点击修改 Logo';
+                navLogo.onclick = function() {
+                    if (!isEditMode) return;
+                    document.getElementById('logoPreview').src = this.src;
+                    document.getElementById('logoPreview').style.display = 'block';
+                    document.getElementById('logoEditModal').style.display = 'block';
+                };
+            }
+            
             renderMembers(getMembersData());
         }
 
-        // --- 直编保存逻辑 (Live Edit Save) ---
-        // 直接在页面上修改文字，失去焦点时触发此函数自动保存到 localStorage
+        // 全局导航存储同步
+        function loadGlobalNav() {
+            const savedData = localStorage.getItem('boxlabData');
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                if(data.navLogoSrc) document.getElementById('navLogoImg').src = data.navLogoSrc;
+                if(data.navBrand) document.getElementById('navBrandText').textContent = data.navBrand;
+            }
+        }
+        function saveGlobalNav() {
+            const savedData = localStorage.getItem('boxlabData');
+            let data = savedData ? JSON.parse(savedData) : {};
+            data.navLogoSrc = document.getElementById('navLogoImg').src;
+            data.navBrand = document.getElementById('navBrandText').textContent;
+            localStorage.setItem('boxlabData', JSON.stringify(data));
+        }
+
         function updateInlineText(id, field, element) {
             const newValue = element.innerText.trim();
             let allMembers = getMembersData();
@@ -257,53 +312,37 @@
             }
         }
 
-        // 修改分类的大标题
         function updateCategoryTitle(oldCategory, element) {
             const newCategory = element.innerText.trim();
             if(!newCategory || newCategory === oldCategory) return;
-            
             let allMembers = getMembersData();
-            allMembers.forEach(m => {
-                if(m.category === oldCategory) m.category = newCategory;
-            });
+            allMembers.forEach(m => { if(m.category === oldCategory) m.category = newCategory; });
             localStorage.setItem('boxlabMembersV2', JSON.stringify(allMembers));
-            renderMembers(allMembers); // 重新渲染以更新布局
+            renderMembers(allMembers);
         }
-
-        // --- 核心 CRUD (照片、转移、新增、删除) ---
 
         function addNewMember() {
             const name = document.getElementById('newName').value.trim();
-            if (!name) { alert('Name is required!'); return; }
-
+            if (!name) return;
             const data = {
-                id: Date.now().toString(),
-                category: document.getElementById('newCategory').value.trim() || "Uncategorized",
-                name: name,
-                role: document.getElementById('newRole').value.trim(),
+                id: Date.now().toString(), category: document.getElementById('newCategory').value.trim() || "Uncategorized",
+                name: name, role: document.getElementById('newRole').value.trim(),
                 detail: document.getElementById('newDetail').value.trim(),
                 img: document.getElementById('newPhoto').value.trim() || 'https://via.placeholder.com/300x400.png?text=No+Photo'
             };
-
-            let allMembers = getMembersData();
-            allMembers.push(data);
+            let allMembers = getMembersData(); allMembers.push(data);
             localStorage.setItem('boxlabMembersV2', JSON.stringify(allMembers));
-            
-            // 清空表单
             document.querySelectorAll('#addMemberModal input, #addMemberModal textarea').forEach(el => el.value='');
-            closeModal('addMemberModal');
-            renderMembers(allMembers);
+            closeModal('addMemberModal'); renderMembers(allMembers);
         }
 
         function openSettingsModal(id) {
             if(!isEditMode) return;
             const member = getMembersData().find(m => m.id === id);
             if(!member) return;
-
             document.getElementById('editMemberId').value = member.id;
             document.getElementById('mCategory').value = member.category;
             document.getElementById('mPhoto').value = member.img;
-            
             document.getElementById('deleteMember').style.display = 'block';
             document.getElementById('memberSettingsModal').style.display = 'block';
         }
@@ -311,70 +350,46 @@
         function saveMemberSettings() {
             const id = document.getElementById('editMemberId').value;
             let allMembers = getMembersData();
-            let memberIndex = allMembers.findIndex(m => m.id === id);
-            
-            if(memberIndex > -1) {
-                allMembers[memberIndex].category = document.getElementById('mCategory').value.trim() || "Uncategorized";
-                allMembers[memberIndex].img = document.getElementById('mPhoto').value.trim() || 'https://via.placeholder.com/300x400.png?text=No+Photo';
-                
+            let index = allMembers.findIndex(m => m.id === id);
+            if(index > -1) {
+                allMembers[index].category = document.getElementById('mCategory').value.trim() || "Uncategorized";
+                allMembers[index].img = document.getElementById('mPhoto').value.trim() || 'https://via.placeholder.com/300x400.png?text=No+Photo';
                 localStorage.setItem('boxlabMembersV2', JSON.stringify(allMembers));
-                closeModal('memberSettingsModal');
-                renderMembers(allMembers);
+                closeModal('memberSettingsModal'); renderMembers(allMembers);
             }
         }
 
         function deleteMemberEntry() {
             if(!confirm('Delete this member completely?')) return;
             const id = document.getElementById('editMemberId').value;
-            let allMembers = getMembersData();
-            allMembers = allMembers.filter(m => m.id !== id);
+            let allMembers = getMembersData().filter(m => m.id !== id);
             localStorage.setItem('boxlabMembersV2', JSON.stringify(allMembers));
-            closeModal('memberSettingsModal');
-            renderMembers(allMembers);
+            closeModal('memberSettingsModal'); renderMembers(allMembers);
         }
 
-        // --- 渲染与加载逻辑 ---
-
-        function getMembersData() {
-            return JSON.parse(localStorage.getItem('boxlabMembersV2')) || defaultMembers;
-        }
+        function getMembersData() { return JSON.parse(localStorage.getItem('boxlabMembersV2')) || defaultMembers; }
 
         function renderMembers(members) {
             const container = document.getElementById('membersContainer');
             container.innerHTML = '';
-            
             const grouped = {};
-            members.forEach(m => {
-                if(!grouped[m.category]) grouped[m.category] = [];
-                grouped[m.category].push(m);
-            });
-
-            // 动态合并分类：先显示基础分类，再显示用户自定义的新分类
-            const activeCategories = Object.keys(grouped);
-            const displayOrder = [...new Set([...baseCategoryOrder, ...activeCategories])];
+            members.forEach(m => { if(!grouped[m.category]) grouped[m.category] = []; grouped[m.category].push(m); });
+            const displayOrder = [...new Set([...baseCategoryOrder, ...Object.keys(grouped)])];
 
             displayOrder.forEach(category => {
                 if(grouped[category] && grouped[category].length > 0) {
-                    const section = document.createElement('div');
-                    section.className = 'member-section';
-                    
-                    // 分类标题，如果是编辑模式则可修改
+                    const section = document.createElement('div'); section.className = 'member-section';
                     const editAttr = isEditMode ? `contenteditable="true" onblur="updateCategoryTitle('${category}', this)"` : '';
-                    section.innerHTML = `<h2 class="section-title" ${editAttr} title="Click to rename category">${category}</h2>`;
-                    
-                    const grid = document.createElement('div');
-                    grid.className = 'member-grid';
+                    section.innerHTML = `<h2 class="section-title" ${editAttr}>${category}</h2>`;
+                    const grid = document.createElement('div'); grid.className = 'member-grid';
                     
                     grouped[category].forEach(member => {
                         const card = document.createElement('div');
                         card.className = `member-card ${isEditMode ? 'editable-active' : ''}`;
-                        
-                        // 文字直编的核心：根据 isEditMode 挂载 contenteditable 和 onblur
-                        const textEdit = isEditMode ? 'contenteditable="true" title="Click to edit text"' : '';
-                        
+                        const textEdit = isEditMode ? 'contenteditable="true"' : '';
                         card.innerHTML = `
-                            <button class="item-edit-btn" onclick="openSettingsModal('${member.id}')" title="Change Photo / Move / Delete"><i class="fas fa-camera"></i></button>
-                            <img src="${member.img}" class="member-photo" alt="Photo" onerror="this.src='https://via.placeholder.com/300x400.png?text=Image+Error'">
+                            <button class="item-edit-btn" onclick="openSettingsModal('${member.id}')" title="Change Settings"><i class="fas fa-camera"></i></button>
+                            <img src="${member.img}" class="member-photo" onerror="this.src='https://via.placeholder.com/300x400.png?text=Error'">
                             <div class="member-info">
                                 <h3 ${textEdit} onblur="updateInlineText('${member.id}', 'name', this)">${member.name}</h3>
                                 <div class="role" ${textEdit} onblur="updateInlineText('${member.id}', 'role', this)">${member.role}</div>
@@ -383,23 +398,20 @@
                         `;
                         grid.appendChild(card);
                     });
-                    
-                    section.appendChild(grid);
-                    container.appendChild(section);
+                    section.appendChild(grid); container.appendChild(section);
                 }
             });
         }
 
         function loadAllContent() {
+            loadGlobalNav();
             renderMembers(getMembersData());
             const staticData = JSON.parse(localStorage.getItem('boxlabMembersStatic') || '{}');
             if(staticData.title) document.getElementById('pageTitle').innerText = staticData.title;
             if(staticData.subtitle) document.getElementById('pageSubtitle').innerText = staticData.subtitle;
             if(staticData.footer) document.getElementById('footerText').innerText = staticData.footer;
             if(staticData.nav && staticData.nav.length > 0) {
-                document.querySelectorAll('#mainNav a').forEach((a, i) => {
-                    if(staticData.nav[i]) a.innerText = staticData.nav[i];
-                });
+                document.querySelectorAll('#mainNav a').forEach((a, i) => { if(staticData.nav[i]) a.innerText = staticData.nav[i]; });
             }
         }
 
@@ -413,13 +425,11 @@
             localStorage.setItem('boxlabMembersStatic', JSON.stringify(staticData));
         }
 
-        // --- 导入导出保护数据 ---
         function exportData() {
             const data = localStorage.getItem('boxlabMembersV2') || JSON.stringify(defaultMembers);
             const blob = new Blob([data], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
+            const a = document.createElement('a'); a.href = url;
             a.download = `boxlab_members_${new Date().toISOString().slice(0,10)}.json`;
             a.click(); URL.revokeObjectURL(url);
         }
@@ -433,13 +443,11 @@
                     const data = JSON.parse(e.target.result);
                     if(Array.isArray(data)) {
                         localStorage.setItem('boxlabMembersV2', JSON.stringify(data));
-                        renderMembers(data);
-                        alert('Data imported successfully!');
-                    } else { alert('Invalid format.'); }
+                        renderMembers(data); alert('Data imported successfully!');
+                    }
                 } catch { alert('Error reading file.'); }
             };
-            reader.readAsText(file);
-            event.target.value = ''; 
+            reader.readAsText(file); event.target.value = ''; 
         }
 
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }

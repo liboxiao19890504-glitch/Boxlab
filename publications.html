@@ -6,95 +6,89 @@
     <title>Publications - Boxlab</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* 基础样式与色彩系统 */
         :root { --primary: #334155; --secondary: #475569; --accent: #3b82f6; --bg: #f8fafc; }
         body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; background-color: var(--bg); color: #333; }
+        
+        /* 统一导航栏样式 */
+        nav { background-color: var(--primary); color: white; padding: 12px 0; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.15); }
+        .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
+        .nav-logo { display: flex; align-items: center; gap: 15px; }
+        .nav-logo img { height: 46px; width: 46px; border-radius: 50%; background-color: white; object-fit: cover; border: 2px solid rgba(255, 255, 255, 0.9); box-shadow: 0 2px 5px rgba(0,0,0,0.2); transition: transform 0.3s; }
+        .nav-logo img:hover { transform: scale(1.05); }
+        .nav-brand { font-size: 1.4rem; font-weight: bold; letter-spacing: 1px; color: white; }
+        nav ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 20px; }
+        nav ul li a { color: #e2e8f0; text-decoration: none; padding: 8px 12px; border-radius: 6px; transition: 0.3s; font-weight: 500; }
+        nav ul li a:hover { background-color: rgba(255,255,255,0.1); color: white; }
+        #navLogoImg.editable.active { cursor: pointer; border: 2px dashed rgba(255,255,255,0.8); }
+        .nav-brand.editable.active { border-color: rgba(255,255,255,0.6); background-color: rgba(255,255,255,0.1); outline: 2px dashed rgba(255,255,255,0.5); padding: 2px 5px; border-radius: 4px;}
+
         header { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; padding: 50px 20px; text-align: center; }
-        nav { background-color: var(--primary); color: white; padding: 15px 0; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        nav ul { list-style: none; margin: 0; padding: 0; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
-        nav ul li a { color: white; text-decoration: none; padding: 8px 15px; border-radius: 6px; transition: background 0.3s; }
-        nav ul li a:hover { background-color: rgba(255,255,255,0.1); }
         .container { max-width: 1000px; margin: 0 auto; padding: 30px 20px; min-height: 60vh; }
         
-        /* 论文列表排版 */
         .pub-year-section { margin-bottom: 40px; animation: fadeIn 0.5s ease-in; }
         .year-title { border-bottom: 2px solid var(--primary); color: var(--primary); padding-bottom: 8px; margin-bottom: 25px; font-size: 1.8rem; }
-        .pub-item { 
-            background: white; padding: 25px; border-radius: 10px; margin-bottom: 20px; 
-            box-shadow: 0 4px 6px rgba(0,0,0,0.02); border: 1px solid #e2e8f0;
-            position: relative; transition: all 0.3s ease; display: flex; gap: 15px;
-        }
+        .pub-item { background: white; padding: 25px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); border: 1px solid #e2e8f0; position: relative; transition: all 0.3s ease; display: flex; gap: 15px; }
         .pub-item:hover { transform: translateY(-3px); box-shadow: 0 10px 15px rgba(0,0,0,0.05); border-color: #cbd5e1; }
         .pub-icon { color: var(--secondary); font-size: 1.5rem; margin-top: 3px; }
         .pub-content { flex: 1; }
         .pub-title { font-weight: 700; color: #0f172a; font-size: 1.1rem; margin-bottom: 8px; display: block; line-height: 1.4; }
         .pub-authors { color: #475569; font-size: 0.95em; margin-bottom: 5px; }
         .pub-journal { font-style: italic; color: #059669; font-weight: 500; margin-bottom: 10px; }
-        .pub-link { 
-            display: inline-flex; align-items: center; gap: 5px; color: var(--accent); 
-            text-decoration: none; font-size: 0.9em; font-weight: 500;
-            background: #eff6ff; padding: 5px 12px; border-radius: 20px; transition: 0.2s;
-        }
+        .pub-link { display: inline-flex; align-items: center; gap: 5px; color: var(--accent); text-decoration: none; font-size: 0.9em; font-weight: 500; background: #eff6ff; padding: 5px 12px; border-radius: 20px; transition: 0.2s; }
         .pub-link:hover { background: #dbeafe; }
 
-        /* 管理员控制台 (仅编辑模式显示) */
-        .admin-panel {
-            display: none; background: white; padding: 15px 20px; border-radius: 8px;
-            margin-bottom: 30px; border: 2px dashed var(--accent);
-            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
-        }
+        .admin-panel { display: none; background: white; padding: 15px 20px; border-radius: 8px; margin-bottom: 30px; border: 2px dashed var(--accent); justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
         .admin-panel.active { display: flex; }
-        
-        /* 编辑按钮与模态框 */
-        .item-edit-btn { 
-            display: none; position: absolute; right: 20px; top: 20px; 
-            background: #f1f5f9; color: var(--primary); border: none; 
-            padding: 8px; border-radius: 6px; cursor: pointer; transition: 0.2s;
-        }
+        .item-edit-btn { display: none; position: absolute; right: 20px; top: 20px; background: #f1f5f9; color: var(--primary); border: none; padding: 8px; border-radius: 6px; cursor: pointer; transition: 0.2s; }
         .item-edit-btn:hover { background: #e2e8f0; }
         .pub-item.editable-active .item-edit-btn { display: block; }
         
         .floating-login-btn { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; border-radius: 50%; background-color: var(--primary); color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.15); font-size: 1.2rem; transition: 0.3s; }
-        .floating-login-btn:hover { transform: scale(1.1); }
+        .floating-login-btn:hover { transform: scale(1.1); background-color: #1e293b; }
         
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); z-index: 2000; backdrop-filter: blur(4px); }
         .modal-content { background: white; margin: 5vh auto; padding: 30px; border-radius: 12px; width: 90%; max-width: 500px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); animation: slideDown 0.3s ease-out; }
         .form-group { margin-bottom: 18px; }
         .form-group label { display: block; margin-bottom: 6px; font-weight: 600; color: #334155; font-size: 0.9rem; }
-        .form-group input, .form-group textarea { width: 100%; padding: 12px; box-sizing: border-box; border: 1px solid #cbd5e1; border-radius: 6px; font-family: inherit; transition: border 0.3s; }
+        .form-group input, .form-group textarea { width: 100%; padding: 12px; box-sizing: border-box; border: 1px solid #cbd5e1; border-radius: 6px; transition: border 0.3s; }
         .form-group input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
         
         .btn-group { display: flex; gap: 12px; justify-content: flex-end; margin-top: 25px; }
         .btn { padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: 0.2s; }
         .btn-primary { background-color: var(--primary); color: white; }
-        .btn-primary:hover { background-color: #1e293b; }
         .btn-success { background-color: #10b981; color: white; }
         .btn-danger { background-color: #ef4444; color: white; }
 
-        /* 编辑模式下的高亮样式 */
+        .image-upload { border: 2px dashed #cbd5e1; padding: 20px; text-align: center; margin-bottom: 15px; cursor: pointer; border-radius: 8px; background: #f8fafc; transition: 0.3s; }
+        .image-upload:hover { border-color: var(--accent); background: white; }
+        #logoPreview { max-width: 100%; max-height: 200px; margin-top: 10px; border-radius: 4px; }
+
         [contenteditable="true"] { outline: 2px dashed rgba(255,255,255,0.5); padding: 2px 5px; border-radius: 4px; transition: 0.2s; }
         [contenteditable="true"]:focus { outline: 2px solid var(--accent); background: rgba(255,255,255,0.1); }
         .text-dark [contenteditable="true"] { outline-color: #cbd5e1; }
         .text-dark [contenteditable="true"]:focus { outline-color: var(--accent); background: rgba(59, 130, 246, 0.05); }
 
         footer { background-color: var(--primary); color: white; text-align: center; padding: 25px 0; margin-top: auto; }
-        
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-        
-        /* 隐藏文件上传 input */
         #importFile { display: none; }
     </style>
 </head>
 <body>
     <nav>
-        <ul id="mainNav">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="publications.html">Publications</a></li>
-            <li><a href="members.html">Members</a></li>
-            <li><a href="researches.html">Researches</a></li>
-            <li><a href="join.html">Join Us</a></li>
-        </ul>
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="image_3c6abc.jpg" alt="Logo" title="Logo" id="navLogoImg">
+                <span class="nav-brand editable" contenteditable="false" id="navBrandText">Boxlab</span>
+            </div>
+            <ul id="mainNav">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="publications.html">Publications</a></li>
+                <li><a href="members.html">Members</a></li>
+                <li><a href="researches.html">Researches & Cooperation</a></li>
+                <li><a href="join.html">Join Us</a></li>
+            </ul>
+        </div>
     </nav>
 
     <header>
@@ -116,15 +110,14 @@
             </div>
         </div>
 
-        <div id="pubList">
-            </div>
+        <div id="pubList"></div>
     </div>
 
     <footer>
         <p id="footerText">&copy; 2026 Boxlab. All Rights Reserved.</p>
     </footer>
 
-    <div class="floating-login-btn" id="loginTriggerBtn"><i class="fas fa-cog"></i></div>
+    <div class="floating-login-btn" id="loginTriggerBtn" title="管理员登录"><i class="fas fa-magic"></i></div>
 
     <div class="modal" id="loginModal">
         <div class="modal-content">
@@ -138,6 +131,24 @@
         </div>
     </div>
 
+    <div class="modal" id="logoEditModal">
+        <div class="modal-content">
+            <h3 style="margin-top:0; color: var(--primary);">更换 Logo</h3>
+            <div class="form-group">
+                <label>上传新 Logo</label>
+                <div class="image-upload" id="logoUploadArea">
+                    <p><i class="fas fa-cloud-upload-alt"></i> 点击上传图片</p>
+                    <input type="file" id="logoFileInput" accept="image/*" style="display: none;">
+                    <img id="logoPreview" src="" alt="预览" style="display: none;">
+                </div>
+            </div>
+            <div class="btn-group">
+                <button class="btn" style="background:#e2e8f0; color:#333;" onclick="closeModal('logoEditModal')">取消</button>
+                <button class="btn btn-primary" id="saveLogoBtn">保存</button>
+            </div>
+        </div>
+    </div>
+
     <div class="modal" id="pubEditModal">
         <div class="modal-content">
             <h3 id="modalTitle" style="margin-top:0; color: var(--primary);">Edit Publication</h3>
@@ -146,8 +157,8 @@
             <div class="form-group"><label>Authors</label><input type="text" id="editAuthors" placeholder="A. Smith, B. Doe*"></div>
             <div class="form-group"><label>Journal / Details</label><input type="text" id="editJournal" placeholder="Nature Materials, 2026, 15, 123-130"></div>
             <div class="form-group"><label>DOI Link (URL)</label><input type="url" id="editDoi" placeholder="https://doi.org/10..."></div>
-            
-            <input type="hidden" id="editOriginalTitle"> <div class="btn-group">
+            <input type="hidden" id="editOriginalTitle">
+            <div class="btn-group">
                 <button class="btn" style="background:#e2e8f0; color:#333;" onclick="closeModal('pubEditModal')">Cancel</button>
                 <button class="btn btn-danger" id="deletePub" style="display:none;">Delete</button>
                 <button class="btn btn-primary" id="savePub">Save Changes</button>
@@ -157,8 +168,6 @@
 
     <script>
         let isEditMode = false;
-
-        // 默认数据，契合聚氨酯、气凝胶、Diels-Alder自修复相关研究
         const defaultData = [
             { year: "2026", title: "Structurally Controlled Self-Healing Polyurethane Composites via Diels-Alder Click Chemistry", authors: "Your Name*, Student A, Colleague B", journal: "Advanced Functional Materials, 2026, 36(4), 2501234", doi: "#" },
             { year: "2026", title: "Carbon Nanotube Aerogel Integrated Polyurethane for Highly Sensitive Flexible Compression Sensors", authors: "Student C, Your Name*, Colleague D", journal: "ACS Nano, 2026, 20(2), 1542-1553", doi: "#" },
@@ -171,21 +180,38 @@
         });
 
         function setupEventListeners() {
-            // 登录相关
             document.getElementById('loginTriggerBtn').onclick = () => document.getElementById('loginModal').style.display = 'block';
             document.getElementById('submitLogin').onclick = handleLogin;
             
-            // 模态框点击外部关闭
-            window.onclick = (e) => {
-                if (e.target.classList.contains('modal')) e.target.style.display = 'none';
-            };
+            window.onclick = (e) => { if (e.target.classList.contains('modal')) e.target.style.display = 'none'; };
 
-            // 数据管理相关
+            // Logo 上传
+            document.getElementById('logoUploadArea').addEventListener('click', () => document.getElementById('logoFileInput').click());
+            document.getElementById('logoFileInput').addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const preview = document.getElementById('logoPreview');
+                        preview.src = e.target.result;
+                        preview.style.display = 'block';
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+            document.getElementById('saveLogoBtn').addEventListener('click', function() {
+                const newSrc = document.getElementById('logoPreview').src;
+                if(newSrc) {
+                    document.getElementById('navLogoImg').src = newSrc;
+                    saveGlobalNav();
+                }
+                closeModal('logoEditModal');
+            });
+
             document.getElementById('addPubBtn').onclick = openAddModal;
             document.getElementById('savePub').onclick = savePublicationEntry;
             document.getElementById('deletePub').onclick = deletePublicationEntry;
             
-            // 导入导出相关
             document.getElementById('exportBtn').onclick = exportData;
             document.getElementById('importFile').addEventListener('change', importData);
         }
@@ -194,9 +220,7 @@
             if(document.getElementById('username').value === 'admin' && document.getElementById('password').value === 'password') {
                 enableEditMode();
                 document.getElementById('loginModal').style.display = 'none';
-            } else { 
-                alert('Invalid credentials. (Hint: admin / password)'); 
-            }
+            } else { alert('Invalid credentials.'); }
         }
 
         function enableEditMode() {
@@ -204,24 +228,53 @@
             document.getElementById('loginTriggerBtn').style.display = 'none';
             document.getElementById('adminPanel').style.display = 'flex';
             
-            // 启用静态文字编辑 (只有在编辑模式下才绑定 input 事件，防止平时浪费性能)
-            const editableIds = ['pageTitle', 'pageSubtitle', 'footerText'];
-            editableIds.forEach(id => {
+            ['pageTitle', 'pageSubtitle', 'footerText'].forEach(id => {
                 const el = document.getElementById(id);
-                el.contentEditable = true;
-                el.addEventListener('blur', saveStaticContent); // 失去焦点时保存
+                el.contentEditable = true; el.addEventListener('blur', saveStaticContent);
             });
             
             document.querySelectorAll('#mainNav a').forEach(a => {
-                a.contentEditable = true;
-                a.addEventListener('blur', saveStaticContent);
+                a.contentEditable = true; a.addEventListener('blur', saveStaticContent);
             });
+
+            const navBrand = document.getElementById('navBrandText');
+            if(navBrand) {
+                navBrand.contentEditable = true;
+                navBrand.classList.add('active');
+                navBrand.addEventListener('blur', saveGlobalNav);
+            }
             
-            // 为所有的论文条目加上编辑按钮
+            const navLogo = document.getElementById('navLogoImg');
+            if(navLogo) {
+                navLogo.classList.add('editable', 'active');
+                navLogo.title = '点击修改 Logo';
+                navLogo.onclick = function() {
+                    if (!isEditMode) return;
+                    document.getElementById('logoPreview').src = this.src;
+                    document.getElementById('logoPreview').style.display = 'block';
+                    document.getElementById('logoEditModal').style.display = 'block';
+                };
+            }
+            
             document.querySelectorAll('.pub-item').forEach(el => el.classList.add('editable-active'));
         }
 
-        // --- 核心 CRUD 逻辑 ---
+        // 全局共享导航保存
+        function loadGlobalNav() {
+            const savedData = localStorage.getItem('boxlabData');
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                if(data.navLogoSrc) document.getElementById('navLogoImg').src = data.navLogoSrc;
+                if(data.navBrand) document.getElementById('navBrandText').textContent = data.navBrand;
+            }
+        }
+        function saveGlobalNav() {
+            const savedData = localStorage.getItem('boxlabData');
+            let data = savedData ? JSON.parse(savedData) : {};
+            data.navLogoSrc = document.getElementById('navLogoImg').src;
+            data.navBrand = document.getElementById('navBrandText').textContent;
+            localStorage.setItem('boxlabData', JSON.stringify(data));
+        }
 
         function openAddModal() {
             document.getElementById('modalTitle').innerText = "Add New Publication";
@@ -230,26 +283,22 @@
             document.getElementById('editAuthors').value = '';
             document.getElementById('editJournal').value = '';
             document.getElementById('editDoi').value = '';
-            document.getElementById('editOriginalTitle').value = ''; // 标记为新增
-            
+            document.getElementById('editOriginalTitle').value = ''; 
             document.getElementById('deletePub').style.display = 'none';
             document.getElementById('pubEditModal').style.display = 'block';
         }
 
         function openEditModal(title) {
             if(!isEditMode) return;
-            const allPubs = getPubsData();
-            const pub = allPubs.find(p => p.title === title);
+            const pub = getPubsData().find(p => p.title === title);
             if(!pub) return;
-
             document.getElementById('modalTitle').innerText = "Edit Publication";
             document.getElementById('pubYear').value = pub.year;
             document.getElementById('editPubTitle').value = pub.title;
             document.getElementById('editAuthors').value = pub.authors;
             document.getElementById('editJournal').value = pub.journal;
             document.getElementById('editDoi').value = pub.doi;
-            document.getElementById('editOriginalTitle').value = pub.title; // 记录原标题以便修改
-            
+            document.getElementById('editOriginalTitle').value = pub.title; 
             document.getElementById('deletePub').style.display = 'block';
             document.getElementById('pubEditModal').style.display = 'block';
         }
@@ -262,76 +311,46 @@
                 journal: document.getElementById('editJournal').value.trim(),
                 doi: document.getElementById('editDoi').value.trim()
             };
-
-            if (!data.title) { alert('Title is required!'); return; }
-
+            if (!data.title) return;
             const originalTitle = document.getElementById('editOriginalTitle').value;
             let allPubs = getPubsData();
-            
             if (originalTitle) {
-                // 编辑现有：找到并替换
                 const index = allPubs.findIndex(p => p.title === originalTitle);
                 if(index > -1) allPubs[index] = data;
-            } else {
-                // 新增
-                allPubs.push(data);
-            }
-            
+            } else { allPubs.push(data); }
             localStorage.setItem('boxlabPubs', JSON.stringify(allPubs));
-            closeModal('pubEditModal');
-            renderPubs(allPubs);
-            if(isEditMode) enableEditMode(); // 重新应用编辑按钮
+            closeModal('pubEditModal'); renderPubs(allPubs);
+            if(isEditMode) enableEditMode(); 
         }
 
         function deletePublicationEntry() {
             if(!confirm('Are you sure you want to delete this publication?')) return;
-            
             const originalTitle = document.getElementById('editOriginalTitle').value;
-            let allPubs = getPubsData();
-            allPubs = allPubs.filter(p => p.title !== originalTitle);
-            
+            let allPubs = getPubsData().filter(p => p.title !== originalTitle);
             localStorage.setItem('boxlabPubs', JSON.stringify(allPubs));
-            closeModal('pubEditModal');
-            renderPubs(allPubs);
+            closeModal('pubEditModal'); renderPubs(allPubs);
             if(isEditMode) enableEditMode();
         }
 
-        // --- 渲染与加载逻辑 ---
-
-        function getPubsData() {
-            const saved = localStorage.getItem('boxlabPubs');
-            return saved ? JSON.parse(saved) : defaultData;
-        }
+        function getPubsData() { return JSON.parse(localStorage.getItem('boxlabPubs')) || defaultData; }
 
         function renderPubs(pubs) {
             const container = document.getElementById('pubList');
             container.innerHTML = '';
-            
-            // 按年份降序排序
             const sortedPubs = [...pubs].sort((a, b) => parseInt(b.year) - parseInt(a.year));
-            
             let currentYear = "";
             sortedPubs.forEach(item => {
-                // 渲染年份分隔线
                 if(item.year !== currentYear) {
                     currentYear = item.year;
                     const yearSec = document.createElement('div');
-                    yearSec.className = 'pub-year-section';
-                    yearSec.dataset.year = currentYear;
-                    
-                    // 这里允许对年份文本进行编辑
+                    yearSec.className = 'pub-year-section'; yearSec.dataset.year = currentYear;
                     yearSec.innerHTML = `<h2 class="year-title" ${isEditMode ? 'contenteditable="true"' : ''} onblur="updateYear(this, '${currentYear}')">${currentYear}</h2><div class="year-items-container"></div>`;
                     container.appendChild(yearSec);
                 }
-                
                 const secContainer = container.querySelector(`.pub-year-section[data-year="${currentYear}"] .year-items-container`);
-                
                 const itemDiv = document.createElement('div');
                 itemDiv.className = `pub-item ${isEditMode ? 'editable-active' : ''}`;
-                
-                // 修复单双引号导致传参错误的问题，使用 encodeURIComponent
                 const safeTitle = encodeURIComponent(item.title).replace(/'/g, "%27");
-                
                 itemDiv.innerHTML = `
                     <div class="pub-icon"><i class="fas fa-file-alt"></i></div>
                     <div class="pub-content">
@@ -340,36 +359,30 @@
                         <div class="pub-journal">${item.journal}</div>
                         ${item.doi && item.doi !== '#' ? `<a href="${item.doi}" class="pub-link" target="_blank"><i class="fas fa-link"></i> Link / DOI</a>` : ''}
                     </div>
-                    <button class="item-edit-btn" onclick="openEditModal(decodeURIComponent('${safeTitle}'))" title="Edit this paper"><i class="fas fa-pencil-alt"></i></button>
+                    <button class="item-edit-btn" onclick="openEditModal(decodeURIComponent('${safeTitle}'))" title="Edit"><i class="fas fa-pencil-alt"></i></button>
                 `;
                 secContainer.appendChild(itemDiv);
             });
         }
 
-        // 修改年份快捷操作
         function updateYear(el, oldYear) {
             const newYear = el.innerText.trim();
             if(newYear === oldYear || !newYear) return;
-            
             let allPubs = getPubsData();
             allPubs.forEach(p => { if(p.year === oldYear) p.year = newYear; });
             localStorage.setItem('boxlabPubs', JSON.stringify(allPubs));
-            renderPubs(allPubs);
-            if(isEditMode) enableEditMode();
+            renderPubs(allPubs); if(isEditMode) enableEditMode();
         }
 
         function loadAllContent() {
+            loadGlobalNav();
             renderPubs(getPubsData());
-
-            // 加载静态文字 (如果没有则保留HTML里的默认值)
             const staticData = JSON.parse(localStorage.getItem('boxlabPubsStatic') || '{}');
             if(staticData.title) document.getElementById('pageTitle').innerText = staticData.title;
             if(staticData.subtitle) document.getElementById('pageSubtitle').innerText = staticData.subtitle;
             if(staticData.footer) document.getElementById('footerText').innerText = staticData.footer;
             if(staticData.nav && staticData.nav.length > 0) {
-                document.querySelectorAll('#mainNav a').forEach((a, i) => {
-                    if(staticData.nav[i]) a.innerText = staticData.nav[i];
-                });
+                document.querySelectorAll('#mainNav a').forEach((a, i) => { if(staticData.nav[i]) a.innerText = staticData.nav[i]; });
             }
         }
 
@@ -383,18 +396,13 @@
             localStorage.setItem('boxlabPubsStatic', JSON.stringify(staticData));
         }
 
-        // --- 数据导入导出 (防止数据丢失) ---
         function exportData() {
             const pubs = localStorage.getItem('boxlabPubs') || JSON.stringify(defaultData);
             const blob = new Blob([pubs], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
+            const a = document.createElement('a'); a.href = url;
             a.download = `boxlab_publications_${new Date().toISOString().slice(0,10)}.json`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
+            a.click(); URL.revokeObjectURL(url);
         }
 
         function importData(event) {
@@ -406,18 +414,12 @@
                     const data = JSON.parse(e.target.result);
                     if(Array.isArray(data)) {
                         localStorage.setItem('boxlabPubs', JSON.stringify(data));
-                        renderPubs(data);
-                        if(isEditMode) enableEditMode();
+                        renderPubs(data); if(isEditMode) enableEditMode();
                         alert('Data imported successfully!');
-                    } else {
-                        alert('Invalid JSON format for publications.');
                     }
-                } catch (error) {
-                    alert('Error reading file. Make sure it is a valid JSON backup.');
-                }
+                } catch (error) { alert('Invalid file format.'); }
             };
-            reader.readAsText(file);
-            event.target.value = ''; // Reset file input
+            reader.readAsText(file); event.target.value = '';
         }
 
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
