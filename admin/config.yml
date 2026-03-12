@@ -2,9 +2,9 @@
 
 backend:
   name: github
-  repo: liboxiao19890504/Boxlab          # ← 改成这个！正确用户名
+  repo: liboxiao19890504-glitch/Boxlab          # ← 你仓库地址里的用户名（有 o + -glitch）
   branch: master
-  base_url: https://sveltia-cms-auth.liboxiao19890504.workers.dev   # Worker URL 保持不变
+  base_url: https://sveltia-cms-auth.liboxia19890504.workers.dev   # ← 你 Cloudflare 截图里的 Worker URL（少 o，保持不变）
 
 media_folder: assets/uploads
 public_folder: /uploads
