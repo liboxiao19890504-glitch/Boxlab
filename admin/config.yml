@@ -2,11 +2,11 @@ backend:
   name: github
   repo: liboxiao19890504-glitch/Boxlab
   branch: master
-  # 保留了您至关重要的登录认证配置！
+  # 保留了您的认证地址
   base_url: https://sveltia-cms-auth.liboxiao19890504.workers.dev
 
-media_folder: "images" # 您在后台上传的图片会自动存到仓库的 images 文件夹
-public_folder: "images" # 网页读取图片的路径
+media_folder: "images" 
+public_folder: "images" 
 
 collections:
   - name: "site_data"
@@ -21,7 +21,8 @@ collections:
             widget: "list"
             fields:
               - {label: "新闻标题", name: "title", widget: "string"}
-              - {label: "发布日期", name: "date", widget: "date", format: "YYYY-MM-DD"}
+              # ↓↓↓ 就是这行做了修复，改成了 datetime 和 time_format: false ↓↓↓
+              - {label: "发布日期", name: "date", widget: "datetime", format: "YYYY-MM-DD", time_format: false}
               - {label: "正文内容", name: "content", widget: "text"}
               - {label: "新闻配图", name: "image", widget: "image", required: false}
               
