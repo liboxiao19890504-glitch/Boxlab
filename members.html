@@ -6,7 +6,7 @@
     <title>Members - Boxlab</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* 基础样式与色彩系统 (与 publications 保持一致) */
+        /* 基础样式与色彩系统 */
         :root { --primary: #334155; --secondary: #475569; --accent: #3b82f6; --bg: #f8fafc; }
         body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; background-color: var(--bg); color: #333; display: flex; flex-direction: column; min-height: 100vh; }
         header { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; padding: 50px 20px; text-align: center; }
@@ -38,9 +38,9 @@
         .member-card:hover { transform: translateY(-5px); box-shadow: 0 12px 20px rgba(0,0,0,0.08); border-color: #cbd5e1; }
         .member-photo { width: 100%; height: 260px; object-fit: cover; background-color: #e2e8f0; border-bottom: 3px solid var(--accent); }
         .member-info { padding: 20px 15px; flex: 1; display: flex; flex-direction: column; justify-content: flex-start; }
-        .member-info h3 { margin: 0 0 8px; color: #0f172a; font-size: 1.25rem; }
-        .member-info .role { color: var(--accent); font-weight: 600; font-size: 0.95rem; margin-bottom: 10px; }
-        .member-info .detail { color: #64748b; font-size: 0.9rem; line-height: 1.5; margin: 0; }
+        .member-info h3 { margin: 0 0 8px; color: #0f172a; font-size: 1.25rem; min-height: 1.2em; }
+        .member-info .role { color: var(--accent); font-weight: 600; font-size: 0.95rem; margin-bottom: 10px; min-height: 1.2em; }
+        .member-info .detail { color: #64748b; font-size: 0.9rem; line-height: 1.5; margin: 0; min-height: 1.5em; text-align: left; }
         
         /* 编辑按钮与交互 */
         .item-edit-btn { 
@@ -70,11 +70,17 @@
         .btn-success { background-color: #10b981; color: white; }
         .btn-danger { background-color: #ef4444; color: white; }
 
-        /* 编辑模式下文字高亮 */
-        [contenteditable="true"] { outline: 2px dashed rgba(255,255,255,0.5); padding: 2px 5px; border-radius: 4px; transition: 0.2s; }
+        /* 编辑模式下文字高亮（全局直接可编辑） */
+        [contenteditable="true"] { 
+            outline: 2px dashed rgba(255,255,255,0.3); padding: 2px 5px; border-radius: 4px; transition: 0.2s; cursor: text;
+        }
+        [contenteditable="true"]:hover { outline-color: rgba(59, 130, 246, 0.5); background: rgba(255,255,255,0.05); }
         [contenteditable="true"]:focus { outline: 2px solid var(--accent); background: rgba(255,255,255,0.1); }
-        .text-dark [contenteditable="true"] { outline-color: #cbd5e1; }
-        .text-dark [contenteditable="true"]:focus { outline-color: var(--accent); background: rgba(59, 130, 246, 0.05); }
+        
+        /* 亮色背景下的文字高亮 */
+        .text-dark [contenteditable="true"] { outline-color: rgba(51, 65, 85, 0.2); }
+        .text-dark [contenteditable="true"]:hover { outline-color: var(--accent); background: rgba(59, 130, 246, 0.05); }
+        .text-dark [contenteditable="true"]:focus { outline-color: var(--accent); background: rgba(59, 130, 246, 0.1); }
 
         footer { background-color: var(--primary); color: white; text-align: center; padding: 25px 0; margin-top: auto; width: 100%; }
         
@@ -103,11 +109,11 @@
     <div class="container text-dark">
         <div class="admin-panel" id="adminPanel">
             <div>
-                <span style="font-weight: 600; color: var(--primary);"><i class="fas fa-shield-alt"></i> Admin Mode Active</span>
-                <span style="font-size: 0.85rem; color: #64748b; margin-left: 10px;">Click titles to edit. Manage member cards below.</span>
+                <span style="font-weight: 600; color: var(--primary);"><i class="fas fa-magic"></i> Live Edit Active</span>
+                <span style="font-size: 0.85rem; color: #64748b; margin-left: 10px;">Click ANY text (names, roles, titles) to type and edit directly. Changes save automatically when you click away.</span>
             </div>
             <div style="display: flex; gap: 10px;">
-                <button class="btn btn-success" id="exportBtn"><i class="fas fa-download"></i> Backup JSON</button>
+                <button class="btn btn-success" id="exportBtn"><i class="fas fa-download"></i> Backup Data</button>
                 <button class="btn" style="background: #e2e8f0; color: #333;" onclick="document.getElementById('importFile').click()"><i class="fas fa-upload"></i> Restore</button>
                 <input type="file" id="importFile" accept=".json">
                 <button class="btn btn-primary" id="addMemberBtn"><i class="fas fa-plus"></i> Add Member</button>
@@ -136,30 +142,45 @@
         </div>
     </div>
 
-    <div class="modal" id="memberEditModal">
+    <div class="modal" id="memberSettingsModal">
         <div class="modal-content">
-            <h3 id="modalTitle" style="margin-top:0; color: var(--primary);">Edit Member</h3>
-            <input type="hidden" id="editMemberId"> <div class="form-group">
-                <label>Category</label>
-                <select id="mCategory">
-                    <option value="Principal Investigator">Principal Investigator</option>
-                    <option value="Postdoctoral Researchers">Postdoctoral Researchers</option>
-                    <option value="Ph.D. Students">Ph.D. Students</option>
-                    <option value="Master Students">Master Students</option>
-                    <option value="Alumni">Alumni</option>
-                </select>
+            <h3 id="modalTitle" style="margin-top:0; color: var(--primary);">Member Settings</h3>
+            <p style="font-size: 0.85rem; color: #64748b; margin-top: -10px; margin-bottom: 20px;">Text details (Name, Role, etc.) can be edited directly on the page.</p>
+            <input type="hidden" id="editMemberId">
+            
+            <div class="form-group">
+                <label>Category (Group)</label>
+                <input type="text" id="mCategory" placeholder="e.g. Principal Investigator, Ph.D. Students" list="categoryHints">
+                <datalist id="categoryHints">
+                    <option value="Principal Investigator">
+                    <option value="Postdoctoral Researchers">
+                    <option value="Ph.D. Students">
+                    <option value="Master Students">
+                    <option value="Alumni">
+                </datalist>
             </div>
-            <div class="form-group"><label>Name</label><input type="text" id="mName" placeholder="Dr. John Doe"></div>
-            <div class="form-group"><label>Role / Title</label><input type="text" id="mRole" placeholder="Principal Investigator"></div>
-            <div class="form-group"><label>Research Focus / Detail</label><textarea id="mDetail" rows="3" placeholder="Polymer Synthesis, Self-healing Materials..."></textarea></div>
-            <div class="form-group"><label>Photo URL</label><input type="url" id="mPhoto" placeholder="https://example.com/photo.jpg">
-                <small style="color:#64748b; display:block; margin-top:4px;">Leave empty for default avatar.</small>
-            </div>
+            <div class="form-group"><label>Photo URL</label><input type="url" id="mPhoto" placeholder="https://example.com/photo.jpg"></div>
 
             <div class="btn-group">
-                <button class="btn" style="background:#e2e8f0; color:#333;" onclick="closeModal('memberEditModal')">Cancel</button>
-                <button class="btn btn-danger" id="deleteMember" style="display:none;">Delete</button>
-                <button class="btn btn-primary" id="saveMember">Save Changes</button>
+                <button class="btn" style="background:#e2e8f0; color:#333;" onclick="closeModal('memberSettingsModal')">Cancel</button>
+                <button class="btn btn-danger" id="deleteMember" style="display:none;">Delete Member</button>
+                <button class="btn btn-primary" id="saveMemberSettings">Save Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="addMemberModal">
+        <div class="modal-content">
+            <h3 style="margin-top:0; color: var(--primary);">Add New Member</h3>
+            <div class="form-group"><label>Category</label><input type="text" id="newCategory" value="Ph.D. Students"></div>
+            <div class="form-group"><label>Name</label><input type="text" id="newName" placeholder="Dr. John Doe"></div>
+            <div class="form-group"><label>Role / Title</label><input type="text" id="newRole" placeholder="Ph.D. Candidate"></div>
+            <div class="form-group"><label>Details</label><textarea id="newDetail" rows="2" placeholder="Research interests..."></textarea></div>
+            <div class="form-group"><label>Photo URL</label><input type="url" id="newPhoto" placeholder="(Optional) URL to image"></div>
+
+            <div class="btn-group">
+                <button class="btn" style="background:#e2e8f0; color:#333;" onclick="closeModal('addMemberModal')">Cancel</button>
+                <button class="btn btn-primary" id="saveNewMember">Add Member</button>
             </div>
         </div>
     </div>
@@ -167,16 +188,14 @@
     <script>
         let isEditMode = false;
 
-        // 预设团队数据，契合 PI、聚氨酯、自修复、气凝胶背景
         const defaultMembers = [
             { id: "1", category: "Principal Investigator", name: "Dr. Name", role: "Principal Investigator", detail: "Research Focus: Polyurethane Synthesis, Diels-Alder Self-Healing Polymers, Flexible Sensors.", img: "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=professional%20academic%20portrait%2C%20male%2C%20lab%20background&image_size=portrait_3_4" },
             { id: "2", category: "Postdoctoral Researchers", name: "Dr. Alice Chen", role: "Postdoctoral Fellow", detail: "Research Focus: Carbon Nanotube Aerogel Assembly & Composite Materials.", img: "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=female%20scientist%20portrait%2C%20professional%2C%20clean%20background&image_size=portrait_3_4" },
-            { id: "3", category: "Ph.D. Students", name: "Bob Smith", role: "Ph.D. Candidate (Year 3)", detail: "Research Focus: Ion-based Flexible Sensors using PU composites.", img: "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=young%20male%20student%20portrait%2C%20smiling%2C%20university%20background&image_size=portrait_3_4" },
-            { id: "4", category: "Ph.D. Students", name: "Carol Wang", role: "Ph.D. Candidate (Year 1)", detail: "Research Focus: Vitrimer Polymers & 2D-IR correlation spectroscopy.", img: "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=young%20female%20student%20portrait%2C%20academic&image_size=portrait_3_4" }
+            { id: "3", category: "Ph.D. Students", name: "Bob Smith", role: "Ph.D. Candidate (Year 3)", detail: "Research Focus: Ion-based Flexible Sensors using PU composites.", img: "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=young%20male%20student%20portrait%2C%20smiling%2C%20university%20background&image_size=portrait_3_4" }
         ];
 
-        // 固定的分类顺序，控制渲染时的先后顺序
-        const categoryOrder = ["Principal Investigator", "Postdoctoral Researchers", "Ph.D. Students", "Master Students", "Alumni"];
+        // 基础分类顺序，用户新增的分类会自动追加到后面
+        const baseCategoryOrder = ["Principal Investigator", "Postdoctoral Researchers", "Ph.D. Students", "Master Students", "Alumni"];
 
         document.addEventListener('DOMContentLoaded', () => {
             loadAllContent();
@@ -186,11 +205,12 @@
         function setupEventListeners() {
             document.getElementById('loginTriggerBtn').onclick = () => document.getElementById('loginModal').style.display = 'block';
             document.getElementById('submitLogin').onclick = handleLogin;
-            
             window.onclick = (e) => { if (e.target.classList.contains('modal')) e.target.style.display = 'none'; };
 
-            document.getElementById('addMemberBtn').onclick = openAddModal;
-            document.getElementById('saveMember').onclick = saveMemberEntry;
+            document.getElementById('addMemberBtn').onclick = () => document.getElementById('addMemberModal').style.display = 'block';
+            document.getElementById('saveNewMember').onclick = addNewMember;
+            
+            document.getElementById('saveMemberSettings').onclick = saveMemberSettings;
             document.getElementById('deleteMember').onclick = deleteMemberEntry;
             
             document.getElementById('exportBtn').onclick = exportData;
@@ -201,9 +221,7 @@
             if(document.getElementById('username').value === 'admin' && document.getElementById('password').value === 'password') {
                 enableEditMode();
                 document.getElementById('loginModal').style.display = 'none';
-            } else { 
-                alert('Invalid credentials.'); 
-            }
+            } else { alert('Invalid credentials.'); }
         }
 
         function enableEditMode() {
@@ -211,9 +229,8 @@
             document.getElementById('loginTriggerBtn').style.display = 'none';
             document.getElementById('adminPanel').style.display = 'flex';
             
-            // 启用静态文字编辑
-            const editableIds = ['pageTitle', 'pageSubtitle', 'footerText'];
-            editableIds.forEach(id => {
+            // 启用头尾部的文字直接编辑
+            ['pageTitle', 'pageSubtitle', 'footerText'].forEach(id => {
                 const el = document.getElementById(id);
                 el.contentEditable = true;
                 el.addEventListener('blur', saveStaticContent);
@@ -224,114 +241,126 @@
                 a.addEventListener('blur', saveStaticContent);
             });
             
-            // 显示成员卡片的编辑按钮
-            document.querySelectorAll('.member-card').forEach(el => el.classList.add('editable-active'));
+            // 重新渲染列表以应用成员的 inline-editable 属性
+            renderMembers(getMembersData());
         }
 
-        // --- 核心 CRUD 逻辑 ---
-
-        function openAddModal() {
-            document.getElementById('modalTitle').innerText = "Add New Member";
-            document.getElementById('editMemberId').value = ""; // 空 ID 表示新增
-            
-            document.getElementById('mCategory').value = "Ph.D. Students";
-            document.getElementById('mName').value = '';
-            document.getElementById('mRole').value = '';
-            document.getElementById('mDetail').value = '';
-            document.getElementById('mPhoto').value = '';
-            
-            document.getElementById('deleteMember').style.display = 'none';
-            document.getElementById('memberEditModal').style.display = 'block';
+        // --- 直编保存逻辑 (Live Edit Save) ---
+        // 直接在页面上修改文字，失去焦点时触发此函数自动保存到 localStorage
+        function updateInlineText(id, field, element) {
+            const newValue = element.innerText.trim();
+            let allMembers = getMembersData();
+            let member = allMembers.find(m => m.id === id);
+            if(member && member[field] !== newValue) {
+                member[field] = newValue;
+                localStorage.setItem('boxlabMembersV2', JSON.stringify(allMembers));
+            }
         }
 
-        function openEditModal(id) {
+        // 修改分类的大标题
+        function updateCategoryTitle(oldCategory, element) {
+            const newCategory = element.innerText.trim();
+            if(!newCategory || newCategory === oldCategory) return;
+            
+            let allMembers = getMembersData();
+            allMembers.forEach(m => {
+                if(m.category === oldCategory) m.category = newCategory;
+            });
+            localStorage.setItem('boxlabMembersV2', JSON.stringify(allMembers));
+            renderMembers(allMembers); // 重新渲染以更新布局
+        }
+
+        // --- 核心 CRUD (照片、转移、新增、删除) ---
+
+        function addNewMember() {
+            const name = document.getElementById('newName').value.trim();
+            if (!name) { alert('Name is required!'); return; }
+
+            const data = {
+                id: Date.now().toString(),
+                category: document.getElementById('newCategory').value.trim() || "Uncategorized",
+                name: name,
+                role: document.getElementById('newRole').value.trim(),
+                detail: document.getElementById('newDetail').value.trim(),
+                img: document.getElementById('newPhoto').value.trim() || 'https://via.placeholder.com/300x400.png?text=No+Photo'
+            };
+
+            let allMembers = getMembersData();
+            allMembers.push(data);
+            localStorage.setItem('boxlabMembersV2', JSON.stringify(allMembers));
+            
+            // 清空表单
+            document.querySelectorAll('#addMemberModal input, #addMemberModal textarea').forEach(el => el.value='');
+            closeModal('addMemberModal');
+            renderMembers(allMembers);
+        }
+
+        function openSettingsModal(id) {
             if(!isEditMode) return;
-            const allMembers = getMembersData();
-            const member = allMembers.find(m => m.id === id);
+            const member = getMembersData().find(m => m.id === id);
             if(!member) return;
 
-            document.getElementById('modalTitle').innerText = "Edit Member";
             document.getElementById('editMemberId').value = member.id;
-            
-            document.getElementById('mCategory').value = member.category || "Ph.D. Students";
-            document.getElementById('mName').value = member.name;
-            document.getElementById('mRole').value = member.role;
-            document.getElementById('mDetail').value = member.detail;
+            document.getElementById('mCategory').value = member.category;
             document.getElementById('mPhoto').value = member.img;
             
             document.getElementById('deleteMember').style.display = 'block';
-            document.getElementById('memberEditModal').style.display = 'block';
+            document.getElementById('memberSettingsModal').style.display = 'block';
         }
 
-        function saveMemberEntry() {
-            const data = {
-                category: document.getElementById('mCategory').value,
-                name: document.getElementById('mName').value.trim(),
-                role: document.getElementById('mRole').value.trim(),
-                detail: document.getElementById('mDetail').value.trim(),
-                img: document.getElementById('mPhoto').value.trim() || 'https://via.placeholder.com/300x400.png?text=No+Photo'
-            };
-
-            if (!data.name) { alert('Name is required!'); return; }
-
+        function saveMemberSettings() {
             const id = document.getElementById('editMemberId').value;
             let allMembers = getMembersData();
+            let memberIndex = allMembers.findIndex(m => m.id === id);
             
-            if (id) {
-                // 编辑现有
-                data.id = id;
-                const index = allMembers.findIndex(m => m.id === id);
-                if(index > -1) allMembers[index] = data;
-            } else {
-                // 新增，生成唯一ID
-                data.id = Date.now().toString();
-                allMembers.push(data);
+            if(memberIndex > -1) {
+                allMembers[memberIndex].category = document.getElementById('mCategory').value.trim() || "Uncategorized";
+                allMembers[memberIndex].img = document.getElementById('mPhoto').value.trim() || 'https://via.placeholder.com/300x400.png?text=No+Photo';
+                
+                localStorage.setItem('boxlabMembersV2', JSON.stringify(allMembers));
+                closeModal('memberSettingsModal');
+                renderMembers(allMembers);
             }
-            
-            localStorage.setItem('boxlabMembersV2', JSON.stringify(allMembers));
-            closeModal('memberEditModal');
-            renderMembers(allMembers);
-            if(isEditMode) enableEditMode();
         }
 
         function deleteMemberEntry() {
-            if(!confirm('Are you sure you want to delete this member?')) return;
-            
+            if(!confirm('Delete this member completely?')) return;
             const id = document.getElementById('editMemberId').value;
             let allMembers = getMembersData();
             allMembers = allMembers.filter(m => m.id !== id);
-            
             localStorage.setItem('boxlabMembersV2', JSON.stringify(allMembers));
-            closeModal('memberEditModal');
+            closeModal('memberSettingsModal');
             renderMembers(allMembers);
-            if(isEditMode) enableEditMode();
         }
 
         // --- 渲染与加载逻辑 ---
 
         function getMembersData() {
-            const saved = localStorage.getItem('boxlabMembersV2');
-            return saved ? JSON.parse(saved) : defaultMembers;
+            return JSON.parse(localStorage.getItem('boxlabMembersV2')) || defaultMembers;
         }
 
         function renderMembers(members) {
             const container = document.getElementById('membersContainer');
             container.innerHTML = '';
             
-            // 按类别分组
             const grouped = {};
             members.forEach(m => {
                 if(!grouped[m.category]) grouped[m.category] = [];
                 grouped[m.category].push(m);
             });
 
-            // 按预设顺序渲染类别
-            categoryOrder.forEach(category => {
+            // 动态合并分类：先显示基础分类，再显示用户自定义的新分类
+            const activeCategories = Object.keys(grouped);
+            const displayOrder = [...new Set([...baseCategoryOrder, ...activeCategories])];
+
+            displayOrder.forEach(category => {
                 if(grouped[category] && grouped[category].length > 0) {
                     const section = document.createElement('div');
                     section.className = 'member-section';
                     
-                    section.innerHTML = `<h2 class="section-title" ${isEditMode ? 'contenteditable="true"' : ''}>${category}</h2>`;
+                    // 分类标题，如果是编辑模式则可修改
+                    const editAttr = isEditMode ? `contenteditable="true" onblur="updateCategoryTitle('${category}', this)"` : '';
+                    section.innerHTML = `<h2 class="section-title" ${editAttr} title="Click to rename category">${category}</h2>`;
                     
                     const grid = document.createElement('div');
                     grid.className = 'member-grid';
@@ -339,13 +368,17 @@
                     grouped[category].forEach(member => {
                         const card = document.createElement('div');
                         card.className = `member-card ${isEditMode ? 'editable-active' : ''}`;
+                        
+                        // 文字直编的核心：根据 isEditMode 挂载 contenteditable 和 onblur
+                        const textEdit = isEditMode ? 'contenteditable="true" title="Click to edit text"' : '';
+                        
                         card.innerHTML = `
-                            <button class="item-edit-btn" onclick="openEditModal('${member.id}')" title="Edit Member"><i class="fas fa-pencil-alt"></i></button>
-                            <img src="${member.img}" class="member-photo" alt="${member.name}" onerror="this.src='https://via.placeholder.com/300x400.png?text=Image+Error'">
+                            <button class="item-edit-btn" onclick="openSettingsModal('${member.id}')" title="Change Photo / Move / Delete"><i class="fas fa-camera"></i></button>
+                            <img src="${member.img}" class="member-photo" alt="Photo" onerror="this.src='https://via.placeholder.com/300x400.png?text=Image+Error'">
                             <div class="member-info">
-                                <h3>${member.name}</h3>
-                                <div class="role">${member.role}</div>
-                                <p class="detail">${member.detail}</p>
+                                <h3 ${textEdit} onblur="updateInlineText('${member.id}', 'name', this)">${member.name}</h3>
+                                <div class="role" ${textEdit} onblur="updateInlineText('${member.id}', 'role', this)">${member.role}</div>
+                                <p class="detail" ${textEdit} onblur="updateInlineText('${member.id}', 'detail', this)">${member.detail}</p>
                             </div>
                         `;
                         grid.appendChild(card);
@@ -359,7 +392,6 @@
 
         function loadAllContent() {
             renderMembers(getMembersData());
-
             const staticData = JSON.parse(localStorage.getItem('boxlabMembersStatic') || '{}');
             if(staticData.title) document.getElementById('pageTitle').innerText = staticData.title;
             if(staticData.subtitle) document.getElementById('pageSubtitle').innerText = staticData.subtitle;
@@ -381,7 +413,7 @@
             localStorage.setItem('boxlabMembersStatic', JSON.stringify(staticData));
         }
 
-        // --- 数据导入导出 ---
+        // --- 导入导出保护数据 ---
         function exportData() {
             const data = localStorage.getItem('boxlabMembersV2') || JSON.stringify(defaultMembers);
             const blob = new Blob([data], { type: 'application/json' });
@@ -389,10 +421,7 @@
             const a = document.createElement('a');
             a.href = url;
             a.download = `boxlab_members_${new Date().toISOString().slice(0,10)}.json`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
+            a.click(); URL.revokeObjectURL(url);
         }
 
         function importData(event) {
@@ -405,14 +434,9 @@
                     if(Array.isArray(data)) {
                         localStorage.setItem('boxlabMembersV2', JSON.stringify(data));
                         renderMembers(data);
-                        if(isEditMode) enableEditMode();
                         alert('Data imported successfully!');
-                    } else {
-                        alert('Invalid JSON format.');
-                    }
-                } catch (error) {
-                    alert('Error reading file. Make sure it is a valid JSON backup.');
-                }
+                    } else { alert('Invalid format.'); }
+                } catch { alert('Error reading file.'); }
             };
             reader.readAsText(file);
             event.target.value = ''; 
