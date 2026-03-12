@@ -4,7 +4,7 @@ backend:
   name: github
   repo: liboxia19890504-glitch/Boxlab
   branch: master
-  base_url: https://sveltia-cms-auth.liboxia19890504.workers.dev   # ← 这行必须有！
+  base_url: https://sveltia-cms-auth.liboxiao19890504.workers.dev   # ← 这行必须有！
 
 media_folder: assets/uploads
 public_folder: /uploads
