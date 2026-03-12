@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Join Us - Boxlab</title>
+    <title>Join Us - Box Lab</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --primary: #334155; --secondary: #475569; --accent: #3b82f6; --bg: #f8fafc; }
         body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; background-color: var(--bg); color: #333; display: flex; flex-direction: column; min-height: 100vh; }
         
-        /* 统一导航栏样式 */
         nav { background-color: var(--primary); color: white; padding: 12px 0; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.15); }
         .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
         .nav-logo { display: flex; align-items: center; gap: 15px; }
@@ -51,18 +50,14 @@
         .contact-text p { margin: 0; font-size: 1.1rem; font-weight: 600; }
 
         .item-edit-btn { display: none; position: absolute; right: 20px; top: 20px; background: #f1f5f9; color: #ef4444; border: none; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; transition: 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.1); z-index: 10; }
-        .item-edit-btn:hover { background: #fee2e2; }
         .editable-active .item-edit-btn { display: block; }
-        
         .floating-login-btn { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; border-radius: 50%; background-color: var(--primary); color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.15); font-size: 1.2rem; transition: 0.3s; }
-        .floating-login-btn:hover { transform: scale(1.1); background-color: #1e293b;}
         
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); z-index: 2000; backdrop-filter: blur(4px); }
         .modal-content { background: white; margin: 5vh auto; padding: 30px; border-radius: 12px; width: 90%; max-width: 500px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); animation: slideDown 0.3s ease-out; }
         .form-group { margin-bottom: 18px; text-align: left; }
         .form-group label { display: block; margin-bottom: 6px; font-weight: 600; color: #334155; font-size: 0.9rem; }
-        .form-group input, .form-group textarea { width: 100%; padding: 12px; box-sizing: border-box; border: 1px solid #cbd5e1; border-radius: 6px; font-family: inherit; }
-        
+        .form-group input, .form-group textarea { width: 100%; padding: 12px; box-sizing: border-box; border: 1px solid #cbd5e1; border-radius: 6px; }
         .btn-group { display: flex; gap: 12px; justify-content: flex-end; margin-top: 25px; }
         .btn { padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: 0.2s; }
         .btn-primary { background-color: var(--primary); color: white; }
@@ -70,30 +65,25 @@
         .btn-sm { padding: 5px 10px; font-size: 0.85rem; }
 
         .image-upload { border: 2px dashed #cbd5e1; padding: 20px; text-align: center; margin-bottom: 15px; cursor: pointer; border-radius: 8px; background: #f8fafc; transition: 0.3s; }
-        .image-upload:hover { border-color: var(--accent); background: white; }
         #logoPreview { max-width: 100%; max-height: 200px; margin-top: 10px; border-radius: 4px; }
 
         [contenteditable="true"] { outline: 2px dashed rgba(255,255,255,0.3); padding: 2px 5px; border-radius: 4px; transition: 0.2s; cursor: text; }
-        [contenteditable="true"]:hover { outline-color: rgba(59, 130, 246, 0.5); background: rgba(255,255,255,0.05); }
         [contenteditable="true"]:focus { outline: 2px solid var(--accent); background: rgba(255,255,255,0.1); }
         .text-dark [contenteditable="true"] { outline-color: rgba(51, 65, 85, 0.2); }
-        .text-dark [contenteditable="true"]:hover { outline-color: var(--accent); background: rgba(59, 130, 246, 0.05); }
-        .text-dark [contenteditable="true"]:focus { outline-color: var(--accent); background: rgba(59, 130, 246, 0.1); }
         .contact-box [contenteditable="true"]:focus { background: rgba(0,0,0,0.2); outline-color: white; }
 
         footer { background-color: var(--primary); color: white; text-align: center; padding: 25px 0; margin-top: auto; width: 100%; }
         @keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-        #importFile { display: none; }
     </style>
 </head>
 <body>
     <nav>
         <div class="nav-container">
             <div class="nav-logo">
-                <img src="image_3c6abc.jpg" alt="Logo" title="Logo" id="navLogoImg">
-                <span class="nav-brand editable" contenteditable="false" id="navBrandText">Boxlab</span>
+                <img src="logo.jpg" alt="Logo" title="Logo" id="navLogoImg" onerror="this.src='https://via.placeholder.com/46'">
+                <span class="nav-brand editable" contenteditable="false" id="navBrandText">Box Lab</span>
             </div>
-            <ul id="mainNav">
+            <ul>
                 <li><a href="index.html">Home</a></li>
                 <li><a href="publications.html">Publications</a></li>
                 <li><a href="members.html">Members</a></li>
@@ -104,7 +94,7 @@
     </nav>
 
     <header>
-        <h1 id="pageTitle">Join Boxlab</h1>
+        <h1 id="pageTitle">Join Box Lab</h1>
         <p id="pageSubtitle">Building the future of functional polymers together</p>
     </header>
 
@@ -115,16 +105,14 @@
                 <span style="font-size: 0.85rem; color: #64748b; margin-left: 10px;">Click texts to edit directly. Click trash icon to remove positions.</span>
             </div>
             <div style="display: flex; gap: 10px;">
-                <button class="btn btn-success" id="exportBtn"><i class="fas fa-download"></i> Backup Data</button>
-                <button class="btn" style="background: #e2e8f0; color: #333;" onclick="document.getElementById('importFile').click()"><i class="fas fa-upload"></i> Restore</button>
-                <input type="file" id="importFile" accept=".json">
+                <button class="btn btn-success" id="exportBtn"><i class="fas fa-download"></i> Backup</button>
+                <button class="btn" style="background:#e2e8f0; color:#333;" onclick="document.getElementById('importFile').click()"><i class="fas fa-upload"></i> Restore</button>
+                <input type="file" id="importFile" accept=".json" style="display:none;">
             </div>
         </div>
 
         <h2 class="section-title"><span id="introTitle">Why Choose Us</span></h2>
-        <div class="intro-box">
-            <p id="introDesc">We are highly motivated to push the boundaries of materials science. Our laboratory is strongly supported by the National Natural Science Foundation of China (NSFC) and major corporate projects in the automotive sector.</p>
-        </div>
+        <div class="intro-box"><p id="introDesc">We are highly motivated to push the boundaries of materials science. Our laboratory is strongly supported by the National Natural Science Foundation of China (NSFC) and major corporate projects in the automotive sector.</p></div>
 
         <h2 class="section-title">
             <span id="posTitle">Open Positions</span>
@@ -136,39 +124,25 @@
         <div class="contact-box">
             <div class="contact-item">
                 <div class="contact-icon"><i class="fas fa-envelope"></i></div>
-                <div class="contact-text">
-                    <h4>Email Applications To</h4>
-                    <p id="contactEmail">investigator@university.edu</p>
-                </div>
+                <div class="contact-text"><h4>Email Applications To</h4><p id="contactEmail">investigator@university.edu</p></div>
             </div>
             <div class="contact-item">
                 <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
-                <div class="contact-text">
-                    <h4>Lab Location</h4>
-                    <p id="contactLocation">School of Materials Science, Main Campus</p>
-                </div>
+                <div class="contact-text"><h4>Lab Location</h4><p id="contactLocation">School of Materials Science, Main Campus</p></div>
             </div>
-            <div style="flex: 100%; margin-top: 10px;">
-                <p id="contactNote" style="margin: 0; font-size: 0.95rem; color: #cbd5e1;">Please include your CV, transcript, and a brief statement of your research interests.</p>
-            </div>
+            <div style="flex: 100%; margin-top: 10px;"><p id="contactNote" style="margin: 0; font-size: 0.95rem; color: #cbd5e1;">Please include your CV, transcript, and a brief statement of your research interests.</p></div>
         </div>
     </div>
 
-    <footer>
-        <p id="footerText">&copy; 2026 Boxlab. All Rights Reserved.</p>
-    </footer>
-
+    <footer><p id="footerText">&copy; 2026 Box Lab. All Rights Reserved.</p></footer>
     <div class="floating-login-btn" id="loginTriggerBtn" title="管理员登录"><i class="fas fa-magic"></i></div>
 
     <div class="modal" id="loginModal">
         <div class="modal-content">
-            <h3 style="margin-top:0; color: var(--primary);">Admin Login</h3>
+            <h3 style="margin-top:0;">管理员登录</h3>
             <div class="form-group"><label>Username</label><input type="text" id="username" placeholder="admin"></div>
             <div class="form-group"><label>Password</label><input type="password" id="password" placeholder="password"></div>
-            <div class="btn-group">
-                <button class="btn" style="background:#e2e8f0; color:#333;" onclick="closeModal('loginModal')">Cancel</button>
-                <button class="btn btn-primary" id="submitLogin">Login</button>
-            </div>
+            <div class="btn-group"><button class="btn" style="background:#e2e8f0; color:#333;" onclick="closeModal('loginModal')">Cancel</button><button class="btn btn-primary" id="submitLogin">Login</button></div>
         </div>
     </div>
 
@@ -180,7 +154,7 @@
                 <div class="image-upload" id="logoUploadArea">
                     <p><i class="fas fa-cloud-upload-alt"></i> 点击上传图片</p>
                     <input type="file" id="logoFileInput" accept="image/*" style="display: none;">
-                    <img id="logoPreview" src="" alt="预览" style="display: none;">
+                    <img id="logoPreview" src="" alt="预览" style="display: none; max-height:120px;">
                 </div>
             </div>
             <div class="btn-group">
@@ -192,230 +166,91 @@
 
     <div class="modal" id="addPosModal">
         <div class="modal-content">
-            <h3 style="margin-top:0; color: var(--primary);">Add New Position</h3>
-            <div class="form-group"><label>Position Title</label><input type="text" id="addTitle" placeholder="e.g. Postdoctoral Fellow"></div>
-            <div class="form-group"><label>Badge / Tag</label><input type="text" id="addBadge" placeholder="e.g. Urgent" value="Open"></div>
-            <div class="form-group"><label>Description</label><textarea id="addDesc" rows="2" placeholder="Brief role description..."></textarea></div>
-            <div class="form-group"><label>Requirements</label><textarea id="addReqs" rows="3" placeholder="Background..."></textarea></div>
-            <div class="btn-group">
-                <button class="btn" style="background:#e2e8f0; color:#333;" onclick="closeModal('addPosModal')">Cancel</button>
-                <button class="btn btn-primary" id="savePosBtn">Add Position</button>
-            </div>
+            <h3 style="margin-top:0;">Add New Position</h3>
+            <div class="form-group"><label>Position Title</label><input type="text" id="addTitle"></div>
+            <div class="form-group"><label>Badge / Tag</label><input type="text" id="addBadge" value="Open"></div>
+            <div class="form-group"><label>Description</label><textarea id="addDesc" rows="2"></textarea></div>
+            <div class="form-group"><label>Requirements</label><textarea id="addReqs" rows="3"></textarea></div>
+            <div class="btn-group"><button class="btn" style="background:#e2e8f0; color:#333;" onclick="closeModal('addPosModal')">Cancel</button><button class="btn btn-primary" id="savePosBtn">Add</button></div>
         </div>
     </div>
 
     <script>
         let isEditMode = false;
+        const defaultPositions = [{ id: "p1", title: "Postdoctoral Researcher", badge: "Urgent", desc: "Seeking a motivated postdoc to lead projects on self-healing polyurethanes.", reqs: "Ph.D. in Polymer Chemistry." }];
 
-        const defaultPositions = [
-            { id: "p1", title: "Postdoctoral Researcher", badge: "Urgent", desc: "Seeking a motivated postdoc to lead projects on self-healing polyurethanes.", reqs: "Ph.D. in Polymer Chemistry." }
-        ];
-
-        document.addEventListener('DOMContentLoaded', () => {
-            loadAllContent();
-            setupEventListeners();
-        });
+        document.addEventListener('DOMContentLoaded', () => { loadAllContent(); setupEventListeners(); });
 
         function setupEventListeners() {
             document.getElementById('loginTriggerBtn').onclick = () => document.getElementById('loginModal').style.display = 'block';
             document.getElementById('submitLogin').onclick = handleLogin;
             window.onclick = (e) => { if (e.target.classList.contains('modal')) e.target.style.display = 'none'; };
 
-            // Logo 上传
             document.getElementById('logoUploadArea').addEventListener('click', () => document.getElementById('logoFileInput').click());
             document.getElementById('logoFileInput').addEventListener('change', function(e) {
-                const file = e.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        const preview = document.getElementById('logoPreview');
-                        preview.src = e.target.result; preview.style.display = 'block';
-                    };
-                    reader.readAsDataURL(file);
-                }
+                if (e.target.files[0]) { const reader = new FileReader(); reader.onload = function(e) { document.getElementById('logoPreview').src = e.target.result; document.getElementById('logoPreview').style.display = 'block'; }; reader.readAsDataURL(e.target.files[0]); }
             });
             document.getElementById('saveLogoBtn').addEventListener('click', function() {
-                const newSrc = document.getElementById('logoPreview').src;
-                if(newSrc) {
-                    document.getElementById('navLogoImg').src = newSrc;
-                    saveGlobalNav();
-                }
+                if(document.getElementById('logoPreview').src) { document.getElementById('navLogoImg').src = document.getElementById('logoPreview').src; saveGlobalNav(); }
                 closeModal('logoEditModal');
             });
 
-            document.getElementById('addPosBtn').onclick = () => {
-                ['addTitle', 'addDesc', 'addReqs'].forEach(id => document.getElementById(id).value = '');
-                document.getElementById('addPosModal').style.display = 'block';
-            };
+            document.getElementById('addPosBtn').onclick = () => { ['addTitle', 'addDesc', 'addReqs'].forEach(id => document.getElementById(id).value = ''); document.getElementById('addPosModal').style.display = 'block'; };
             document.getElementById('savePosBtn').onclick = saveNewPosition;
             document.getElementById('exportBtn').onclick = exportData;
             document.getElementById('importFile').addEventListener('change', importData);
         }
 
         function handleLogin() {
-            if(document.getElementById('username').value === 'admin' && document.getElementById('password').value === 'password') {
-                enableEditMode(); document.getElementById('loginModal').style.display = 'none';
-            } else { alert('Invalid credentials.'); }
+            if(document.getElementById('username').value === 'admin' && document.getElementById('password').value === 'password') { enableEditMode(); document.getElementById('loginModal').style.display = 'none'; } else { alert('Error.'); }
         }
 
         function enableEditMode() {
-            isEditMode = true;
-            document.getElementById('loginTriggerBtn').style.display = 'none';
-            document.getElementById('adminPanel').style.display = 'flex';
-            document.getElementById('addPosBtn').style.display = 'inline-block';
-            
-            const textIds = ['pageTitle', 'pageSubtitle', 'footerText', 'introTitle', 'introDesc', 'posTitle', 'contactTitle', 'contactEmail', 'contactLocation', 'contactNote'];
-            textIds.forEach(id => {
-                const el = document.getElementById(id);
-                if(el) { el.contentEditable = true; el.addEventListener('blur', saveStaticContent); }
-            });
-            document.querySelectorAll('#mainNav a').forEach(a => {
-                a.contentEditable = true; a.addEventListener('blur', saveStaticContent);
-            });
+            isEditMode = true; document.getElementById('loginTriggerBtn').style.display = 'none'; document.getElementById('adminPanel').style.display = 'flex'; document.getElementById('addPosBtn').style.display = 'inline-block';
+            ['pageTitle', 'pageSubtitle', 'footerText', 'introTitle', 'introDesc', 'posTitle', 'contactTitle', 'contactEmail', 'contactLocation', 'contactNote'].forEach(id => { const el = document.getElementById(id); if(el){ el.contentEditable = true; el.addEventListener('blur', saveStaticContent); } });
             
             const navBrand = document.getElementById('navBrandText');
-            if(navBrand) {
-                navBrand.contentEditable = true;
-                navBrand.classList.add('active');
-                navBrand.addEventListener('blur', saveGlobalNav);
-            }
-            
+            if(navBrand) { navBrand.contentEditable = true; navBrand.classList.add('active'); navBrand.addEventListener('blur', saveGlobalNav); }
             const navLogo = document.getElementById('navLogoImg');
-            if(navLogo) {
-                navLogo.classList.add('editable', 'active');
-                navLogo.title = '点击修改 Logo';
-                navLogo.onclick = function() {
-                    if (!isEditMode) return;
-                    document.getElementById('logoPreview').src = this.src;
-                    document.getElementById('logoPreview').style.display = 'block';
-                    document.getElementById('logoEditModal').style.display = 'block';
-                };
-            }
-
+            if(navLogo) { navLogo.classList.add('editable', 'active'); navLogo.title = 'Edit Logo'; navLogo.onclick = function() { if(isEditMode){ document.getElementById('logoPreview').src = this.src; document.getElementById('logoPreview').style.display = 'block'; document.getElementById('logoEditModal').style.display = 'block'; } }; }
+            
             renderPositions(getPositionsData());
         }
 
-        // 全局共享导航
         function loadGlobalNav() {
-            const savedData = localStorage.getItem('boxlabData');
-            if (savedData) {
-                const data = JSON.parse(savedData);
-                if(data.navLogoSrc) document.getElementById('navLogoImg').src = data.navLogoSrc;
-                if(data.navBrand) document.getElementById('navBrandText').textContent = data.navBrand;
-            }
+            const data = JSON.parse(localStorage.getItem('boxlabData') || '{}');
+            if(data.navLogoSrc) document.getElementById('navLogoImg').src = data.navLogoSrc;
+            if(data.navBrand) document.getElementById('navBrandText').textContent = data.navBrand;
         }
         function saveGlobalNav() {
-            const savedData = localStorage.getItem('boxlabData');
-            let data = savedData ? JSON.parse(savedData) : {};
-            data.navLogoSrc = document.getElementById('navLogoImg').src;
-            data.navBrand = document.getElementById('navBrandText').textContent;
+            let data = JSON.parse(localStorage.getItem('boxlabData') || '{}');
+            data.navLogoSrc = document.getElementById('navLogoImg').src; data.navBrand = document.getElementById('navBrandText').textContent;
             localStorage.setItem('boxlabData', JSON.stringify(data));
         }
 
         function getPositionsData() { return JSON.parse(localStorage.getItem('boxlabPositions')) || defaultPositions; }
-
         function updatePositionText(id, field, element) {
-            const newValue = element.innerText.trim(); let posList = getPositionsData();
-            let item = posList.find(i => i.id === id);
+            const newValue = element.innerText.trim(); let posList = getPositionsData(); let item = posList.find(i => i.id === id);
             if(item && item[field] !== newValue) { item[field] = newValue; localStorage.setItem('boxlabPositions', JSON.stringify(posList)); }
         }
-
-        function deletePosition(id) {
-            if(!confirm('Are you sure you want to remove this position posting?')) return;
-            let posList = getPositionsData().filter(i => i.id !== id);
-            localStorage.setItem('boxlabPositions', JSON.stringify(posList)); renderPositions(posList);
-        }
-
+        function deletePosition(id) { if(!confirm('Delete?')) return; let posList = getPositionsData().filter(i => i.id !== id); localStorage.setItem('boxlabPositions', JSON.stringify(posList)); renderPositions(posList); }
         function saveNewPosition() {
-            const title = document.getElementById('addTitle').value.trim(); if(!title) return;
-            let posList = getPositionsData();
-            posList.push({
-                id: Date.now().toString(), title: title,
-                badge: document.getElementById('addBadge').value.trim() || 'Open',
-                desc: document.getElementById('addDesc').value.trim(),
-                reqs: document.getElementById('addReqs').value.trim()
-            });
-            localStorage.setItem('boxlabPositions', JSON.stringify(posList));
-            closeModal('addPosModal'); renderPositions(posList);
+            if(!document.getElementById('addTitle').value.trim()) return; let posList = getPositionsData();
+            posList.push({ id: Date.now().toString(), title: document.getElementById('addTitle').value.trim(), badge: document.getElementById('addBadge').value.trim(), desc: document.getElementById('addDesc').value.trim(), reqs: document.getElementById('addReqs').value.trim() });
+            localStorage.setItem('boxlabPositions', JSON.stringify(posList)); closeModal('addPosModal'); renderPositions(posList);
         }
 
         function renderPositions(positions) {
-            const container = document.getElementById('positionsContainer');
-            container.innerHTML = '';
+            const container = document.getElementById('positionsContainer'); container.innerHTML = '';
             positions.forEach(pos => {
-                const editAttr = isEditMode ? 'contenteditable="true"' : '';
-                container.innerHTML += `
-                    <div class="${isEditMode ? 'position-card editable-active' : 'position-card'}">
-                        <button class="item-edit-btn" onclick="deletePosition('${pos.id}')"><i class="fas fa-trash-alt"></i></button>
-                        <div class="pos-header">
-                            <h3 class="pos-title" ${editAttr} onblur="updatePositionText('${pos.id}', 'title', this)">${pos.title}</h3>
-                            <span class="pos-badge" ${editAttr} onblur="updatePositionText('${pos.id}', 'badge', this)">${pos.badge}</span>
-                        </div>
-                        <div class="pos-desc" ${editAttr} onblur="updatePositionText('${pos.id}', 'desc', this)">${pos.desc}</div>
-                        <div class="pos-reqs">
-                            <div class="pos-reqs-title">Candidate Requirements:</div>
-                            <div class="pos-reqs-content" ${editAttr} onblur="updatePositionText('${pos.id}', 'reqs', this)">${pos.reqs}</div>
-                        </div>
-                    </div>`;
+                container.innerHTML += `<div class="${isEditMode ? 'position-card editable-active' : 'position-card'}"><button class="item-edit-btn" onclick="deletePosition('${pos.id}')"><i class="fas fa-trash-alt"></i></button><div class="pos-header"><h3 class="pos-title" ${isEditMode ? 'contenteditable="true"' : ''} onblur="updatePositionText('${pos.id}', 'title', this)">${pos.title}</h3><span class="pos-badge" ${isEditMode ? 'contenteditable="true"' : ''} onblur="updatePositionText('${pos.id}', 'badge', this)">${pos.badge}</span></div><div class="pos-desc" ${isEditMode ? 'contenteditable="true"' : ''} onblur="updatePositionText('${pos.id}', 'desc', this)">${pos.desc}</div><div class="pos-reqs"><div class="pos-reqs-title">Candidate Requirements:</div><div class="pos-reqs-content" ${isEditMode ? 'contenteditable="true"' : ''} onblur="updatePositionText('${pos.id}', 'reqs', this)">${pos.reqs}</div></div></div>`;
             });
         }
 
-        function loadAllContent() {
-            loadGlobalNav();
-            renderPositions(getPositionsData());
-            const staticData = JSON.parse(localStorage.getItem('boxlabJoinStatic') || '{}');
-            const textIds = ['pageTitle', 'pageSubtitle', 'footerText', 'introTitle', 'introDesc', 'posTitle', 'contactTitle', 'contactEmail', 'contactLocation', 'contactNote'];
-            textIds.forEach(id => { if(staticData[id] && document.getElementById(id)) document.getElementById(id).innerText = staticData[id]; });
-            if(staticData.nav && staticData.nav.length > 0) {
-                document.querySelectorAll('#mainNav a').forEach((a, i) => { if(staticData.nav[i]) a.innerText = staticData.nav[i]; });
-            }
-        }
-
-        function saveStaticContent() {
-            const staticData = {
-                pageTitle: document.getElementById('pageTitle').innerText,
-                pageSubtitle: document.getElementById('pageSubtitle').innerText,
-                footerText: document.getElementById('footerText').innerText,
-                introTitle: document.getElementById('introTitle').innerText,
-                introDesc: document.getElementById('introDesc').innerText,
-                posTitle: document.getElementById('posTitle').innerText,
-                contactTitle: document.getElementById('contactTitle').innerText,
-                contactEmail: document.getElementById('contactEmail').innerText,
-                contactLocation: document.getElementById('contactLocation').innerText,
-                contactNote: document.getElementById('contactNote').innerText,
-                nav: Array.from(document.querySelectorAll('#mainNav a')).map(a => a.innerText)
-            };
-            localStorage.setItem('boxlabJoinStatic', JSON.stringify(staticData));
-        }
-
-        function exportData() {
-            const staticData = localStorage.getItem('boxlabJoinStatic') || '{}';
-            const posData = localStorage.getItem('boxlabPositions') || JSON.stringify(defaultPositions);
-            const combinedData = { static: JSON.parse(staticData), positions: JSON.parse(posData) };
-            const blob = new Blob([JSON.stringify(combinedData)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a'); a.href = url;
-            a.download = `boxlab_joinus_${new Date().toISOString().slice(0,10)}.json`;
-            a.click(); URL.revokeObjectURL(url);
-        }
-
-        function importData(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const data = JSON.parse(e.target.result);
-                    if(data.positions) {
-                        localStorage.setItem('boxlabPositions', JSON.stringify(data.positions));
-                        localStorage.setItem('boxlabJoinStatic', JSON.stringify(data.static || {}));
-                        loadAllContent(); alert('Data imported successfully!');
-                    }
-                } catch { alert('Error reading file.'); }
-            };
-            reader.readAsText(file); event.target.value = ''; 
-        }
-
+        function loadAllContent() { loadGlobalNav(); renderPositions(getPositionsData()); const s = JSON.parse(localStorage.getItem('boxlabJoinStatic') || '{}'); ['pageTitle', 'pageSubtitle', 'footerText', 'introTitle', 'introDesc', 'posTitle', 'contactTitle', 'contactEmail', 'contactLocation', 'contactNote'].forEach(id => { if(s[id] && document.getElementById(id)) document.getElementById(id).innerText = s[id]; }); }
+        function saveStaticContent() { const s = {}; ['pageTitle', 'pageSubtitle', 'footerText', 'introTitle', 'introDesc', 'posTitle', 'contactTitle', 'contactEmail', 'contactLocation', 'contactNote'].forEach(id => { if(document.getElementById(id)) s[id] = document.getElementById(id).innerText; }); localStorage.setItem('boxlabJoinStatic', JSON.stringify(s)); }
+        function exportData() { const blob = new Blob([JSON.stringify({ static: JSON.parse(localStorage.getItem('boxlabJoinStatic') || '{}'), positions: getPositionsData() })], { type: 'application/json' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'boxlab_join.json'; a.click(); }
+        function importData(event) { const file = event.target.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = function(e) { try { const data = JSON.parse(e.target.result); if(data.positions) { localStorage.setItem('boxlabPositions', JSON.stringify(data.positions)); localStorage.setItem('boxlabJoinStatic', JSON.stringify(data.static || {})); loadAllContent(); alert('Data imported successfully!'); } } catch { alert('Error.'); } }; reader.readAsText(file); event.target.value = ''; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
     </script>
 </body>
