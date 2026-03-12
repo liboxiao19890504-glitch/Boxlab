@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Members - Boxlab</title>
+    <title>Members - Box Lab</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --primary: #334155; --secondary: #475569; --accent: #3b82f6; --bg: #f8fafc; }
         body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; background-color: var(--bg); color: #333; display: flex; flex-direction: column; min-height: 100vh; }
         
-        /* 统一导航栏样式 */
         nav { background-color: var(--primary); color: white; padding: 12px 0; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.15); }
         .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
         .nav-logo { display: flex; align-items: center; gap: 15px; }
@@ -19,8 +18,6 @@
         nav ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 20px; }
         nav ul li a { color: #e2e8f0; text-decoration: none; padding: 8px 12px; border-radius: 6px; transition: 0.3s; font-weight: 500; }
         nav ul li a:hover { background-color: rgba(255,255,255,0.1); color: white; }
-        #navLogoImg.editable.active { cursor: pointer; border: 2px dashed rgba(255,255,255,0.8); }
-        .nav-brand.editable.active { border-color: rgba(255,255,255,0.6); background-color: rgba(255,255,255,0.1); outline: 2px dashed rgba(255,255,255,0.5); padding: 2px 5px; border-radius: 4px;}
 
         header { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; padding: 50px 20px; text-align: center; }
         .container { max-width: 1100px; margin: 0 auto; padding: 30px 20px; flex: 1; width: 100%; box-sizing: border-box; }
@@ -45,44 +42,37 @@
         .member-card.editable-active .item-edit-btn { display: block; }
         
         .floating-login-btn { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; border-radius: 50%; background-color: var(--primary); color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.15); font-size: 1.2rem; transition: 0.3s; }
-        .floating-login-btn:hover { transform: scale(1.1); }
+        .floating-login-btn:hover { transform: scale(1.1); background-color: #1e293b; }
         
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); z-index: 2000; backdrop-filter: blur(4px); }
         .modal-content { background: white; margin: 5vh auto; padding: 30px; border-radius: 12px; width: 90%; max-width: 500px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); animation: slideDown 0.3s ease-out; max-height: 90vh; overflow-y: auto; }
         .form-group { margin-bottom: 18px; text-align: left; }
         .form-group label { display: block; margin-bottom: 6px; font-weight: 600; color: #334155; font-size: 0.9rem; }
         .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px; box-sizing: border-box; border: 1px solid #cbd5e1; border-radius: 6px; transition: border 0.3s; }
-        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
-        
         .btn-group { display: flex; gap: 12px; justify-content: flex-end; margin-top: 25px; }
         .btn { padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: 0.2s; }
         .btn-primary { background-color: var(--primary); color: white; }
         .btn-success { background-color: #10b981; color: white; }
         .btn-danger { background-color: #ef4444; color: white; }
 
-        .image-upload { border: 2px dashed #cbd5e1; padding: 20px; text-align: center; margin-bottom: 15px; cursor: pointer; border-radius: 8px; background: #f8fafc; transition: 0.3s; }
-        .image-upload:hover { border-color: var(--accent); background: white; }
-        #logoPreview { max-width: 100%; max-height: 200px; margin-top: 10px; border-radius: 4px; }
-
         [contenteditable="true"] { outline: 2px dashed rgba(255,255,255,0.3); padding: 2px 5px; border-radius: 4px; transition: 0.2s; cursor: text; }
-        [contenteditable="true"]:hover { outline-color: rgba(59, 130, 246, 0.5); background: rgba(255,255,255,0.05); }
         [contenteditable="true"]:focus { outline: 2px solid var(--accent); background: rgba(255,255,255,0.1); }
-        .text-dark [contenteditable="true"] { outline-color: rgba(51, 65, 85, 0.2); }
-        .text-dark [contenteditable="true"]:hover { outline-color: var(--accent); background: rgba(59, 130, 246, 0.05); }
-        .text-dark [contenteditable="true"]:focus { outline-color: var(--accent); background: rgba(59, 130, 246, 0.1); }
-
+        .text-dark [contenteditable="true"] { outline-color: #cbd5e1; }
+        .text-dark [contenteditable="true"]:focus { outline-color: var(--accent); background: rgba(59, 130, 246, 0.05); }
+        #navLogoImg.editable.active { cursor: pointer; border: 2px dashed rgba(255,255,255,0.8); }
+        .nav-brand.editable.active { border-color: rgba(255,255,255,0.6); background-color: rgba(255,255,255,0.1); }
+        .image-upload { border: 2px dashed #cbd5e1; padding: 20px; text-align: center; margin-bottom: 15px; cursor: pointer; border-radius: 8px; background: #f8fafc; transition: 0.3s; }
         footer { background-color: var(--primary); color: white; text-align: center; padding: 25px 0; margin-top: auto; width: 100%; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-        #importFile { display: none; }
     </style>
 </head>
 <body>
     <nav>
         <div class="nav-container">
             <div class="nav-logo">
-                <img src="image_3c6abc.jpg" alt="Logo" title="Logo" id="navLogoImg">
-                <span class="nav-brand editable" contenteditable="false" id="navBrandText">Boxlab</span>
+                <img src="logo.jpg" alt="Logo" title="Logo" id="navLogoImg" onerror="this.src='https://via.placeholder.com/46'">
+                <span class="nav-brand editable" contenteditable="false" id="navBrandText">Box Lab</span>
             </div>
             <ul id="mainNav">
                 <li><a href="index.html">Home</a></li>
@@ -108,18 +98,14 @@
             <div style="display: flex; gap: 10px;">
                 <button class="btn btn-success" id="exportBtn"><i class="fas fa-download"></i> Backup Data</button>
                 <button class="btn" style="background: #e2e8f0; color: #333;" onclick="document.getElementById('importFile').click()"><i class="fas fa-upload"></i> Restore</button>
-                <input type="file" id="importFile" accept=".json">
+                <input type="file" id="importFile" accept=".json" style="display:none;">
                 <button class="btn btn-primary" id="addMemberBtn"><i class="fas fa-plus"></i> Add Member</button>
             </div>
         </div>
-
         <div id="membersContainer"></div>
     </div>
 
-    <footer>
-        <p id="footerText">&copy; 2026 Boxlab. All Rights Reserved.</p>
-    </footer>
-
+    <footer><p id="footerText">&copy; 2026 Box Lab. All Rights Reserved.</p></footer>
     <div class="floating-login-btn" id="loginTriggerBtn" title="管理员登录"><i class="fas fa-magic"></i></div>
 
     <div class="modal" id="loginModal">
@@ -142,7 +128,7 @@
                 <div class="image-upload" id="logoUploadArea">
                     <p><i class="fas fa-cloud-upload-alt"></i> 点击上传图片</p>
                     <input type="file" id="logoFileInput" accept="image/*" style="display: none;">
-                    <img id="logoPreview" src="" alt="预览" style="display: none;">
+                    <img id="logoPreview" src="" alt="预览" style="display: none; max-height:120px;">
                 </div>
             </div>
             <div class="btn-group">
@@ -155,23 +141,16 @@
     <div class="modal" id="memberSettingsModal">
         <div class="modal-content">
             <h3 id="modalTitle" style="margin-top:0; color: var(--primary);">Member Settings</h3>
-            <p style="font-size: 0.85rem; color: #64748b; margin-top: -10px; margin-bottom: 20px;">Text details (Name, Role, etc.) can be edited directly on the page.</p>
             <input type="hidden" id="editMemberId">
             <div class="form-group">
                 <label>Category (Group)</label>
                 <input type="text" id="mCategory" list="categoryHints">
-                <datalist id="categoryHints">
-                    <option value="Principal Investigator">
-                    <option value="Postdoctoral Researchers">
-                    <option value="Ph.D. Students">
-                    <option value="Master Students">
-                    <option value="Alumni">
-                </datalist>
+                <datalist id="categoryHints"><option value="Principal Investigator"><option value="Ph.D. Students"></datalist>
             </div>
-            <div class="form-group"><label>Photo URL</label><input type="url" id="mPhoto" placeholder="https://example.com/photo.jpg"></div>
+            <div class="form-group"><label>Photo URL</label><input type="url" id="mPhoto"></div>
             <div class="btn-group">
                 <button class="btn" style="background:#e2e8f0; color:#333;" onclick="closeModal('memberSettingsModal')">Cancel</button>
-                <button class="btn btn-danger" id="deleteMember" style="display:none;">Delete Member</button>
+                <button class="btn btn-danger" id="deleteMember" style="display:none;">Delete</button>
                 <button class="btn btn-primary" id="saveMemberSettings">Save Settings</button>
             </div>
         </div>
@@ -181,13 +160,13 @@
         <div class="modal-content">
             <h3 style="margin-top:0; color: var(--primary);">Add New Member</h3>
             <div class="form-group"><label>Category</label><input type="text" id="newCategory" value="Ph.D. Students"></div>
-            <div class="form-group"><label>Name</label><input type="text" id="newName" placeholder="Dr. John Doe"></div>
-            <div class="form-group"><label>Role / Title</label><input type="text" id="newRole" placeholder="Ph.D. Candidate"></div>
-            <div class="form-group"><label>Details</label><textarea id="newDetail" rows="2" placeholder="Research interests..."></textarea></div>
-            <div class="form-group"><label>Photo URL</label><input type="url" id="newPhoto" placeholder="(Optional) URL to image"></div>
+            <div class="form-group"><label>Name</label><input type="text" id="newName"></div>
+            <div class="form-group"><label>Role / Title</label><input type="text" id="newRole"></div>
+            <div class="form-group"><label>Details</label><textarea id="newDetail" rows="2"></textarea></div>
+            <div class="form-group"><label>Photo URL</label><input type="url" id="newPhoto"></div>
             <div class="btn-group">
                 <button class="btn" style="background:#e2e8f0; color:#333;" onclick="closeModal('addMemberModal')">Cancel</button>
-                <button class="btn btn-primary" id="saveNewMember">Add Member</button>
+                <button class="btn btn-primary" id="saveNewMember">Add</button>
             </div>
         </div>
     </div>
@@ -195,41 +174,24 @@
     <script>
         let isEditMode = false;
         const defaultMembers = [
-            { id: "1", category: "Principal Investigator", name: "Dr. Name", role: "Principal Investigator", detail: "Research Focus: Polyurethane Synthesis, Diels-Alder Self-Healing Polymers, Flexible Sensors.", img: "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=professional%20academic%20portrait%2C%20male%2C%20lab%20background&image_size=portrait_3_4" },
-            { id: "2", category: "Postdoctoral Researchers", name: "Dr. Alice Chen", role: "Postdoctoral Fellow", detail: "Research Focus: Carbon Nanotube Aerogel Assembly & Composite Materials.", img: "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=female%20scientist%20portrait%2C%20professional%2C%20clean%20background&image_size=portrait_3_4" },
-            { id: "3", category: "Ph.D. Students", name: "Bob Smith", role: "Ph.D. Candidate (Year 3)", detail: "Research Focus: Ion-based Flexible Sensors using PU composites.", img: "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=young%20male%20student%20portrait%2C%20smiling%2C%20university%20background&image_size=portrait_3_4" }
+            { id: "1", category: "Principal Investigator", name: "Boxiao Li", role: "Junior PI", detail: "Research Focus: Polyurethane Synthesis, Self-Healing Polymers.", img: "https://via.placeholder.com/300x400.png?text=PI" },
+            { id: "2", category: "Ph.D. Students", name: "Student Name", role: "Ph.D. Candidate", detail: "Research Focus: Carbon Nanotube Aerogels.", img: "https://via.placeholder.com/300x400.png?text=Student" }
         ];
-        const baseCategoryOrder = ["Principal Investigator", "Postdoctoral Researchers", "Ph.D. Students", "Master Students", "Alumni"];
+        const baseCategoryOrder = ["Principal Investigator", "Ph.D. Students", "Master Students", "Alumni"];
 
-        document.addEventListener('DOMContentLoaded', () => {
-            loadAllContent();
-            setupEventListeners();
-        });
+        document.addEventListener('DOMContentLoaded', () => { loadAllContent(); setupEventListeners(); });
 
         function setupEventListeners() {
             document.getElementById('loginTriggerBtn').onclick = () => document.getElementById('loginModal').style.display = 'block';
             document.getElementById('submitLogin').onclick = handleLogin;
             window.onclick = (e) => { if (e.target.classList.contains('modal')) e.target.style.display = 'none'; };
 
-            // Logo 上传
             document.getElementById('logoUploadArea').addEventListener('click', () => document.getElementById('logoFileInput').click());
             document.getElementById('logoFileInput').addEventListener('change', function(e) {
-                const file = e.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        const preview = document.getElementById('logoPreview');
-                        preview.src = e.target.result; preview.style.display = 'block';
-                    };
-                    reader.readAsDataURL(file);
-                }
+                if (e.target.files[0]) { const reader = new FileReader(); reader.onload = function(e) { document.getElementById('logoPreview').src = e.target.result; document.getElementById('logoPreview').style.display = 'block'; }; reader.readAsDataURL(e.target.files[0]); }
             });
             document.getElementById('saveLogoBtn').addEventListener('click', function() {
-                const newSrc = document.getElementById('logoPreview').src;
-                if(newSrc) {
-                    document.getElementById('navLogoImg').src = newSrc;
-                    saveGlobalNav();
-                }
+                if(document.getElementById('logoPreview').src) { document.getElementById('navLogoImg').src = document.getElementById('logoPreview').src; saveGlobalNav(); }
                 closeModal('logoEditModal');
             });
 
@@ -237,165 +199,78 @@
             document.getElementById('saveNewMember').onclick = addNewMember;
             document.getElementById('saveMemberSettings').onclick = saveMemberSettings;
             document.getElementById('deleteMember').onclick = deleteMemberEntry;
-            
-            document.getElementById('exportBtn').onclick = exportData;
+            document.getElementById('exportBtn').onclick = () => { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(getMembersData())], {type: 'application/json'})); a.download = 'boxlab_members.json'; a.click(); };
             document.getElementById('importFile').addEventListener('change', importData);
         }
 
         function handleLogin() {
-            if(document.getElementById('username').value === 'admin' && document.getElementById('password').value === 'password') {
-                enableEditMode();
-                document.getElementById('loginModal').style.display = 'none';
-            } else { alert('Invalid credentials.'); }
+            if(document.getElementById('username').value === 'admin' && document.getElementById('password').value === 'password') { enableEditMode(); document.getElementById('loginModal').style.display = 'none'; } else { alert('Error.'); }
         }
 
         function enableEditMode() {
-            isEditMode = true;
-            document.getElementById('loginTriggerBtn').style.display = 'none';
-            document.getElementById('adminPanel').style.display = 'flex';
+            isEditMode = true; document.getElementById('loginTriggerBtn').style.display = 'none'; document.getElementById('adminPanel').style.display = 'flex';
+            ['pageTitle', 'pageSubtitle', 'footerText'].forEach(id => { const el = document.getElementById(id); if(el){ el.contentEditable = true; el.addEventListener('blur', saveStaticContent); } });
             
-            ['pageTitle', 'pageSubtitle', 'footerText'].forEach(id => {
-                const el = document.getElementById(id);
-                el.contentEditable = true; el.addEventListener('blur', saveStaticContent);
-            });
-            
-            document.querySelectorAll('#mainNav a').forEach(a => {
-                a.contentEditable = true; a.addEventListener('blur', saveStaticContent);
-            });
-
             const navBrand = document.getElementById('navBrandText');
-            if(navBrand) {
-                navBrand.contentEditable = true;
-                navBrand.classList.add('active');
-                navBrand.addEventListener('blur', saveGlobalNav);
-            }
-            
+            if(navBrand) { navBrand.contentEditable = true; navBrand.classList.add('active'); navBrand.addEventListener('blur', saveGlobalNav); }
             const navLogo = document.getElementById('navLogoImg');
-            if(navLogo) {
-                navLogo.classList.add('editable', 'active');
-                navLogo.title = '点击修改 Logo';
-                navLogo.onclick = function() {
-                    if (!isEditMode) return;
-                    document.getElementById('logoPreview').src = this.src;
-                    document.getElementById('logoPreview').style.display = 'block';
-                    document.getElementById('logoEditModal').style.display = 'block';
-                };
-            }
-            
+            if(navLogo) { navLogo.classList.add('editable', 'active'); navLogo.title = 'Edit Logo'; navLogo.onclick = function() { if(isEditMode){ document.getElementById('logoPreview').src = this.src; document.getElementById('logoPreview').style.display = 'block'; document.getElementById('logoEditModal').style.display = 'block'; } }; }
             renderMembers(getMembersData());
         }
 
-        // 全局导航存储同步
         function loadGlobalNav() {
-            const savedData = localStorage.getItem('boxlabData');
-            if (savedData) {
-                const data = JSON.parse(savedData);
-                if(data.navLogoSrc) document.getElementById('navLogoImg').src = data.navLogoSrc;
-                if(data.navBrand) document.getElementById('navBrandText').textContent = data.navBrand;
-            }
+            const data = JSON.parse(localStorage.getItem('boxlabData') || '{}');
+            if(data.navLogoSrc) document.getElementById('navLogoImg').src = data.navLogoSrc;
+            if(data.navBrand) document.getElementById('navBrandText').textContent = data.navBrand;
         }
         function saveGlobalNav() {
-            const savedData = localStorage.getItem('boxlabData');
-            let data = savedData ? JSON.parse(savedData) : {};
-            data.navLogoSrc = document.getElementById('navLogoImg').src;
-            data.navBrand = document.getElementById('navBrandText').textContent;
+            let data = JSON.parse(localStorage.getItem('boxlabData') || '{}');
+            data.navLogoSrc = document.getElementById('navLogoImg').src; data.navBrand = document.getElementById('navBrandText').textContent;
             localStorage.setItem('boxlabData', JSON.stringify(data));
         }
 
         function updateInlineText(id, field, element) {
-            const newValue = element.innerText.trim();
-            let allMembers = getMembersData();
-            let member = allMembers.find(m => m.id === id);
-            if(member && member[field] !== newValue) {
-                member[field] = newValue;
-                localStorage.setItem('boxlabMembersV2', JSON.stringify(allMembers));
-            }
+            const newValue = element.innerText.trim(); let allMembers = getMembersData(); let member = allMembers.find(m => m.id === id);
+            if(member && member[field] !== newValue) { member[field] = newValue; localStorage.setItem('boxlabMembersV2', JSON.stringify(allMembers)); }
         }
-
         function updateCategoryTitle(oldCategory, element) {
-            const newCategory = element.innerText.trim();
-            if(!newCategory || newCategory === oldCategory) return;
-            let allMembers = getMembersData();
-            allMembers.forEach(m => { if(m.category === oldCategory) m.category = newCategory; });
-            localStorage.setItem('boxlabMembersV2', JSON.stringify(allMembers));
-            renderMembers(allMembers);
+            const newCategory = element.innerText.trim(); if(!newCategory || newCategory === oldCategory) return;
+            let allMembers = getMembersData(); allMembers.forEach(m => { if(m.category === oldCategory) m.category = newCategory; });
+            localStorage.setItem('boxlabMembersV2', JSON.stringify(allMembers)); renderMembers(allMembers);
         }
 
         function addNewMember() {
-            const name = document.getElementById('newName').value.trim();
-            if (!name) return;
-            const data = {
-                id: Date.now().toString(), category: document.getElementById('newCategory').value.trim() || "Uncategorized",
-                name: name, role: document.getElementById('newRole').value.trim(),
-                detail: document.getElementById('newDetail').value.trim(),
-                img: document.getElementById('newPhoto').value.trim() || 'https://via.placeholder.com/300x400.png?text=No+Photo'
-            };
-            let allMembers = getMembersData(); allMembers.push(data);
-            localStorage.setItem('boxlabMembersV2', JSON.stringify(allMembers));
-            document.querySelectorAll('#addMemberModal input, #addMemberModal textarea').forEach(el => el.value='');
-            closeModal('addMemberModal'); renderMembers(allMembers);
-        }
-
-        function openSettingsModal(id) {
-            if(!isEditMode) return;
-            const member = getMembersData().find(m => m.id === id);
-            if(!member) return;
-            document.getElementById('editMemberId').value = member.id;
-            document.getElementById('mCategory').value = member.category;
-            document.getElementById('mPhoto').value = member.img;
-            document.getElementById('deleteMember').style.display = 'block';
-            document.getElementById('memberSettingsModal').style.display = 'block';
-        }
-
-        function saveMemberSettings() {
-            const id = document.getElementById('editMemberId').value;
+            if (!document.getElementById('newName').value.trim()) return;
             let allMembers = getMembersData();
-            let index = allMembers.findIndex(m => m.id === id);
-            if(index > -1) {
-                allMembers[index].category = document.getElementById('mCategory').value.trim() || "Uncategorized";
-                allMembers[index].img = document.getElementById('mPhoto').value.trim() || 'https://via.placeholder.com/300x400.png?text=No+Photo';
-                localStorage.setItem('boxlabMembersV2', JSON.stringify(allMembers));
-                closeModal('memberSettingsModal'); renderMembers(allMembers);
-            }
+            allMembers.push({ id: Date.now().toString(), category: document.getElementById('newCategory').value.trim() || "Uncategorized", name: document.getElementById('newName').value.trim(), role: document.getElementById('newRole').value.trim(), detail: document.getElementById('newDetail').value.trim(), img: document.getElementById('newPhoto').value.trim() || 'https://via.placeholder.com/300x400.png?text=No+Photo' });
+            localStorage.setItem('boxlabMembersV2', JSON.stringify(allMembers)); closeModal('addMemberModal'); renderMembers(allMembers);
         }
-
+        function openSettingsModal(id) {
+            if(!isEditMode) return; const member = getMembersData().find(m => m.id === id); if(!member) return;
+            document.getElementById('editMemberId').value = member.id; document.getElementById('mCategory').value = member.category; document.getElementById('mPhoto').value = member.img;
+            document.getElementById('deleteMember').style.display = 'block'; document.getElementById('memberSettingsModal').style.display = 'block';
+        }
+        function saveMemberSettings() {
+            const id = document.getElementById('editMemberId').value; let allMembers = getMembersData(); let index = allMembers.findIndex(m => m.id === id);
+            if(index > -1) { allMembers[index].category = document.getElementById('mCategory').value.trim(); allMembers[index].img = document.getElementById('mPhoto').value.trim(); localStorage.setItem('boxlabMembersV2', JSON.stringify(allMembers)); closeModal('memberSettingsModal'); renderMembers(allMembers); }
+        }
         function deleteMemberEntry() {
-            if(!confirm('Delete this member completely?')) return;
-            const id = document.getElementById('editMemberId').value;
-            let allMembers = getMembersData().filter(m => m.id !== id);
-            localStorage.setItem('boxlabMembersV2', JSON.stringify(allMembers));
-            closeModal('memberSettingsModal'); renderMembers(allMembers);
+            let allMembers = getMembersData().filter(m => m.id !== document.getElementById('editMemberId').value);
+            localStorage.setItem('boxlabMembersV2', JSON.stringify(allMembers)); closeModal('memberSettingsModal'); renderMembers(allMembers);
         }
 
         function getMembersData() { return JSON.parse(localStorage.getItem('boxlabMembersV2')) || defaultMembers; }
-
         function renderMembers(members) {
-            const container = document.getElementById('membersContainer');
-            container.innerHTML = '';
-            const grouped = {};
-            members.forEach(m => { if(!grouped[m.category]) grouped[m.category] = []; grouped[m.category].push(m); });
-            const displayOrder = [...new Set([...baseCategoryOrder, ...Object.keys(grouped)])];
-
-            displayOrder.forEach(category => {
+            const container = document.getElementById('membersContainer'); container.innerHTML = '';
+            const grouped = {}; members.forEach(m => { if(!grouped[m.category]) grouped[m.category] = []; grouped[m.category].push(m); });
+            [...new Set([...baseCategoryOrder, ...Object.keys(grouped)])].forEach(category => {
                 if(grouped[category] && grouped[category].length > 0) {
                     const section = document.createElement('div'); section.className = 'member-section';
-                    const editAttr = isEditMode ? `contenteditable="true" onblur="updateCategoryTitle('${category}', this)"` : '';
-                    section.innerHTML = `<h2 class="section-title" ${editAttr}>${category}</h2>`;
+                    section.innerHTML = `<h2 class="section-title" ${isEditMode ? `contenteditable="true" onblur="updateCategoryTitle('${category}', this)"` : ''}>${category}</h2>`;
                     const grid = document.createElement('div'); grid.className = 'member-grid';
-                    
                     grouped[category].forEach(member => {
-                        const card = document.createElement('div');
-                        card.className = `member-card ${isEditMode ? 'editable-active' : ''}`;
-                        const textEdit = isEditMode ? 'contenteditable="true"' : '';
-                        card.innerHTML = `
-                            <button class="item-edit-btn" onclick="openSettingsModal('${member.id}')" title="Change Settings"><i class="fas fa-camera"></i></button>
-                            <img src="${member.img}" class="member-photo" onerror="this.src='https://via.placeholder.com/300x400.png?text=Error'">
-                            <div class="member-info">
-                                <h3 ${textEdit} onblur="updateInlineText('${member.id}', 'name', this)">${member.name}</h3>
-                                <div class="role" ${textEdit} onblur="updateInlineText('${member.id}', 'role', this)">${member.role}</div>
-                                <p class="detail" ${textEdit} onblur="updateInlineText('${member.id}', 'detail', this)">${member.detail}</p>
-                            </div>
-                        `;
+                        const card = document.createElement('div'); card.className = `member-card ${isEditMode ? 'editable-active' : ''}`;
+                        card.innerHTML = `<button class="item-edit-btn" onclick="openSettingsModal('${member.id}')"><i class="fas fa-camera"></i></button><img src="${member.img}" class="member-photo" onerror="this.src='https://via.placeholder.com/300x400.png?text=Error'"><div class="member-info"><h3 ${isEditMode ? 'contenteditable="true"' : ''} onblur="updateInlineText('${member.id}', 'name', this)">${member.name}</h3><div class="role" ${isEditMode ? 'contenteditable="true"' : ''} onblur="updateInlineText('${member.id}', 'role', this)">${member.role}</div><p class="detail" ${isEditMode ? 'contenteditable="true"' : ''} onblur="updateInlineText('${member.id}', 'detail', this)">${member.detail}</p></div>`;
                         grid.appendChild(card);
                     });
                     section.appendChild(grid); container.appendChild(section);
@@ -404,52 +279,16 @@
         }
 
         function loadAllContent() {
-            loadGlobalNav();
-            renderMembers(getMembersData());
+            loadGlobalNav(); renderMembers(getMembersData());
             const staticData = JSON.parse(localStorage.getItem('boxlabMembersStatic') || '{}');
             if(staticData.title) document.getElementById('pageTitle').innerText = staticData.title;
             if(staticData.subtitle) document.getElementById('pageSubtitle').innerText = staticData.subtitle;
-            if(staticData.footer) document.getElementById('footerText').innerText = staticData.footer;
-            if(staticData.nav && staticData.nav.length > 0) {
-                document.querySelectorAll('#mainNav a').forEach((a, i) => { if(staticData.nav[i]) a.innerText = staticData.nav[i]; });
-            }
         }
-
-        function saveStaticContent() {
-            const staticData = {
-                title: document.getElementById('pageTitle').innerText,
-                subtitle: document.getElementById('pageSubtitle').innerText,
-                footer: document.getElementById('footerText').innerText,
-                nav: Array.from(document.querySelectorAll('#mainNav a')).map(a => a.innerText)
-            };
-            localStorage.setItem('boxlabMembersStatic', JSON.stringify(staticData));
-        }
-
-        function exportData() {
-            const data = localStorage.getItem('boxlabMembersV2') || JSON.stringify(defaultMembers);
-            const blob = new Blob([data], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a'); a.href = url;
-            a.download = `boxlab_members_${new Date().toISOString().slice(0,10)}.json`;
-            a.click(); URL.revokeObjectURL(url);
-        }
-
+        function saveStaticContent() { localStorage.setItem('boxlabMembersStatic', JSON.stringify({ title: document.getElementById('pageTitle').innerText, subtitle: document.getElementById('pageSubtitle').innerText })); }
         function importData(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const data = JSON.parse(e.target.result);
-                    if(Array.isArray(data)) {
-                        localStorage.setItem('boxlabMembersV2', JSON.stringify(data));
-                        renderMembers(data); alert('Data imported successfully!');
-                    }
-                } catch { alert('Error reading file.'); }
-            };
-            reader.readAsText(file); event.target.value = ''; 
+            const file = event.target.files[0]; if (!file) return;
+            const reader = new FileReader(); reader.onload = function(e) { try { const data = JSON.parse(e.target.result); if(Array.isArray(data)) { localStorage.setItem('boxlabMembersV2', JSON.stringify(data)); renderMembers(data); } } catch (e) {} }; reader.readAsText(file); event.target.value = '';
         }
-
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
     </script>
 </body>
