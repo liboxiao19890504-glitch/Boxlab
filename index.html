@@ -166,6 +166,9 @@
         .text-dark .editable:hover { border-color: rgba(51, 65, 85, 0.3); }
         .editable.active { border-color: var(--accent); background-color: rgba(59, 130, 246, 0.05); }
         
+        /* 针对导航栏中的深色背景做特殊的高亮轮廓 */
+        .nav-brand.editable.active { border-color: rgba(255,255,255,0.6); background-color: rgba(255,255,255,0.1); }
+        
         .image-upload { border: 2px dashed #cbd5e1; padding: 20px; text-align: center; margin-bottom: 15px; cursor: pointer; border-radius: 8px; background: #f8fafc; transition: 0.3s; }
         .image-upload:hover { border-color: var(--accent); background: white; }
         #newsImagePreview { max-width: 100%; max-height: 200px; margin-top: 10px; border-radius: 4px; }
@@ -175,8 +178,8 @@
     <nav>
         <div class="nav-container">
             <div class="nav-logo">
-                <img src="image_3c6abc.jpg" alt="QUST Logo">
-                <span class="nav-brand">Boxlab</span>
+                <img src="image_3c6abc.jpg" alt="QUST Logo" title="QUST Logo">
+                <span class="nav-brand editable" contenteditable="false" id="navBrandText">Boxlab</span>
             </div>
             <ul>
                 <li><a href="index.html">Home</a></li>
@@ -195,33 +198,9 @@
 
     <section class="text-dark">
         <div class="container">
-            <h2 class="editable" contenteditable="false">Selected News</h2>
+            <h2 class="editable" contenteditable="false" id="newsSectionTitle">Selected News</h2>
             <div class="news-grid" id="newsGrid">
-                <div class="news-item">
-                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=academic%20research%20team%20meeting%2C%20professional%20setting%2C%20high%20quality%20photo&image_size=landscape_4_3" alt="新闻图片" class="news-image">
-                    <div class="news-content">
-                        <h3 class="editable" contenteditable="false">团队成员在国际会议上发表重要研究成果</h3>
-                        <p class="editable" contenteditable="false">2026-03-10</p>
-                        <p class="editable" contenteditable="false">团队成员在最近的国际会议上展示了最新研究成果，获得了同行的高度评价。</p>
-                    </div>
                 </div>
-                <div class="news-item">
-                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=research%20team%20receiving%20award%2C%20ceremony%20setting%2C%20high%20quality%20photo&image_size=landscape_4_3" alt="新闻图片" class="news-image">
-                    <div class="news-content">
-                        <h3 class="editable" contenteditable="false">团队获得国家自然科学基金项目资助</h3>
-                        <p class="editable" contenteditable="false">2026-03-05</p>
-                        <p class="editable" contenteditable="false">团队成功获得国家自然科学基金重点项目资助，将开展为期三年的深入研究。</p>
-                    </div>
-                </div>
-                <div class="news-item">
-                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=new%20team%20member%20joining%2C%20office%20setting%2C%20high%20quality%20photo&image_size=landscape_4_3" alt="新闻图片" class="news-image">
-                    <div class="news-content">
-                        <h3 class="editable" contenteditable="false">团队新成员加入</h3>
-                        <p class="editable" contenteditable="false">2026-02-28</p>
-                        <p class="editable" contenteditable="false">欢迎新博士后研究员加入团队，将为团队带来新的研究视角和技术专长。</p>
-                    </div>
-                </div>
-            </div>
             <button class="add-news-btn" id="addNewsBtn" style="display: none;"><i class="fas fa-plus"></i> 添加新闻</button>
         </div>
     </section>
@@ -288,6 +267,28 @@
         let isEditMode = false;
         let currentEditingNews = -1;
         
+        // 默认新闻数据
+        const defaultNews = [
+            {
+                image: "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=academic%20research%20team%20meeting%2C%20professional%20setting%2C%20high%20quality%20photo&image_size=landscape_4_3",
+                title: "团队成员在国际会议上发表重要研究成果",
+                date: "2026-03-10",
+                content: "团队成员在最近的国际会议上展示了最新研究成果，获得了同行的高度评价。"
+            },
+            {
+                image: "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=research%20team%20receiving%20award%2C%20ceremony%20setting%2C%20high%20quality%20photo&image_size=landscape_4_3",
+                title: "团队获得国家自然科学基金项目资助",
+                date: "2026-03-05",
+                content: "团队成功获得国家自然科学基金重点项目资助，将开展为期三年的深入研究。"
+            },
+            {
+                image: "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=new%20team%20member%20joining%2C%20office%20setting%2C%20high%20quality%20photo&image_size=landscape_4_3",
+                title: "团队新成员加入",
+                date: "2026-02-28",
+                content: "欢迎新博士后研究员加入团队，将为团队带来新的研究视角和技术专长。"
+            }
+        ];
+
         document.addEventListener('DOMContentLoaded', function() {
             loadData();
             initEventListeners();
@@ -365,10 +366,19 @@
                 element.classList.add('active');
             });
             
+            // 重新绑定新闻点击事件
+            bindNewsClickEvents();
+        }
+
+        function bindNewsClickEvents() {
             const newsItems = document.querySelectorAll('.news-item');
             newsItems.forEach((item, index) => {
-                item.addEventListener('click', function() {
-                    openNewsEditModal(index);
+                // 先移除旧事件防止重复触发
+                const newItem = item.cloneNode(true);
+                item.parentNode.replaceChild(newItem, item);
+                
+                newItem.addEventListener('click', function() {
+                    if(isEditMode) openNewsEditModal(index);
                 });
             });
         }
@@ -418,19 +428,13 @@
                 const newNewsItem = document.createElement('div');
                 newNewsItem.className = 'news-item';
                 newNewsItem.innerHTML = `
-                    <img src="${imageSrc || 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=academic%20research%20team%2C%20professional%20setting%2C%20high%20quality%20photo&image_size=landscape_4_3'}" alt="新闻图片" class="news-image">
+                    <img src="${imageSrc || 'https://via.placeholder.com/400x300'}" alt="新闻图片" class="news-image">
                     <div class="news-content">
                         <h3 class="editable active" contenteditable="true">${title}</h3>
                         <p class="editable active" contenteditable="true">${date}</p>
                         <p class="editable active" contenteditable="true">${content}</p>
                     </div>
                 `;
-                
-                newNewsItem.addEventListener('click', function() {
-                    const newIndex = Array.from(newsGrid.children).indexOf(newNewsItem);
-                    openNewsEditModal(newIndex);
-                });
-                
                 newsGrid.appendChild(newNewsItem);
             } else {
                 const newsItem = newsGrid.children[index];
@@ -440,6 +444,7 @@
                 newsItem.querySelector('p:nth-child(3)').textContent = content;
             }
             
+            bindNewsClickEvents(); // 重新绑定事件
             saveData();
             document.getElementById('newsEditModal').style.display = 'none';
         }
@@ -450,15 +455,19 @@
             
             if (index !== -1 && confirm('确定要删除这条新闻吗？')) {
                 newsGrid.removeChild(newsGrid.children[index]);
+                bindNewsClickEvents();
                 saveData();
                 document.getElementById('newsEditModal').style.display = 'none';
             }
         }
         
+        // 核心修复部分：在 saveData 中增加了 navBrand 和 sectionTitle
         function saveData() {
             const data = {
+                navBrand: document.getElementById('navBrandText').textContent,
                 title: document.querySelector('header h1').textContent,
                 subtitle: document.querySelector('header p').textContent,
+                sectionTitle: document.getElementById('newsSectionTitle').textContent,
                 footer: document.querySelector('footer p').textContent,
                 news: []
             };
@@ -476,34 +485,44 @@
             localStorage.setItem('boxlabData', JSON.stringify(data));
         }
         
+        // 核心修复部分：在 loadData 中读取 navBrand 和 sectionTitle
         function loadData() {
             const savedData = localStorage.getItem('boxlabData');
-            if (savedData) {
-                const data = JSON.parse(savedData);
+            let data = savedData ? JSON.parse(savedData) : null;
+            
+            if (data) {
+                if(data.navBrand) document.getElementById('navBrandText').textContent = data.navBrand;
+                if(data.sectionTitle) document.getElementById('newsSectionTitle').textContent = data.sectionTitle;
                 
-                document.querySelector('header h1').textContent = data.title;
-                document.querySelector('header p').textContent = data.subtitle;
-                document.querySelector('footer p').textContent = data.footer;
+                document.querySelector('header h1').textContent = data.title || "Boxlab";
+                document.querySelector('header p').textContent = data.subtitle || "Dr. 姓名 - 首席研究员 | 博士生导师 | 青岛科技大学";
+                document.querySelector('footer p').textContent = data.footer || "© 2026 Boxlab. 保留所有权利.";
                 
-                if (data.news && data.news.length > 0) {
-                    const newsGrid = document.getElementById('newsGrid');
-                    newsGrid.innerHTML = '';
-                    
-                    data.news.forEach((news, index) => {
-                        const newsItem = document.createElement('div');
-                        newsItem.className = 'news-item';
-                        newsItem.innerHTML = `
-                            <img src="${news.image}" alt="新闻图片" class="news-image">
-                            <div class="news-content">
-                                <h3 class="editable" contenteditable="false">${news.title}</h3>
-                                <p class="editable" contenteditable="false">${news.date}</p>
-                                <p class="editable" contenteditable="false">${news.content}</p>
-                            </div>
-                        `;
-                        newsGrid.appendChild(newsItem);
-                    });
-                }
+                const newsToLoad = (data.news && data.news.length > 0) ? data.news : defaultNews;
+                renderNews(newsToLoad);
+            } else {
+                renderNews(defaultNews);
             }
+        }
+
+        function renderNews(newsArray) {
+            const newsGrid = document.getElementById('newsGrid');
+            newsGrid.innerHTML = '';
+            newsArray.forEach((news, index) => {
+                const editAttrs = isEditMode ? 'contenteditable="true" class="editable active"' : 'contenteditable="false" class="editable"';
+                const newsItem = document.createElement('div');
+                newsItem.className = 'news-item';
+                newsItem.innerHTML = `
+                    <img src="${news.image}" alt="新闻图片" class="news-image">
+                    <div class="news-content">
+                        <h3 ${editAttrs}>${news.title}</h3>
+                        <p ${editAttrs}>${news.date}</p>
+                        <p ${editAttrs}>${news.content}</p>
+                    </div>
+                `;
+                newsGrid.appendChild(newsItem);
+            });
+            if(isEditMode) bindNewsClickEvents();
         }
         
         document.addEventListener('input', function(e) {
