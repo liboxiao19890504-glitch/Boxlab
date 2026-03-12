@@ -1,0 +1,31 @@
+{
+  "nav_brand": "Box Lab",
+  "footer_text": "© 2026 Box Lab. All Rights Reserved.",
+  "home": {
+    "title": "Box Lab —— Thinking out of the Box",
+    "subtitle": "Junior PI: Dr. Boxiao Li (Senior PI: Jianming Zhang)"
+  },
+  "pub": {
+    "title": "Publications",
+    "subtitle": "Selected Research Papers and Patents"
+  },
+  "members": {
+    "title": "Our Team",
+    "subtitle": "Innovation through collaboration and dedication"
+  },
+  "res": {
+    "title": "Researches & Cooperation",
+    "subtitle": "Advancing Polymer Science through Innovation",
+    "intro_title": "About Our Research Group",
+    "intro_desc": "We are a dynamic research group focused on...",
+    "intro_img": ""
+  },
+  "join": {
+    "title": "Join Box Lab",
+    "subtitle": "Building the future of functional polymers",
+    "intro_desc": "We are highly motivated to push the boundaries...",
+    "email": "investigator@university.edu",
+    "location": "School of Materials Science, Main Campus",
+    "note": "Please include your CV, transcript, and a brief statement..."
+  }
+}
